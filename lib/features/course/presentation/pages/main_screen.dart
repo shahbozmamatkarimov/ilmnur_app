@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:ilmnur_app/core/resources/app_colors.dart';
 import 'package:ilmnur_app/core/widgets/w_tabbar.dart';
+import 'package:ilmnur_app/features/chat/presentation/pages/chat_screen.dart';
 // import 'package:ilmnur_app/features/course/presentation/pages/chat.dart';
 import 'package:ilmnur_app/features/course/presentation/pages/lessons_screen.dart';
 // import 'package:ilmnur_app/features/course/presentation/pages/news.dart';
@@ -21,7 +22,7 @@ class MainScreen extends StatefulWidget {
 class MainScreenState extends State<MainScreen>
     with SingleTickerProviderStateMixin {
   late final TabController controllerForMainTabVarView = TabController(
-    length: 7,
+    length: communityTabs.length,
     vsync: this,
     initialIndex: 0,
   );
@@ -52,7 +53,7 @@ class MainScreenState extends State<MainScreen>
               controller: controllerForMainTabVarView,
               children: [
                 Lessons(id: widget.id),
-                Lessons(id: widget.id),
+                const ChatScreen(),
                 Lessons(id: widget.id),
                 Lessons(id: widget.id),
                 Lessons(id: widget.id),

@@ -4,17 +4,17 @@ import 'package:ilmnur_app/core/resources/app_colors.dart';
 import 'package:ilmnur_app/features/home/data/data_sources/group/group_service.dart';
 import 'package:ilmnur_app/features/home/data/repositories/impl_group_repo.dart';
 import 'package:ilmnur_app/features/home/presentation/bloc/group/group_bloc.dart';
-import 'package:ilmnur_app/features/home/presentation/widgets/WGroupCard.dart';
+import 'package:ilmnur_app/features/home/presentation/widgets/group_card.dart';
 import 'package:shimmer/shimmer.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class GroupPage extends StatefulWidget {
+  const GroupPage({super.key});
 
   @override
-  HomePageState createState() => HomePageState();
+  GroupPageState createState() => GroupPageState();
 }
 
-class HomePageState extends State<HomePage> {
+class GroupPageState extends State<GroupPage> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

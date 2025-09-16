@@ -6,16 +6,13 @@ import 'package:ilmnur_app/core/resources/app_colors.dart';
 import 'package:ilmnur_app/core/util/responsive.dart';
 import 'package:ilmnur_app/core/widgets/w_button.dart';
 import 'package:ilmnur_app/core/widgets/w_tabbar.dart';
-// import 'package:ilmnur_app/features/course/presentation/pages/chat.dart';
-// import 'package:ilmnur_app/features/course/presentation/pages/news.dart';
-// import 'package:ilmnur_app/features/course/presentation/pages/reyting.dart';
 import 'package:ilmnur_app/features/home/data/data_sources/category/category_service.dart';
 import 'package:ilmnur_app/features/home/data/data_sources/group/group_service.dart';
 import 'package:ilmnur_app/features/home/data/repositories/impl_category_repo.dart';
 import 'package:ilmnur_app/features/home/data/repositories/impl_group_repo.dart';
 import 'package:ilmnur_app/features/home/presentation/bloc/category/category_bloc.dart';
 import 'package:ilmnur_app/features/home/presentation/bloc/group/group_bloc.dart';
-import 'package:ilmnur_app/features/home/presentation/pages/home_page.dart';
+import 'package:ilmnur_app/features/home/presentation/pages/group_page.dart';
 import 'package:shimmer/shimmer.dart';
 
 @RoutePage()
@@ -177,7 +174,7 @@ class GroupsScreenState extends State<GroupsScreen>
               Expanded(
                 child: TabBarView(
                   controller: controllerForMainTabVarView,
-                  children: const [HomePage(), HomePage(), HomePage()],
+                  children: const [GroupPage(), GroupPage(), GroupPage()],
                 ),
               ),
             ],
