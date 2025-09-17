@@ -51,30 +51,10 @@ class _LessonScreenState extends State<LessonScreen>
     if (videoData.video == currentVideoUrl) return;
     currentVideoUrl = videoData.video ?? '';
     videoLesson = videoData;
-    controller = VideoPlayerController.network(videoData.video ?? '')
-      ..addListener(() {
-        if (controller.value.hasError) {
-          log("Video error: ${controller.value.errorDescription}");
-        }
-      });
-    controller.initialize().then((value) {
-      if (controller.value.isInitialized) {
-        // controller.play();
-        setState(() {});
-      } else {
-        log("video file load failed");
-      }
-    });
-  }
 
-  @override
-  void initState() {
-    super.initState();
+    final videoUrl = videoData.video ?? '';
 
-    // Replace with your YouTube video URL
-    String videoUrl = "https://www.youtube.com/watch?v=wd-99wY0b0w";
-
-    // Extract the video ID from the URL
+    // YouTube URL bo‘lsa
     String? videoId = YoutubePlayer.convertUrlToId(videoUrl);
 
     // Initialize the YouTube player controller with the extracted video ID
@@ -126,7 +106,7 @@ class _LessonScreenState extends State<LessonScreen>
               // shadowColor: AppColors.transparent,
               // foregroundColor: AppColors.transparent,
               // surfaceTintColor: AppColors.transparent,
-              expandedHeight: isDesktop ? 466 : 420,
+              expandedHeight: isDesktop ? 466 : 320,
               leadingWidth: 0,
               leading: Text(""),
               toolbarHeight: 0,
