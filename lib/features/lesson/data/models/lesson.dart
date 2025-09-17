@@ -9,7 +9,7 @@ class Lesson {
   final int id;
   final String title;
   final String content;
-  final String video;
+  final String? video;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -17,7 +17,7 @@ class Lesson {
     required this.id,
     required this.title,
     required this.content,
-    required this.video,
+    this.video,
     required this.createdAt,
     required this.updatedAt,
   });

@@ -10,7 +10,7 @@ Lesson _$LessonFromJson(Map<String, dynamic> json) => Lesson(
   id: (json['id'] as num).toInt(),
   title: json['title'] as String,
   content: json['content'] as String,
-  video: json['video'] as String,
+  video: json['video'] as String?,
   createdAt: DateTime.parse(json['createdAt'] as String),
   updatedAt: DateTime.parse(json['updatedAt'] as String),
 );

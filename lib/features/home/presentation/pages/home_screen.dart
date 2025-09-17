@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
       routes: [
         const GroupsRoute(),
         MainRoute(id: 1),
-        // const CoursesRoute(),
+        CourseRoute(courseId: 1),
         LessonRoute(lessonId: 1),
         const ReytingRoute(),
         const NewsRoute(),

@@ -30,10 +30,45 @@ class LoadedCourseData extends CourseState {
     this.status = StateStatus.normal,
     this.tabIndex = 0,
   });
-
   @override
   List<Object> get props => [course, status, tabIndex];
 }
+
+class LoadedLessonsData extends CourseState {
+  final Course course;
+  final List<Lesson> lessons;
+  final StateStatus status;
+  final String? error;
+  final int tabIndex;
+  const LoadedLessonsData({
+    required this.course,
+    required this.lessons,
+    this.error,
+    this.status = StateStatus.normal,
+    this.tabIndex = 0,
+  });
+  @override
+  List<Object> get props => [course, lessons, status, tabIndex];
+}
+
+// class LoadedLessonsData extends CourseState {
+//   final Course course; // bitta kurs
+//   final List<Lesson> lessons; // kursdagi barcha darslar
+//   final StateStatus status;
+//   final String? error;
+//   final int tabIndex;
+
+//   const LoadedLessonsData({
+//     required this.course,
+//     required this.lessons,
+//     this.error,
+//     this.status = StateStatus.normal,
+//     this.tabIndex = 0,
+//   });
+
+//   @override
+//   List<Object?> get props => [course, lessons, status, tabIndex];
+// }
 
 class SuccessUpdate extends CourseState {
   @override

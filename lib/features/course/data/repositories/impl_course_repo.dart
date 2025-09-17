@@ -2,8 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:ilmnur_app/core/error/exception_handler.dart';
 import 'package:ilmnur_app/features/course/data/models/course.dart';
 import 'package:ilmnur_app/core/resources/data_state.dart';
+import 'package:ilmnur_app/features/course/data/models/course_response.dart';
 import 'package:ilmnur_app/features/course/data/models/createcourse.dart';
 import 'package:ilmnur_app/features/course/domain/repositories/course_repo.dart';
+import 'package:ilmnur_app/features/lesson/presentation/bloc/group/lesson_bloc.dart';
 import 'package:path/path.dart' as path;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../data_sources/course_service.dart';
@@ -59,6 +61,23 @@ class ImplCourseRepo extends CourseRepo {
       return DataSuccess<List<Course>>(data: response.data);
     } catch (e) {
       return DataException.getError<List<Course>>(e);
+    }
+  }
+
+  @override
+  Future<DataState<CourseResponse>> getLessons(int id) async {
+    try {
+      // final List<Course>? courses = await _getCoursesFromPreferences();
+      // print(courses);
+      // if (courses != null && courses.isNotEmpty) {
+      // return DataSuccess<List<Course>>(data: courses);
+      // }
+      final response = await courseService.getLessons(id);
+      // await _saveCoursesToPreferences(response.data);
+      return DataSuccess<CourseResponse>(data: response.data);
+    } catch (e) {
+      print(e);
+      return DataException.getError<CourseResponse>(e);
     }
   }
 

@@ -68,7 +68,7 @@ class Lessons extends StatelessWidget {
                 courseRepo: ImplCourseRepo(
                   courseService: CourseService.create(),
                 ),
-              ),
+              )..add(GetCourses()),
               child: BlocBuilder<CourseBloc, CourseState>(
                 builder: (context, state) {
                   if (state is Loading) {
@@ -108,7 +108,7 @@ class Lessons extends StatelessWidget {
                           GestureDetector(
                             // onTap: () => context.router.pushNamed("/course"),
                             onTap: () {
-                              context.router.push(LessonRoute(lessonId: i.id));
+                              context.router.push(CourseRoute(courseId: i.id));
                             },
                             child: Container(
                               decoration: BoxDecoration(

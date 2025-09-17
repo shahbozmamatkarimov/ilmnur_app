@@ -14,6 +14,9 @@ class Course {
   final String cover;
   final int price;
   final int discount;
+  final int? subscriptions_count;
+  final int? likes_count;
+  final int? lessons_count;
   // final int group_id;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -27,6 +30,9 @@ class Course {
     required this.discount,
     required this.createdAt,
     required this.updatedAt,
+    this.subscriptions_count,
+    this.likes_count,
+    this.lessons_count,
     // required this.group_id,
   });
 

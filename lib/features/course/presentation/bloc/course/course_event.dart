@@ -9,6 +9,11 @@ class GetCourses extends CourseEvent {
   List<Object?> get props => [];
 }
 
+class GetLessons extends CourseEvent {
+  @override
+  List<Object?> get props => [];
+}
+
 class CreateCourse extends CourseEvent {
   final CreateCourseModel course;
 

@@ -31,7 +31,7 @@ class _LessonScreenState extends State<LessonScreen>
     with SingleTickerProviderStateMixin {
   late VideoPlayerController controller;
   late YoutubePlayerController _controller;
-  String currentVideoUrl = '';
+  String? currentVideoUrl = '';
 
   bool isLoading = true;
   Lesson videoLesson = Lesson(
@@ -49,9 +49,9 @@ class _LessonScreenState extends State<LessonScreen>
 
   void setVideoPlayer(Lesson videoData) {
     if (videoData.video == currentVideoUrl) return;
-    currentVideoUrl = videoData.video;
+    currentVideoUrl = videoData.video ?? '';
     videoLesson = videoData;
-    controller = VideoPlayerController.network(videoData.video)
+    controller = VideoPlayerController.network(videoData.video ?? '')
       ..addListener(() {
         if (controller.value.hasError) {
           log("Video error: ${controller.value.errorDescription}");

@@ -13,7 +13,7 @@ class AppRouter extends RootStackRouter {
       children: [
         AutoRoute(page: GroupsRoute.page, path: '', initial: true),
         AutoRoute(page: MainRoute.page, path: 'group/:id'),
-        // AutoRoute(page: CourseRoute.page, path: 'course/:courseId'),
+        AutoRoute(page: CourseRoute.page, path: 'course/:courseId'),
         AutoRoute(page: LessonRoute.page, path: 'lesson/:lessonId'),
         AutoRoute(page: ReytingRoute.page, path: 'reyting'),
         AutoRoute(page: NewsRoute.page, path: 'news'),
