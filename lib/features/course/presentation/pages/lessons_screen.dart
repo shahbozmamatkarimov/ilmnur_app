@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:ilmnur_app/features/course/data/repositories/impl_course_repo.da
 import 'package:ilmnur_app/features/course/presentation/bloc/course/course_bloc.dart';
 import 'package:ilmnur_app/features/course/presentation/widgets/add_course.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:ilmnur_app/config/routes/router.gr.dart';
 
 // @RoutePage()
 class Lessons extends StatelessWidget {
@@ -106,7 +108,7 @@ class Lessons extends StatelessWidget {
                           GestureDetector(
                             // onTap: () => context.router.pushNamed("/course"),
                             onTap: () {
-                              // context.router.push(CourseRoute(courseId: i.id));
+                              context.router.push(LessonRoute(lessonId: i.id));
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -129,7 +131,7 @@ class Lessons extends StatelessWidget {
                                     children: <Widget>[
                                       Image.network(
                                         i.cover,
-                                        height: 150,
+                                        height: 120,
                                         width: double.infinity,
                                         fit: BoxFit.cover,
                                         loadingBuilder:
@@ -390,7 +392,7 @@ class MyCourseView extends StatelessWidget {
         strokeCap: StrokeCap.round,
         radius: const Radius.circular(8),
         child: Container(
-          height: 316,
+          height: 306,
           constraints: BoxConstraints(
             maxWidth: MediaQuery.of(context).size.width > 800
                 ? 245

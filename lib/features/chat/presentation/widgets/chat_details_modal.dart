@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ilmnur_app/core/resources/app_colors.dart';
 
 class ChatDetailModal extends StatefulWidget {
   // final ChatEntity chat;
@@ -57,7 +58,7 @@ class _ChatDetailModalState extends State<ChatDetailModal>
       appBar: AppBar(
         centerTitle: false,
         elevation: 0,
-        backgroundColor: const Color(0xFF00BF6D),
+        backgroundColor: AppColors.mainColor,
         foregroundColor: Colors.white,
         automaticallyImplyLeading: false,
         title: const Row(
@@ -157,7 +158,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
                                     child: Icon(
                                       Icons.attach_file,
                                       color: _showAttachment
-                                          ? const Color(0xFF00BF6D)
+                                          ? AppColors.mainColor
                                           : Theme.of(context)
                                                 .textTheme
                                                 .bodyLarge!
@@ -392,13 +393,13 @@ class AudioMessage extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
-        color: const Color(0xFF00BF6D).withOpacity(message!.isSender ? 1 : 0.1),
+        color: AppColors.mainColor.withOpacity(message!.isSender ? 1 : 0.1),
       ),
       child: Row(
         children: [
           Icon(
             Icons.play_arrow,
-            color: message!.isSender ? Colors.white : const Color(0xFF00BF6D),
+            color: message!.isSender ? Colors.white : AppColors.mainColor,
           ),
           Expanded(
             child: Padding(
@@ -412,7 +413,7 @@ class AudioMessage extends StatelessWidget {
                     height: 2,
                     color: message!.isSender
                         ? Colors.white
-                        : const Color(0xFF00BF6D).withOpacity(0.4),
+                        : AppColors.mainColor.withOpacity(0.4),
                   ),
                   Positioned(
                     left: 0,
@@ -422,7 +423,7 @@ class AudioMessage extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: message!.isSender
                             ? Colors.white
-                            : const Color(0xFF00BF6D),
+                            : AppColors.mainColor,
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -457,7 +458,7 @@ class TextMessage extends StatelessWidget {
         vertical: 16.0 / 2,
       ),
       decoration: BoxDecoration(
-        color: const Color(0xFF00BF6D).withOpacity(message!.isSender ? 1 : 0.1),
+        color: AppColors.mainColor.withOpacity(message!.isSender ? 1 : 0.1),
         borderRadius: BorderRadius.circular(30),
       ),
       child: Text(
@@ -485,7 +486,7 @@ class MessageStatusDot extends StatelessWidget {
         case MessageStatus.notView:
           return Theme.of(context).textTheme.bodyLarge!.color!.withOpacity(0.1);
         case MessageStatus.viewed:
-          return const Color(0xFF00BF6D);
+          return AppColors.mainColor;
         default:
           return Colors.transparent;
       }

@@ -35,9 +35,10 @@ class _HomeScreenState extends State<HomeScreen> {
         const GroupsRoute(),
         MainRoute(id: 1),
         // const CoursesRoute(),
-        // LessonRoute(lessonId: 1),
-        // const ReytingRoute(),
-        // const NewsRoute(),
+        LessonRoute(lessonId: 1),
+        const ReytingRoute(),
+        const NewsRoute(),
+        TestsRoute(testId: 1),
       ],
       transitionBuilder: (context, child, animation) =>
           FadeTransition(opacity: animation, child: child),
@@ -71,6 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         horizontal: 16,
                         vertical: 15,
                       ),
+                      height: 72,
                       decoration: const BoxDecoration(color: AppColors.white),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

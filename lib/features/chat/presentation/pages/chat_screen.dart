@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:ilmnur_app/features/chat/presentation/widgets/chat_details_modal.dart';
 import 'package:ilmnur_app/features/chat/presentation/widgets/show_slide_dialog.dart';
+import 'package:ilmnur_app/core/resources/app_colors.dart';
 
 @RoutePage()
 class ChatScreen extends StatelessWidget {
@@ -14,10 +15,9 @@ class ChatScreen extends StatelessWidget {
         children: [
           Container(
             padding: const EdgeInsets.all(16.0),
-            color: const Color(0xFF00BF6D),
+            color: AppColors.mainColor,
             child: Form(
               child: TextFormField(
-                autofocus: true,
                 textInputAction: TextInputAction.search,
                 onChanged: (value) {
                   // search
