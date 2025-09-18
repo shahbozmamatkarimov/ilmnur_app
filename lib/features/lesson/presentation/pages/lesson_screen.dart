@@ -47,12 +47,11 @@ class _LessonScreenState extends State<LessonScreen>
     ), // Convert string to DateTime
   );
 
-  void setVideoPlayer(Lesson videoData) {
-    if (videoData.video == currentVideoUrl) return;
-    currentVideoUrl = videoData.video ?? '';
-    videoLesson = videoData;
+  void setVideoPlayer(Lesson? videoData) {
+    if (videoData?.video == currentVideoUrl) return;
+    currentVideoUrl = videoData?.video ?? '';
 
-    final videoUrl = videoData.video ?? '';
+    final videoUrl = videoData?.video ?? '';
 
     // YouTube URL bo‘lsa
     String? videoId = YoutubePlayer.convertUrlToId(videoUrl);
@@ -92,6 +91,8 @@ class _LessonScreenState extends State<LessonScreen>
     "Comments",
     "Similar courses",
   ];
+
+  Lesson? lesson;
 
   @override
   Widget build(BuildContext context) {
@@ -156,8 +157,11 @@ class _LessonScreenState extends State<LessonScreen>
                           ),
                         );
                       } else if (state is LoadedLessonData) {
-                        final lesson = state.lesson;
-                        setVideoPlayer(lesson);
+                        lesson = state.lesson;
+                        if (lesson?.video != null &&
+                            lesson!.video!.isNotEmpty) {
+                          setVideoPlayer(lesson);
+                        }
                         return Container(
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
@@ -166,37 +170,40 @@ class _LessonScreenState extends State<LessonScreen>
                           ),
                           child: Column(
                             children: [
-                              Container(
-                                clipBehavior: Clip.hardEdge,
-                                decoration: const BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(8),
+                              if (lesson?.video != null &&
+                                  lesson!.video!.isNotEmpty)
+                                Container(
+                                  clipBehavior: Clip.hardEdge,
+                                  decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8),
+                                    ),
+                                  ),
+                                  child: YoutubePlayer(
+                                    controller: _controller,
+                                    showVideoProgressIndicator: true,
+                                    progressIndicatorColor: Colors.amber,
+                                    onReady: () {
+                                      print("Video is ready to play");
+                                    },
+                                    onEnded: (metaData) {
+                                      print("Video Ended: ${metaData.videoId}");
+                                    },
                                   ),
                                 ),
-                                child: YoutubePlayer(
-                                  controller: _controller,
-                                  showVideoProgressIndicator: true,
-                                  progressIndicatorColor: Colors.amber,
-                                  onReady: () {
-                                    print("Video is ready to play");
-                                  },
-                                  onEnded: (metaData) {
-                                    print("Video Ended: ${metaData.videoId}");
-                                  },
-                                ),
-                              ),
                               const SizedBox(height: 24),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    lesson.title,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 20,
+                                  if (lesson != null)
+                                    Text(
+                                      lesson!.title,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 20,
+                                      ),
                                     ),
-                                  ),
                                   Row(
                                     children: [
                                       WButton(
