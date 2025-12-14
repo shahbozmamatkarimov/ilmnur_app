@@ -8,7 +8,10 @@ part of 'test.dart';
 
 Tests _$TestsFromJson(Map<String, dynamic> json) => Tests(
   id: (json['id'] as num).toInt(),
-  title: json['title'] as String,
+  question: json['question'] as String,
+  variants: (json['variants'] as List<dynamic>)
+      .map((e) => e as String)
+      .toList(),
   type: json['type'] as String,
   createdAt: DateTime.parse(json['createdAt'] as String),
   updatedAt: DateTime.parse(json['updatedAt'] as String),
@@ -16,7 +19,8 @@ Tests _$TestsFromJson(Map<String, dynamic> json) => Tests(
 
 Map<String, dynamic> _$TestsToJson(Tests instance) => <String, dynamic>{
   'id': instance.id,
-  'title': instance.title,
+  'question': instance.question,
+  'variants': instance.variants,
   'type': instance.type,
   'createdAt': instance.createdAt.toIso8601String(),
   'updatedAt': instance.updatedAt.toIso8601String(),

@@ -2,14 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:ilmnur_app/config/routes/router.gr.dart';
 import 'package:ilmnur_app/core/resources/app_colors.dart';
 import 'package:ilmnur_app/core/util/responsive.dart';
 import 'package:ilmnur_app/core/widgets/w_button.dart';
 import 'package:ilmnur_app/core/widgets/w_tabbar.dart';
-// import 'package:ilmnur_app/features/course/presentation/pages/chat.dart';
-// import 'package:ilmnur_app/features/course/presentation/pages/news.dart';
-// import 'package:ilmnur_app/features/course/presentation/pages/reyting.dart';
 import 'package:ilmnur_app/features/lesson/data/data_sources/lesson_service.dart';
 import 'package:ilmnur_app/features/lesson/data/models/lesson.dart';
 import 'package:ilmnur_app/features/lesson/data/repositories/impl_lesson_repo.dart';
@@ -315,6 +311,7 @@ class _LessonScreenState extends State<LessonScreen>
                           children: [
                             LectureView(
                               htmlContent: lesson?.content ?? '',
+                              lessonId: lesson?.id ?? 0,
                               // text: lesson?.content ?? '',
                               // isLoading: isLoading,
                             ),
@@ -331,49 +328,9 @@ class _LessonScreenState extends State<LessonScreen>
             } else {
               return const Text("");
             }
-            return const Text("");
           },
         ),
       ),
     );
   }
 }
-
-// class LectureView extends StatelessWidget {
-//   String text = ''; // Text to display
-//   bool isLoading;
-
-//   LectureView({super.key, required this.isLoading, required this.text});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: AppColors.transparent,
-//       bottomNavigationBar: BottomAppBar(
-//         color: AppColors.transparent,
-//         height: 48,
-//         padding: const EdgeInsets.all(0),
-//         child: WButton(
-//           text: 'Start test',
-//           color: AppColors.mainColor,
-//           textColor: AppColors.white,
-//           verticalPadding: 10,
-//           onTap: () {
-//             context.router.push(TestsRoute(testId: 1));
-//           },
-//         ),
-//       ),
-//       body: SingleChildScrollView(
-//         child: Padding(
-//           padding: const EdgeInsets.symmetric(vertical: 14),
-//           child: Text(
-//             text,
-//             style: const TextStyle(
-//               fontSize: 14, // Font size of the text
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }

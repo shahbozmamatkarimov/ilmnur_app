@@ -23,16 +23,14 @@ class LoadedLoginData extends LoginState {
   final LoginResponse lesson;
   final StateStatus status;
   final String? error;
-  final int tabIndex;
   const LoadedLoginData({
     required this.lesson,
     this.error,
     this.status = StateStatus.normal,
-    this.tabIndex = 0,
   });
 
   @override
-  List<Object> get props => [lesson, status, tabIndex];
+  List<Object> get props => [lesson, status];
 }
 
 class SuccessUpdate extends LoginState {

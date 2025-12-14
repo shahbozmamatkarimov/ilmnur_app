@@ -20,7 +20,7 @@ class LoggedOut extends TestsState {
 }
 
 class LoadedTestsData extends TestsState {
-  final List<Tests> tests;
+  final TestsReponse tests;
   final StateStatus status;
   final String? error;
   final int tabIndex;

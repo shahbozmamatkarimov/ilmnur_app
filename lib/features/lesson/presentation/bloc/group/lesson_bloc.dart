@@ -20,7 +20,6 @@ class LessonBloc extends Bloc<LessonEvent, LessonState> {
       try {
         final response = await lessonRepo.getLesson(id);
         if (response is DataSuccess) {
-          // lesson = response.data;
           Lesson? lesson = response.data;
           if (lesson != null) {
             emit(LoadedLessonData(lesson: lesson, status: StateStatus.loaded));
@@ -29,7 +28,6 @@ class LessonBloc extends Bloc<LessonEvent, LessonState> {
           }
         }
       } catch (e) {
-        print("==$e");
         final errorMessage = 'Failed to load lesson data: $e';
         emit(ErrorLoadingLessonData(errorMessage));
       }

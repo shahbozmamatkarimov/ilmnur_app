@@ -1,6 +1,6 @@
-import 'package:ilmnur_app/features/tests/data/models/test.dart';
 import 'package:ilmnur_app/core/resources/data_state.dart';
+import 'package:ilmnur_app/features/tests/data/models/test_response.dart';
 
 abstract class TestsRepo {
-  Future<DataState<List<Tests>>> getTests(int id);
+  Future<DataState<TestsReponse>> getTests(int id);
 }

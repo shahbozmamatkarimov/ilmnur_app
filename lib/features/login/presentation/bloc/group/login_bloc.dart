@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:ilmnur_app/core/resources/data_state.dart';
@@ -22,23 +21,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       try {
         final response = await loginRepo.googleLogin(event.userCredential);
         if (response is DataSuccess) {
-          // lesson = response.data;
           LoginResponse? lesson = response.data;
           if (lesson != null) {
             final prefs = await SharedPreferences.getInstance();
             await prefs.setString('token', lesson.token);
             emit(LoadedLoginData(lesson: lesson, status: StateStatus.loaded));
           } else {
-            emit(ErrorLoadingLoginData("Failed to load lesson data"));
+            emit(const ErrorLoadingLoginData("Failed to load lesson data"));
           }
         }
       } catch (e) {
-        print("==$e");
         final errorMessage = 'Failed to load lesson data: $e';
         emit(ErrorLoadingLoginData(errorMessage));
       }
     });
-
-    // add(GetLogins());
   }
 }

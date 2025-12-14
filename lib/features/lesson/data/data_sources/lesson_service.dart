@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:ilmnur_app/features/lesson/data/models/course_group_response.dart';
 import 'package:ilmnur_app/features/lesson/data/models/lesson.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:ilmnur_app/core/network/urls.dart';
@@ -14,9 +13,6 @@ abstract class LessonService {
     final dio = Dio();
     return LessonService(dio);
   }
-
-  // @GET("subject")
-  // Future<HttpResponse<List<Lesson>>> getLessons();
 
   @GET("lesson/getById/{id}")
   Future<HttpResponse<Lesson>> getLesson(@Path("id") int id);

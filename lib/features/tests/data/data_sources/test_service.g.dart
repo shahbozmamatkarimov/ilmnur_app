@@ -20,27 +20,25 @@ class _TestsService implements TestsService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<HttpResponse<List<Tests>>> getTests(int id) async {
+  Future<HttpResponse<TestsReponse>> getTests(int id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HttpResponse<List<Tests>>>(
+    final _options = _setStreamType<HttpResponse<TestsReponse>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            'lesson/getByCourse/${id}',
+            'tests/${id}',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<Tests> _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late TestsReponse _value;
     try {
-      _value = _result.data!
-          .map((dynamic i) => Tests.fromJson(i as Map<String, dynamic>))
-          .toList();
+      _value = TestsReponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

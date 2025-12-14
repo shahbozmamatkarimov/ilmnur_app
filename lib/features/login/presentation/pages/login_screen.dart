@@ -8,6 +8,7 @@ import 'package:ilmnur_app/features/login/data/data_sources/google_signin_servic
 import 'package:ilmnur_app/features/login/data/data_sources/login_service.dart';
 import 'package:ilmnur_app/features/login/data/repositories/impl_login_repo.dart';
 import 'package:ilmnur_app/features/login/presentation/bloc/group/login_bloc.dart';
+import 'package:ilmnur_app/features/login/presentation/widgets/SocialButton.dart';
 
 @RoutePage()
 class LoginScreen extends StatelessWidget {
@@ -54,7 +55,7 @@ class _LoginView extends StatelessWidget {
 
               const WelcomeText(
                 title: "Welcome to",
-                text: "Enter your Phone number or Email \naddress for sign in.",
+                text: "Enter your Email \naddress for sign in.",
               ),
 
               const SignInForm(),
@@ -64,7 +65,7 @@ class _LoginView extends StatelessWidget {
               const SizedBox(height: 24),
 
               /// 🔴 GOOGLE BUTTON — endi to‘g‘ri context
-              SocalButton(
+              SocialButton(
                 press: () async {
                   await GoogleSignInService.signOut();
                   final user = await GoogleSignInService.signInWithGoogle();
@@ -205,62 +206,6 @@ class _SignInFormState extends State<SignInForm> {
             child: const Text("Sign in"),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class SocalButton extends StatelessWidget {
-  final Color color;
-  final String text;
-  final Widget icon;
-  final GestureTapCallback press;
-
-  const SocalButton({
-    super.key,
-    required this.color,
-    required this.icon,
-    required this.press,
-    required this.text,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    const padding = EdgeInsets.symmetric(horizontal: 16, vertical: 8);
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          padding: padding,
-          backgroundColor: color,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-          ),
-        ),
-        onPressed: press,
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              height: 28,
-              width: 28,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(4)),
-              ),
-              child: icon,
-            ),
-            const Spacer(flex: 2),
-            Text(
-              text.toUpperCase(),
-              style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const Spacer(flex: 3),
-          ],
-        ),
       ),
     );
   }

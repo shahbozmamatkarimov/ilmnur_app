@@ -7,17 +7,17 @@ part 'test.g.dart'; // Ensure this matches your filename
 @JsonSerializable()
 class Tests {
   final int id;
-  final String title;
-  // final bool published;
+  final String question;
+  final List<String> variants;
   final String type;
   final DateTime createdAt;
   final DateTime updatedAt;
 
   Tests({
     required this.id,
-    required this.title,
+    required this.question,
+    required this.variants,
     required this.type,
-    // required this.published,
     required this.createdAt,
     required this.updatedAt,
   });
