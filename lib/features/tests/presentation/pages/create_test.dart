@@ -5,10 +5,10 @@ class CreateTestPage extends StatelessWidget {
   final Function backPage; // Required parameter
 
   // Constructor with required item
-  CreateTestPage({
-    Key? key,
+  const CreateTestPage({
+    super.key,
     required this.backPage, // Use required to ensure it's passed
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

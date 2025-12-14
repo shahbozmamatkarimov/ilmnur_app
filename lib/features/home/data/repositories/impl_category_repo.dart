@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../data_sources/category/category_service.dart';
 
 class ImplCategoryRepo extends CategoryRepo {
-  final CategoryService categoryService;
+  final Future<CategoryService> categoryService;
   SharedPreferences? preferences; // Use nullable to check initialization
 
   ImplCategoryRepo({required this.categoryService});
@@ -54,7 +54,9 @@ class ImplCategoryRepo extends CategoryRepo {
       if (category != null && category.isNotEmpty) {
         // return DataSuccess<List<Category>>(data: category);
       }
-      final response = await categoryService.getCategory();
+      final service = await categoryService;
+
+      final response = await service.getCategory();
       await _saveCategoryToPreferences(response.data);
       return DataSuccess<List<Category>>(data: response.data);
     } catch (e) {

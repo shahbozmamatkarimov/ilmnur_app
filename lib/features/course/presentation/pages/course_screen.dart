@@ -6,6 +6,7 @@ import 'package:ilmnur_app/features/course/data/repositories/impl_course_repo.da
 import 'package:ilmnur_app/features/course/presentation/bloc/course/course_bloc.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:ilmnur_app/config/routes/router.gr.dart';
+import 'package:ilmnur_app/features/course/presentation/widgets/lesson_tree_item.dart';
 
 @RoutePage()
 class CourseScreen extends StatefulWidget {
@@ -95,7 +96,7 @@ class _CourseScreenState extends State<CourseScreen> {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            course.description ?? "",
+                            course.description,
                             style: const TextStyle(color: Colors.grey),
                           ),
                           const SizedBox(height: 10),
@@ -136,38 +137,42 @@ class _CourseScreenState extends State<CourseScreen> {
 
                     const SizedBox(height: 20),
 
+                    // LessonTreeItem(lesson: lessons),
+                    ...lessons.map((child) => LessonTreeItem(lesson: child)),
                     // Lessons
-                    ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: lessons.length,
-                      separatorBuilder: (_, __) => const Divider(height: 1),
-                      itemBuilder: (context, index) {
-                        final lesson = lessons[index];
-                        return ListTile(
-                          leading: const Icon(Icons.drag_indicator),
-                          title: Text(lesson.title),
-                          trailing: const Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text("0:00"),
-                              SizedBox(width: 10),
-                              Icon(Icons.bar_chart, size: 20),
-                              SizedBox(width: 10),
-                              // Icon(
-                              //   lesson.isFinished ? Icons.lock_open : Icons.lock,
-                              //   size: 20,
-                              // ),
-                            ],
-                          ),
-                          onTap: () {
-                            context.router.push(
-                              LessonRoute(lessonId: lesson.id),
-                            );
-                          },
-                        );
-                      },
-                    ),
+                    // ListView.separated(
+                    //   shrinkWrap: true,
+                    //   physics: const NeverScrollableScrollPhysics(),
+                    //   itemCount: lessons.length,
+                    //   separatorBuilder: (_, __) => const Divider(height: 1),
+                    //   itemBuilder: (context, index) {
+                    //     final lesson = lessons[index];
+                    //     LessonTreeItem(lesson: lesson);
+
+                    //     // return ListTile(
+                    //     //   leading: const Icon(Icons.drag_indicator),
+                    //     //   title: Text(lesson.title),
+                    //     //   trailing: const Row(
+                    //     //     mainAxisSize: MainAxisSize.min,
+                    //     //     children: [
+                    //     //       Text("0:00"),
+                    //     //       SizedBox(width: 10),
+                    //     //       Icon(Icons.bar_chart, size: 20),
+                    //     //       SizedBox(width: 10),
+                    //     //       // Icon(
+                    //     //       //   lesson.isFinished ? Icons.lock_open : Icons.lock,
+                    //     //       //   size: 20,
+                    //     //       // ),
+                    //     //     ],
+                    //     //   ),
+                    //     //   onTap: () {
+                    //     //     context.router.push(
+                    //     //       LessonRoute(lessonId: lesson.id),
+                    //     //     );
+                    //     //   },
+                    //     // );
+                    //   },
+                    // ),
                   ],
                 ),
               );

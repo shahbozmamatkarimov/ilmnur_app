@@ -3,6 +3,7 @@ import 'package:ilmnur_app/core/network/dio_manager.dart';
 import 'package:ilmnur_app/features/course/data/models/course.dart';
 import 'package:ilmnur_app/features/course/data/models/course_response.dart';
 import 'package:ilmnur_app/features/course/data/models/createcourse.dart';
+import 'package:ilmnur_app/features/lesson/data/models/course_group_response.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:ilmnur_app/core/network/urls.dart';
 
@@ -12,14 +13,13 @@ part 'course_service.g.dart';
 abstract class CourseService {
   factory CourseService(Dio dio, {String baseUrl}) = _CourseService;
 
-  factory CourseService.create() {
-    // final dio = Dio();
-    final dio = DioManager.getDio;
+  static Future<CourseService> create() async {
+    final dio = await DioManager.getDio; // Future<Dio> qaytaradi
     return CourseService(dio);
   }
 
   @GET("course/getByCourse/{id}/0")
-  Future<HttpResponse<List<Course>>> getCourses(@Path("id") int id);
+  Future<HttpResponse<CourseGroupResponse>> getCourses(@Path("id") int id);
 
   @GET("lesson/getByCourse/{id}")
   Future<HttpResponse<CourseResponse>> getLessons(@Path("id") int id);

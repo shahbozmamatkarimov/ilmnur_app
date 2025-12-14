@@ -8,9 +8,9 @@ class TestPage extends StatelessWidget {
 
   // Constructor with required item
   TestPage({
-    Key? key,
+    super.key,
     required this.backPage, // Use required to ensure it's passed
-  }) : super(key: key);
+  });
 
   final List<List<String>> testLabels = [
     ["timer", ""],
@@ -25,9 +25,9 @@ class TestPage extends StatelessWidget {
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
         backgroundColor: AppColors.transparent,
-        leading: Text(""),
+        leading: const Text(""),
         leadingWidth: 0,
-        actions: [],
+        actions: const [],
         title: SizedBox(
           width: double.infinity,
           child: Wrap(

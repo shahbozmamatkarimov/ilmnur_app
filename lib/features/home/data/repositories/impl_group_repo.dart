@@ -12,7 +12,7 @@ import '../data_sources/group/group_service.dart';
 import 'package:path/path.dart' as path;
 
 class ImplGroupRepo extends GroupRepo {
-  final GroupService groupService;
+  final Future<GroupService> groupService;
   SharedPreferences? preferences; // Use nullable to check initialization
 
   ImplGroupRepo({required this.groupService});
@@ -54,7 +54,8 @@ class ImplGroupRepo extends GroupRepo {
       if (group != null && group.isNotEmpty) {
         // return DataSuccess<List<Group>>(data: group);
       }
-      final response = await groupService.getGroups();
+      final service = await groupService;
+      final response = await service.getGroups();
       return DataSuccess<GroupDto>(data: response.data);
     } catch (e) {
       return DataException.getError<GroupDto>(e);
@@ -72,8 +73,10 @@ class ImplGroupRepo extends GroupRepo {
           filename: path.basename(groupData.cover),
         ), // Ensure filename is set
       });
-      await groupService.createGroup(formData); // Pass the group data
-      final res = await groupService.getGroups();
+      final service = await groupService;
+
+      await service.createGroup(formData); // Pass the group data
+      final res = await service.getGroups();
 
       // Optionally save the created group to preferences or handle it further
       return DataSuccess<GroupDto>(data: res.data);

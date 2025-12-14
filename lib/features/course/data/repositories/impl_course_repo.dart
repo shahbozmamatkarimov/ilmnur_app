@@ -5,13 +5,13 @@ import 'package:ilmnur_app/core/resources/data_state.dart';
 import 'package:ilmnur_app/features/course/data/models/course_response.dart';
 import 'package:ilmnur_app/features/course/data/models/createcourse.dart';
 import 'package:ilmnur_app/features/course/domain/repositories/course_repo.dart';
-import 'package:ilmnur_app/features/lesson/presentation/bloc/group/lesson_bloc.dart';
+import 'package:ilmnur_app/features/lesson/data/models/course_group_response.dart';
 import 'package:path/path.dart' as path;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../data_sources/course_service.dart';
 
 class ImplCourseRepo extends CourseRepo {
-  final CourseService courseService;
+  final Future<CourseService> courseService;
   SharedPreferences? preferences; // Use nullable to check initialization
 
   ImplCourseRepo({required this.courseService});
@@ -21,7 +21,7 @@ class ImplCourseRepo extends CourseRepo {
   // }
 
   // Retrieve courses from SharedPreferences
-  // Future<List<Course>?> _getCoursesFromPreferences() async {
+  // Future<CourseGroupResponse?> _getCoursesFromPreferences() async {
   //   await _initializePreferences(); // Ensure SharedPreferences is initialized
 
   //   final List<String>? courseJsonStrings = preferences?.getStringList(
@@ -38,7 +38,7 @@ class ImplCourseRepo extends CourseRepo {
   // }
 
   // // Save courses to SharedPreferences
-  // Future<void> _saveCoursesToPreferences(List<Course> courses) async {
+  // Future<void> _saveCoursesToPreferences(CourseGroupResponse courses) async {
   //   await _initializePreferences(); // Ensure SharedPreferences is initialized
 
   //   final List<String> courseJsonStrings = courses.map((course) {
@@ -49,30 +49,32 @@ class ImplCourseRepo extends CourseRepo {
   // }
 
   @override
-  Future<DataState<List<Course>>> getCourses(int id) async {
+  Future<DataState<CourseGroupResponse>> getCourses(int id) async {
     try {
-      // final List<Course>? courses = await _getCoursesFromPreferences();
+      // final CourseGroupResponse? courses = await _getCoursesFromPreferences();
       // print(courses);
       // if (courses != null && courses.isNotEmpty) {
-      // return DataSuccess<List<Course>>(data: courses);
+      // return DataSuccess<CourseGroupResponse>(data: courses);
       // }
-      final response = await courseService.getCourses(id);
+      final service = await courseService;
+      final response = await service.getCourses(id);
       // await _saveCoursesToPreferences(response.data);
-      return DataSuccess<List<Course>>(data: response.data);
+      return DataSuccess<CourseGroupResponse>(data: response.data);
     } catch (e) {
-      return DataException.getError<List<Course>>(e);
+      return DataException.getError<CourseGroupResponse>(e);
     }
   }
 
   @override
   Future<DataState<CourseResponse>> getLessons(int id) async {
     try {
-      // final List<Course>? courses = await _getCoursesFromPreferences();
+      // final CourseGroupResponse? courses = await _getCoursesFromPreferences();
       // print(courses);
       // if (courses != null && courses.isNotEmpty) {
-      // return DataSuccess<List<Course>>(data: courses);
+      // return DataSuccess<CourseGroupResponse>(data: courses);
       // }
-      final response = await courseService.getLessons(id);
+      final service = await courseService;
+      final response = await service.getLessons(id);
       // await _saveCoursesToPreferences(response.data);
       return DataSuccess<CourseResponse>(data: response.data);
     } catch (e) {
@@ -97,7 +99,9 @@ class ImplCourseRepo extends CourseRepo {
         'discount': course.discount,
         'group_id': course.group_id,
       });
-      final response = await courseService.createCourse(
+      final service = await courseService;
+
+      final response = await service.createCourse(
         formData,
       ); // Pass the group data
 
@@ -108,7 +112,7 @@ class ImplCourseRepo extends CourseRepo {
   }
 
   // @override
-  // Future<DataState<List<Course>>> createCourse(CreateCourseModel course) async {
+  // Future<DataState<CourseGroupResponse>> createCourse(CreateCourseModel course) async {
   //   try {
   //     FormData formData = FormData.fromMap({
   //       'title': course.title,

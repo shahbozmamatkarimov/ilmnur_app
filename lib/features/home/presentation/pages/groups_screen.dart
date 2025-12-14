@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:ilmnur_app/config/routes/router.gr.dart';
 import 'package:ilmnur_app/core/resources/app_colors.dart';
 import 'package:ilmnur_app/core/util/responsive.dart';
 import 'package:ilmnur_app/core/widgets/w_button.dart';
@@ -13,6 +14,7 @@ import 'package:ilmnur_app/features/home/data/repositories/impl_group_repo.dart'
 import 'package:ilmnur_app/features/home/presentation/bloc/category/category_bloc.dart';
 import 'package:ilmnur_app/features/home/presentation/bloc/group/group_bloc.dart';
 import 'package:ilmnur_app/features/home/presentation/pages/group_page.dart';
+import 'package:ilmnur_app/features/login/data/data_sources/login_service.dart';
 import 'package:shimmer/shimmer.dart';
 
 @RoutePage()
@@ -64,6 +66,14 @@ class GroupsScreenState extends State<GroupsScreen>
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  ElevatedButton(
+                    onPressed: () async {
+                      await LoginService.logout(context);
+                      context.router.pushNamed("/login");
+                    },
+                    child: Text('Logout'),
+                  ),
+
                   Expanded(
                     child: BlocBuilder<CategoryBloc, CategoryState>(
                       builder: (context, state) {

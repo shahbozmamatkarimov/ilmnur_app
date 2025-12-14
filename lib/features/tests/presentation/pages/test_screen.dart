@@ -8,7 +8,7 @@ import 'package:ilmnur_app/features/tests/presentation/pages/test.dart';
 @RoutePage()
 class TestsScreen extends StatefulWidget {
   final int testId;
-  const TestsScreen({required this.testId});
+  const TestsScreen({super.key, required this.testId});
 
   @override
   State<TestsScreen> createState() => _TestsScreenState();

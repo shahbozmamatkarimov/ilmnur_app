@@ -20,7 +20,7 @@ class LoggedOut extends CourseState {
 }
 
 class LoadedCourseData extends CourseState {
-  final List<Course> course;
+  final CourseGroupResponse course;
   final StateStatus status;
   final String? error;
   final int tabIndex;

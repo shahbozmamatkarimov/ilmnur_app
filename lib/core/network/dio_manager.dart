@@ -1,9 +1,20 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:ilmnur_app/features/login/presentation/pages/login_screen.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 abstract class DioManager {
-  static Dio get getDio {
+  static Future<Dio> get getDio async {
     final dio = Dio();
+
+    dio.options
+      ..followRedirects = true
+      ..maxRedirects = 5
+      ..contentType = 'application/json';
+
     dio.interceptors.addAll([
       PrettyDioLogger(
         requestHeader: true,
@@ -15,15 +26,38 @@ abstract class DioManager {
       ),
     ]);
 
-    dio.options.followRedirects = true;
-    dio.options.maxRedirects = 5;
-    dio.options.contentType = 'application/json';
-    dio.options.headers['Authorization'] = 'Bearer token';
-    dio.options.headers.addAll({
-      "Accept": "application/json",
-      "Authorization":
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzU3NjA2NzM3LCJleHAiOjE3NTg0NzA3Mzd9.HH0uumQY_CO8kT_0b6GE3I8yLOTlOX2rC2bgHnJCuSM",
-    });
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          final prefs = await SharedPreferences.getInstance();
+          final token = prefs.getString('token');
+          print(token);
+          print(23030404);
+          if (token != null && token.isNotEmpty) {
+            options.headers['Authorization'] = 'Bearer $token';
+          } else {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              navigatorKey.currentState?.pushAndRemoveUntil(
+                MaterialPageRoute(builder: (_) => LoginScreen()),
+                (route) => false,
+              );
+            });
+          }
+          handler.next(options);
+        },
+        onError: (e, handler) {
+          if (e.response?.statusCode == 401) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              navigatorKey.currentState?.pushAndRemoveUntil(
+                MaterialPageRoute(builder: (_) => LoginScreen()),
+                (route) => false,
+              );
+            });
+          }
+          handler.next(e);
+        },
+      ),
+    );
 
     return dio;
   }

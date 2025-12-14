@@ -32,11 +32,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return AutoTabsRouter(
       routes: [
+        // const LoginRoute(),
         const GroupsRoute(),
         MainRoute(id: 1),
         CourseRoute(courseId: 1),
         LessonRoute(lessonId: 1),
-        const ReytingRoute(),
+        ReytingRoute(),
         const NewsRoute(),
         TestsRoute(testId: 1),
       ],

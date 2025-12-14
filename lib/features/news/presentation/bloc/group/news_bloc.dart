@@ -25,11 +25,10 @@ class ReytingBloc extends Bloc<ReytingEvent, ReytingState> {
           if (lesson != null) {
             emit(LoadedReytingData(lesson: lesson, status: StateStatus.loaded));
           } else {
-            emit(ErrorLoadingReytingData("Failed to load lesson data"));
+            emit(const ErrorLoadingReytingData("Failed to load lesson data"));
           }
         }
       } catch (e) {
-        print("==$e");
         final errorMessage = 'Failed to load lesson data: $e';
         emit(ErrorLoadingReytingData(errorMessage));
       }

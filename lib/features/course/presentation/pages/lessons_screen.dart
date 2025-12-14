@@ -104,7 +104,7 @@ class Lessons extends StatelessWidget {
                       spacing: 20,
                       runSpacing: 20,
                       children: [
-                        for (dynamic i in courses)
+                        for (dynamic i in courses.courses)
                           GestureDetector(
                             // onTap: () => context.router.pushNamed("/course"),
                             onTap: () {

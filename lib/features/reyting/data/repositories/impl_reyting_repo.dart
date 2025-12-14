@@ -56,7 +56,6 @@ class ImplReytingRepo extends ReytingRepo {
       // await _saveReytingsToPreferences(response.data);
       return DataSuccess<Reyting>(data: response.data);
     } catch (e) {
-      print(e);
       return DataException.getError<Reyting>(e);
     }
   }

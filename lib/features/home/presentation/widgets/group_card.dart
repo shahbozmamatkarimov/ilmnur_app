@@ -94,7 +94,7 @@ class WGroupCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          "${group.user.name} ${group.user.surname}",
+                          "${group.user?.name} ${group.user?.surname}",
                           style: const TextStyle(
                             color: AppColors.white,
                             fontSize: 12,

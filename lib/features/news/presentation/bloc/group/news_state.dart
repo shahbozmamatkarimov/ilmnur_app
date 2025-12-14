@@ -51,7 +51,7 @@ class Error extends ReytingState {
 class ErrorLoadingReytingData extends ReytingState {
   final String errorMessage;
 
-  ErrorLoadingReytingData(this.errorMessage);
+  const ErrorLoadingReytingData(this.errorMessage);
 
   @override
   List<Object?> get props => [errorMessage];

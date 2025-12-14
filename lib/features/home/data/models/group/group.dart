@@ -13,11 +13,11 @@ class Group {
   final String title;
   final String description;
   final String cover;
-  final int courses_count;
-  final int users_count;
-  final int low_price;
-  final int high_price;
-  final User user;
+  final int? courses_count;
+  final int? users_count;
+  final int? low_price;
+  final int? high_price;
+  final User? user;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -26,11 +26,11 @@ class Group {
     required this.title,
     required this.description,
     required this.cover,
-    required this.courses_count,
-    required this.users_count,
-    required this.low_price,
-    required this.high_price,
-    required this.user,
+    this.courses_count,
+    this.users_count,
+    this.low_price,
+    this.high_price,
+    this.user,
     required this.createdAt,
     required this.updatedAt,
   });

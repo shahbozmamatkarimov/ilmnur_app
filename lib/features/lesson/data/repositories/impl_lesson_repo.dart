@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ilmnur_app/core/error/exception_handler.dart';
+import 'package:ilmnur_app/features/lesson/data/models/course_group_response.dart';
 import 'package:ilmnur_app/features/lesson/data/models/lesson.dart';
 import 'package:ilmnur_app/core/resources/data_state.dart';
 import 'package:ilmnur_app/features/lesson/domain/repositories/lesson_repo.dart';
@@ -48,15 +49,15 @@ class ImplLessonRepo extends LessonRepo {
   @override
   Future<DataState<Lesson>> getLesson(int id) async {
     try {
-      final List<Lesson>? lessons = await _getLessonsFromPreferences();
-      if (lessons != null && lessons.isNotEmpty) {
-        // return DataSuccess<List<Lesson>>(data: lessons);
-      }
+      // final List<Lesson>? lessons = await _getLessonsFromPreferences();
+      // if (lessons != null && lessons.isNotEmpty) {
+      //   return DataSuccess<Lesson>(data: lessons);
+      // }
       final response = await lessonService.getLesson(id);
+      print(9999);
       // await _saveLessonsToPreferences(response.data);
       return DataSuccess<Lesson>(data: response.data);
     } catch (e) {
-      print(e);
       return DataException.getError<Lesson>(e);
     }
   }

@@ -20,12 +20,12 @@ class _CourseService implements CourseService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<HttpResponse<List<Course>>> getCourses(int id) async {
+  Future<HttpResponse<CourseGroupResponse>> getCourses(int id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HttpResponse<List<Course>>>(
+    final _options = _setStreamType<HttpResponse<CourseGroupResponse>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -35,12 +35,10 @@ class _CourseService implements CourseService {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<Course> _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late CourseGroupResponse _value;
     try {
-      _value = _result.data!
-          .map((dynamic i) => Course.fromJson(i as Map<String, dynamic>))
-          .toList();
+      _value = CourseGroupResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

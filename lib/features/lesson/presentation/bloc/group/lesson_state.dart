@@ -51,7 +51,7 @@ class Error extends LessonState {
 class ErrorLoadingLessonData extends LessonState {
   final String errorMessage;
 
-  ErrorLoadingLessonData(this.errorMessage);
+  const ErrorLoadingLessonData(this.errorMessage);
 
   @override
   List<Object?> get props => [errorMessage];

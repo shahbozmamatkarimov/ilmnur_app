@@ -11,9 +11,8 @@ part 'group_service.g.dart';
 abstract class GroupService {
   factory GroupService(Dio dio, {String baseUrl}) = _GroupService;
 
-  factory GroupService.create() {
-    // final dio = Dio();
-    final dio = DioManager.getDio;
+  static Future<GroupService> create() async {
+    final dio = await DioManager.getDio; // Future<Dio> qaytaradi
     return GroupService(dio);
   }
 

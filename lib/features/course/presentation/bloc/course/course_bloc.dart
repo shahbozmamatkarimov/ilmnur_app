@@ -6,15 +6,15 @@ import 'package:ilmnur_app/features/course/data/models/course.dart';
 import 'package:ilmnur_app/features/course/data/models/course_response.dart';
 import 'package:ilmnur_app/features/course/data/models/createcourse.dart';
 import 'package:ilmnur_app/features/course/domain/repositories/course_repo.dart';
+import 'package:ilmnur_app/features/lesson/data/models/course_group_response.dart';
 import 'package:ilmnur_app/features/lesson/data/models/lesson.dart';
-import 'package:ilmnur_app/features/lesson/presentation/bloc/group/lesson_bloc.dart';
 part 'course_event.dart';
 part 'course_state.dart';
 
 class CourseBloc extends Bloc<CourseEvent, CourseState> {
   final CourseRepo courseRepo;
   int activeTabIndex = 0;
-  late List<Course> course;
+  late CourseGroupResponse course;
   late int id;
 
   CourseBloc({required this.courseRepo, required this.id})
@@ -23,9 +23,11 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
       emit(Loading());
       try {
         final response = await courseRepo.getCourses(id);
+        print(response);
+        print(2303);
         if (response is DataSuccess) {
           // course = response.data;
-          List<Course>? course = response.data;
+          CourseGroupResponse? course = response.data;
           if (course != null) {
             emit(
               LoadedCourseData(
@@ -36,8 +38,13 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
           } else {
             emit(const ErrorLoadingCourseData("Failed to load course data"));
           }
+        } else if (response is DataError) {
+          print(response.data);
+          print(response.errorResponse?.error);
+          print(response.errorResponse?.message);
         }
       } catch (e) {
+        print(e);
         final errorMessage = 'Failed to load course data: $e';
         emit(ErrorLoadingCourseData(errorMessage));
       }
@@ -47,10 +54,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
       emit(Loading());
       try {
         final response = await courseRepo.getLessons(id);
-        print(response);
         if (response is DataSuccess) {
-          print("Hi2303");
-          // course = response.data;
           CourseResponse? data = response.data;
           if (data != null) {
             emit(
@@ -61,13 +65,10 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
               ),
             );
           } else {
-            print("Fail");
             emit(const ErrorLoadingCourseData("Failed to load course data"));
           }
         }
-        print("Hi23033");
       } catch (e) {
-        print(e);
         final errorMessage = 'Failed to load course data: $e';
         emit(ErrorLoadingCourseData(errorMessage));
       }

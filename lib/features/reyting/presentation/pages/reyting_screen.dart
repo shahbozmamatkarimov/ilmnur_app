@@ -17,6 +17,8 @@ class ReytingScreen extends StatelessWidget {
     "Tarix",
   ];
 
+  ReytingScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     // final screenWidth = MediaQuery.of(context).size.width;
@@ -102,9 +104,7 @@ class ReytingScreen extends StatelessWidget {
                     ),
                   ),
                   tooltip: '',
-                  onSelected: (String value) {
-                    print('Selected: $value');
-                  },
+                  onSelected: (String value) {},
                   offset: const Offset(10, 50),
                   itemBuilder: (BuildContext context) {
                     return [
@@ -141,9 +141,7 @@ class ReytingScreen extends StatelessWidget {
                     ),
                   ),
                   tooltip: '',
-                  onSelected: (String value) {
-                    print('Selected: $value');
-                  },
+                  onSelected: (String value) {},
                   offset: const Offset(10, 50),
                   itemBuilder: (BuildContext context) {
                     return [

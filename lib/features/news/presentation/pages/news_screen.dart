@@ -6,6 +6,8 @@ import 'package:ilmnur_app/features/news/presentation/pages/news.dart';
 
 @RoutePage()
 class NewsScreen extends StatefulWidget {
+  const NewsScreen({super.key});
+
   @override
   _NewsScreenState createState() => _NewsScreenState();
 }
@@ -38,7 +40,7 @@ class _NewsScreenState extends State<NewsScreen>
           Expanded(
             child: TabBarView(
               controller: controllerForMainTabVarView,
-              children: [News(), News()],
+              children: const [News(), News()],
             ),
           ),
         ],
