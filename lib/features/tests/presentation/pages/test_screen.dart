@@ -23,6 +23,9 @@ class TestsScreen extends StatefulWidget {
 
 /// Main example page
 class _TestsScreenState extends State<TestsScreen> {
+  // late Map<String, dynamic> testResult;
+  late int selectedOption = -1;
+  late List<Tests>? tests;
   final List<List<String>> testLabels = [
     ["timer", ""],
     ["pencil", ""],
@@ -83,7 +86,7 @@ class _TestsScreenState extends State<TestsScreen> {
                 ),
               ),
               WButton(
-                text: 'Keyingisi',
+                text: 'Tekshirish',
                 color: AppColors.mainColor,
                 textColor: AppColors.white,
                 borderRadius: 25,
@@ -99,21 +102,95 @@ class _TestsScreenState extends State<TestsScreen> {
                       ),
                     ),
                     builder: (context) {
+                      final bool isTrue =
+                          tests?[currentIndex].true_answer[0] == selectedOption;
                       return Container(
                         width: double.infinity,
                         padding: const EdgeInsets.all(20),
-                        child: const Column(
+                        child: Column(
+                          // mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(
-                              "Natija",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    SvgPicture.asset(
+                                      isTrue
+                                          ? "assets/svg/test/true.svg"
+                                          : "assets/svg/test/false.svg",
+                                    ),
+                                    SizedBox(width: 12),
+                                    Text(
+                                      isTrue
+                                          ? "Javob to‘g‘ri!"
+                                          : "Noto‘g‘ri javob!",
+                                      style: TextStyle(
+                                        color: isTrue
+                                            ? AppColors.green
+                                            : AppColors.red,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SvgPicture.asset("assets/svg/test/help.svg"),
+                              ],
+                            ),
+                            isTrue
+                                ? const Text("")
+                                : Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(height: 32),
+                                      const Text(
+                                        "To'g'ri javob",
+                                        style: TextStyle(
+                                          // fontSize: 18,
+                                          color: AppColors.red,
+                                          // fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      HtmlContent(
+                                        htmlContent:
+                                            tests![currentIndex]
+                                                .variants[tests![currentIndex]
+                                                .true_answer[0]],
+                                      ),
+                                    ],
+                                  ),
+
+                            // const SizedBox(height: 16),
+                            // Text(
+                            //   selectedOption != -1
+                            //       ? "Sizning javobingiz qabul qilindi ${tests?[currentIndex].true_answer[currentIndex] == selectedOption}"
+                            //       : "Iltimos, javobni tanlang",
+                            //   // "Sizning javobingiz qabul qilindi ${tests[selectedOption]}",
+                            // ),
+                            const SizedBox(height: 32),
+                            SizedBox(
+                              width: double.infinity,
+                              child: WButton(
+                                text: 'Keyingi',
+                                color: isTrue
+                                    ? AppColors.mainColor
+                                    : AppColors.red,
+                                textColor: AppColors.white,
+                                borderRadius: 25,
+                                verticalPadding: 13,
+                                horizontalPadding: 50,
+                                onTap: () => {
+                                  Navigator.pop(context),
+                                  _pageController.animateToPage(
+                                    currentIndex + 1, // 4-savol
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeInOut,
+                                  ),
+                                },
                               ),
                             ),
-                            SizedBox(height: 16),
-                            Text("Sizning javobingiz qabul qilindi"),
                           ],
                         ),
                       );
@@ -160,7 +237,7 @@ class _TestsScreenState extends State<TestsScreen> {
                 ),
               );
             } else if (state is LoadedTestsData) {
-              final List<Tests>? tests = state.tests.test;
+              tests = state.tests.test;
               // Questions list
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -247,6 +324,7 @@ class _TestsScreenState extends State<TestsScreen> {
                                     horizontalPadding: 12,
                                     borderRadius: 10,
                                     onTap: () {
+                                      selectedOption = i;
                                       print("Selected option $i");
                                     },
                                     child: Row(

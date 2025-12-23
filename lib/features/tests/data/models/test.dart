@@ -10,6 +10,7 @@ class Tests {
   final String question;
   final List<String> variants;
   final String type;
+  final List<int> true_answer;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -20,6 +21,7 @@ class Tests {
     required this.type,
     required this.createdAt,
     required this.updatedAt,
+    required this.true_answer,
   });
 
   factory Tests.fromJson(Map<String, dynamic> json) => _$TestsFromJson(json);

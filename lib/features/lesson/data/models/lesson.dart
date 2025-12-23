@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ilmnur_app/features/course/data/models/course.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'lesson.g.dart'; // Ensure this matches your filename
@@ -14,6 +15,7 @@ class Lesson {
   final DateTime createdAt;
   final DateTime updatedAt;
   final List<Lesson>? lessons;
+  final Course course;
 
   Lesson({
     required this.id,
@@ -24,6 +26,7 @@ class Lesson {
     required this.createdAt,
     required this.updatedAt,
     this.lessons,
+    required this.course,
   });
 
   factory Lesson.fromJson(Map<String, dynamic> json) => _$LessonFromJson(json);

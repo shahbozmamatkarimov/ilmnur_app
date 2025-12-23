@@ -123,170 +123,172 @@ class _LessonScreenState extends State<LessonScreen>
                 setVideoPlayer(lesson);
               }
               return NestedScrollView(
-                headerSliverBuilder:
-                    (BuildContext context, bool innerBoxIsScrolled) {
-                      return <Widget>[
-                        SliverAppBar(
-                          backgroundColor: AppColors.transparent,
-                          // shadowColor: AppColors.transparent,
-                          // foregroundColor: AppColors.transparent,
-                          // surfaceTintColor: AppColors.transparent,
-                          expandedHeight: isDesktop ? 466 : 320,
-                          leadingWidth: 0,
-                          leading: Text(""),
-                          toolbarHeight: 0,
-                          collapsedHeight: 0,
-                          automaticallyImplyLeading: false,
-                          floating: false,
-                          pinned: true,
-                          stretch: true,
-                          snap: false,
-                          flexibleSpace: FlexibleSpaceBar(
-                            centerTitle: true,
-                            collapseMode: CollapseMode.parallax,
-                            background: Container(
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(6),
-                                color: isDesktop ? AppColors.white : null,
-                              ),
-                              child: Column(
+                headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                  return <Widget>[
+                    SliverAppBar(
+                      backgroundColor: AppColors.transparent,
+                      // shadowColor: AppColors.transparent,
+                      // foregroundColor: AppColors.transparent,
+                      // surfaceTintColor: AppColors.transparent,
+                      expandedHeight: isDesktop
+                          ? 466
+                          : (lesson!.video != null ? 320 : 160),
+                      leadingWidth: 0,
+                      leading: const Text(""),
+                      toolbarHeight: 0,
+                      collapsedHeight: 0,
+                      automaticallyImplyLeading: false,
+                      floating: false,
+                      pinned: true,
+                      stretch: true,
+                      snap: false,
+                      flexibleSpace: FlexibleSpaceBar(
+                        centerTitle: true,
+                        collapseMode: CollapseMode.parallax,
+                        background: Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            color: isDesktop ? AppColors.white : null,
+                          ),
+                          child: Column(
+                            children: [
+                              if (lesson?.video != null &&
+                                  lesson!.video!.isNotEmpty)
+                                Container(
+                                  clipBehavior: Clip.hardEdge,
+                                  decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8),
+                                    ),
+                                  ),
+                                  child: YoutubePlayer(
+                                    controller: _controller,
+                                    showVideoProgressIndicator: true,
+                                    progressIndicatorColor: Colors.amber,
+                                    onReady: () {
+                                      print("Video is ready to play");
+                                    },
+                                    onEnded: (metaData) {
+                                      print("Video Ended: ${metaData.videoId}");
+                                    },
+                                  ),
+                                ),
+                              const SizedBox(height: 24),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  if (lesson?.video != null &&
-                                      lesson!.video!.isNotEmpty)
-                                    Container(
-                                      clipBehavior: Clip.hardEdge,
-                                      decoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(8),
-                                        ),
-                                      ),
-                                      child: YoutubePlayer(
-                                        controller: _controller,
-                                        showVideoProgressIndicator: true,
-                                        progressIndicatorColor: Colors.amber,
-                                        onReady: () {
-                                          print("Video is ready to play");
-                                        },
-                                        onEnded: (metaData) {
-                                          print(
-                                            "Video Ended: ${metaData.videoId}",
-                                          );
-                                        },
+                                  if (lesson != null)
+                                    Text(
+                                      lesson!.title,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 20,
                                       ),
                                     ),
-                                  const SizedBox(height: 24),
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      if (lesson != null)
-                                        Text(
-                                          lesson!.title,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 20,
-                                          ),
+                                      WButton(
+                                        text: "",
+                                        verticalPadding: 12,
+                                        horizontalPadding: 12,
+                                        color: AppColors.mainColor,
+                                        buttonType: ButtonType.outline,
+                                        // color: AppColors.mainColor,
+                                        borderRadius: 8,
+                                        onTap: () => {},
+                                        child: SvgPicture.asset(
+                                          "assets/svg/lesson/marked.svg",
+                                          color: AppColors.mainColor,
                                         ),
-                                      Row(
-                                        children: [
-                                          WButton(
-                                            text: "",
-                                            verticalPadding: 12,
-                                            horizontalPadding: 12,
-                                            color: AppColors.mainColor,
-                                            borderRadius: 8,
-                                            onTap: () => {},
-                                            child: SvgPicture.asset(
-                                              "assets/svg/lesson/marked.svg",
-                                            ),
-                                          ),
-                                          const SizedBox(width: 12),
-                                          WButton(
-                                            text: "",
-                                            verticalPadding: 12,
-                                            horizontalPadding: 12,
-                                            color: AppColors.mainColor,
-                                            borderRadius: 8,
-                                            buttonType: ButtonType.outline,
-                                            onTap: () => {},
-                                            child: SvgPicture.asset(
-                                              "assets/svg/lesson/edit.svg",
-                                            ),
-                                          ),
-                                        ],
                                       ),
+                                      // const SizedBox(width: 12),
+                                      // WButton(
+                                      //   text: "",
+                                      //   verticalPadding: 12,
+                                      //   horizontalPadding: 12,
+                                      //   color: AppColors.mainColor,
+                                      //   borderRadius: 8,
+                                      //   buttonType: ButtonType.outline,
+                                      //   onTap: () => {},
+                                      //   child: SvgPicture.asset(
+                                      //     "assets/svg/lesson/edit.svg",
+                                      //   ),
+                                      // ),
                                     ],
                                   ),
-                                  const SizedBox(height: 16),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius: BorderRadius.circular(
-                                              20,
-                                            ),
-                                            child: Image.network(
-                                              'https://picsum.photos/250?image=9',
-                                              height: 40,
-                                              width: 40,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                          const SizedBox(width: 8),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Marius Ciocirland",
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: AppColors.c_1b
-                                                      .withOpacity(0.9),
-                                                ),
-                                              ),
-                                              Text(
-                                                "Behance",
-                                                style: TextStyle(
-                                                  fontSize: 10,
-                                                  color: AppColors.c_1b
-                                                      .withOpacity(0.6),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          SvgPicture.asset(
-                                            "assets/svg/nav/star.svg",
-                                          ),
-                                          const SizedBox(width: 4),
-                                          const Text(
-                                            "2.3K",
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: AppColors.c_1b,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  // const SizedBox(height: 24),
                                 ],
                               ),
-                            ),
+                              const SizedBox(height: 16),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(20),
+                                        child: Image.network(
+                                          'https://picsum.photos/250?image=9',
+                                          height: 40,
+                                          width: 40,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            lesson!.course.title,
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold,
+                                              color: AppColors.c_1b.withOpacity(
+                                                0.9,
+                                              ),
+                                            ),
+                                          ),
+                                          Text(
+                                            "${lesson!.course.subscriptions_count} subscribers",
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              color: AppColors.c_1b.withOpacity(
+                                                0.6,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/svg/nav/star.svg",
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        "${lesson!.course.likes_count}",
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: AppColors.c_1b,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              // const SizedBox(height: 24),
+                            ],
                           ),
                         ),
-                      ];
-                    },
+                      ),
+                    ),
+                  ];
+                },
                 // body: Stack(
                 //   children: [
                 // SizedBox(height: 40),
