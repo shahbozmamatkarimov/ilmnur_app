@@ -47,7 +47,7 @@ class GroupPageState extends State<GroupPage> {
                                 borderRadius: BorderRadius.circular(12),
                                 color: AppColors.white,
                               ),
-                              height: 200,
+                              height: 360,
                               constraints: const BoxConstraints(
                                 maxWidth: 350, // Set the maximum width to 200
                               ),

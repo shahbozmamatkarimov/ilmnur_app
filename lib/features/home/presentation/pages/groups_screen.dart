@@ -32,7 +32,7 @@ class GroupsScreenState extends State<GroupsScreen>
     initialIndex: 0,
   );
 
-  final List<String> categoryTabs = ["Guruhlar", "Kurslar", "Mentorlar"];
+  // final List<String> categoryTabs = ["Guruhlar", "Kurslar", "Mentorlar"];
 
   @override
   Widget build(BuildContext context) {
@@ -65,14 +65,13 @@ class GroupsScreenState extends State<GroupsScreen>
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ElevatedButton(
-                    onPressed: () async {
-                      await LoginService.logout(context);
-                      context.router.pushNamed("/login");
-                    },
-                    child: Text('Logout'),
-                  ),
-
+                  // ElevatedButton(
+                  //   onPressed: () async {
+                  //     await LoginService.logout(context);
+                  //     context.router.pushNamed("/login");
+                  //   },
+                  //   child: Text('Logout'),
+                  // ),
                   Expanded(
                     child: BlocBuilder<CategoryBloc, CategoryState>(
                       builder: (context, state) {
@@ -176,15 +175,19 @@ class GroupsScreenState extends State<GroupsScreen>
                 ],
               ),
               const SizedBox(height: 20),
-              WTabBar(
-                tabsList: categoryTabs,
-                controllerForMainTabVarView: controllerForMainTabVarView,
-              ),
+              // WTabBar(
+              //   tabsList: categoryTabs,
+              //   controllerForMainTabVarView: controllerForMainTabVarView,
+              // ),
+              // Expanded(
+              //   child: TabBarView(
+              //     controller: controllerForMainTabVarView,
+              //     children: const [GroupPage(), GroupPage(), GroupPage()],
+              //   ),
+              // ),
+              // const SingleChildScrollView(child: GroupPage()),
               Expanded(
-                child: TabBarView(
-                  controller: controllerForMainTabVarView,
-                  children: const [GroupPage(), GroupPage(), GroupPage()],
-                ),
+                child: GroupPage(), // o‘zi scroll qiladi
               ),
             ],
           ),

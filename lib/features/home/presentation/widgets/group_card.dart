@@ -5,6 +5,7 @@ import 'package:ilmnur_app/core/resources/app_colors.dart';
 import 'package:ilmnur_app/core/widgets/w_button.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:ilmnur_app/features/home/data/models/group/group.dart';
+import 'package:shimmer/shimmer.dart';
 
 class WGroupCard extends StatelessWidget {
   final Group group;
@@ -45,14 +46,19 @@ class WGroupCard extends StatelessWidget {
                         if (loadingProgress == null) {
                           return child; // When image is loaded
                         } else {
-                          // While the image is loading, show a progress indicator
-                          return Center(
-                            child: CircularProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded /
-                                        (loadingProgress.expectedTotalBytes ??
-                                            1)
-                                  : null,
+                          return Shimmer.fromColors(
+                            baseColor: Colors.grey.withOpacity(
+                              0.3,
+                            ), // Background color of the skeleton
+                            highlightColor: Colors.grey.withOpacity(
+                              0.1,
+                            ), // Highlight color of the skeleton
+                            child: Container(
+                              decoration: BoxDecoration(color: AppColors.white),
+                              height: 177,
+                              constraints: const BoxConstraints(
+                                maxWidth: 350, // Set the maximum width to 200
+                              ),
                             ),
                           );
                         }

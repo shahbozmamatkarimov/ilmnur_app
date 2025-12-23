@@ -87,8 +87,11 @@ class Lessons extends StatelessWidget {
                                 0.1,
                               ), // Highlight color of the skeleton
                               child: Container(
-                                height: 34,
-                                width: 100,
+                                height: 300,
+                                width: MediaQuery.of(context).size.width > 800
+                                    ? 250
+                                    : MediaQuery.of(context).size.width / 2 -
+                                          30,
                                 decoration: BoxDecoration(
                                   color: Colors.grey[300],
                                   borderRadius: BorderRadius.circular(17),
@@ -143,19 +146,25 @@ class Lessons extends StatelessWidget {
                                               if (loadingProgress == null) {
                                                 return child; // When image is loaded
                                               } else {
-                                                // While the image is loading, show a progress indicator
-                                                return Center(
-                                                  child: CircularProgressIndicator(
-                                                    value:
-                                                        loadingProgress
-                                                                .expectedTotalBytes !=
-                                                            null
-                                                        ? loadingProgress
-                                                                  .cumulativeBytesLoaded /
-                                                              (loadingProgress
-                                                                      .expectedTotalBytes ??
-                                                                  1)
-                                                        : null,
+                                                return Shimmer.fromColors(
+                                                  baseColor: Colors.grey
+                                                      .withOpacity(
+                                                        0.3,
+                                                      ), // Background color of the skeleton
+                                                  highlightColor: Colors.grey
+                                                      .withOpacity(
+                                                        0.1,
+                                                      ), // Highlight color of the skeleton
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      color: AppColors.white,
+                                                    ),
+                                                    height: 120,
+                                                    constraints:
+                                                        const BoxConstraints(
+                                                          maxWidth:
+                                                              350, // Set the maximum width to 200
+                                                        ),
                                                   ),
                                                 );
                                               }
@@ -322,6 +331,7 @@ class Lessons extends StatelessWidget {
                 },
               ),
             ),
+            const SizedBox(height: 20),
           ],
         ),
       ),
