@@ -87,7 +87,7 @@ class _LessonTreeItemState extends State<LessonTreeItem>
                     child: Icon(
                       Icons.chevron_right,
                       size: 20,
-                      color: AppColors.c_1b.withOpacity(0.6),
+                      color: AppColors.mainColor,
                     ),
                   )
                 else
@@ -100,7 +100,7 @@ class _LessonTreeItemState extends State<LessonTreeItem>
                     color: AppColors.mainColor,
                   )
                 else
-                  Icon(Icons.description, size: 20, color: Colors.grey),
+                  Icon(Icons.description, size: 20, color: AppColors.mainColor),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(

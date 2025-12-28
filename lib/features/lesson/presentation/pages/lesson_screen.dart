@@ -242,7 +242,7 @@ class _LessonScreenState extends State<LessonScreen>
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            lesson!.course.title,
+                                            lesson!.course?.title ?? '',
                                             style: TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.bold,
@@ -252,7 +252,7 @@ class _LessonScreenState extends State<LessonScreen>
                                             ),
                                           ),
                                           Text(
-                                            "${lesson!.course.subscriptions_count} subscribers",
+                                            "${lesson!.course?.subscriptions_count ?? 0} subscribers",
                                             style: TextStyle(
                                               fontSize: 10,
                                               color: AppColors.c_1b.withOpacity(
@@ -271,7 +271,7 @@ class _LessonScreenState extends State<LessonScreen>
                                       ),
                                       const SizedBox(width: 4),
                                       Text(
-                                        "${lesson!.course.likes_count}",
+                                        "${lesson!.course?.likes_count ?? 0}",
                                         style: const TextStyle(
                                           fontSize: 14,
                                           color: AppColors.c_1b,

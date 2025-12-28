@@ -15,7 +15,7 @@ class Lesson {
   final DateTime createdAt;
   final DateTime updatedAt;
   final List<Lesson>? lessons;
-  final Course course;
+  final Course? course;
 
   Lesson({
     required this.id,
@@ -26,7 +26,7 @@ class Lesson {
     required this.createdAt,
     required this.updatedAt,
     this.lessons,
-    required this.course,
+    this.course,
   });
 
   factory Lesson.fromJson(Map<String, dynamic> json) => _$LessonFromJson(json);

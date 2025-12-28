@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ilmnur_app/core/resources/app_colors.dart';
+import 'package:ilmnur_app/core/widgets/w_button.dart';
 import 'package:ilmnur_app/features/course/data/data_sources/course_service.dart';
 import 'package:ilmnur_app/features/course/data/repositories/impl_course_repo.dart';
 import 'package:ilmnur_app/features/course/presentation/bloc/course/course_bloc.dart';
@@ -51,34 +53,12 @@ class _CourseScreenState extends State<CourseScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Cover Image
-                    Stack(
-                      children: [
-                        CachedNetworkImage(
-                          imageUrl: course.cover,
-                          height: 200,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                        Positioned(
-                          bottom: 10,
-                          left: 10,
-                          child: Container(
-                            padding: const EdgeInsets.all(6),
-                            color: Colors.black54,
-                            child: Text(
-                              course.title,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                    CachedNetworkImage(
+                      imageUrl: course.cover,
+                      height: 200,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
                     ),
-
                     const SizedBox(height: 10),
 
                     // Course info
@@ -127,9 +107,14 @@ class _CourseScreenState extends State<CourseScreen> {
                             style: const TextStyle(fontWeight: FontWeight.w500),
                           ),
                           const SizedBox(height: 5),
-                          ElevatedButton(
-                            onPressed: () {},
-                            child: const Text("Davom etish"),
+                          WButton(
+                            text: "Davom etish",
+                            color: AppColors.mainColor,
+                            textColor: AppColors.mainColor,
+                            buttonType: ButtonType.outline,
+                            verticalPadding: 8,
+                            borderRadius: 20,
+                            onTap: () {},
                           ),
                         ],
                       ),

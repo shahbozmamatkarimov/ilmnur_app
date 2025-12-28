@@ -318,21 +318,27 @@ class _TestsScreenState extends State<TestsScreen> {
                                   margin: const EdgeInsets.only(bottom: 16),
                                   child: WButton(
                                     text: "",
-                                    color: AppColors.c_a1,
+                                    color: selectedOption == i
+                                        ? AppColors.mainColor
+                                        : AppColors.c_a1,
                                     buttonType: ButtonType.outline,
-                                    verticalPadding: 10,
+                                    verticalPadding: 2,
                                     horizontalPadding: 12,
                                     borderRadius: 10,
                                     onTap: () {
-                                      selectedOption = i;
-                                      print("Selected option $i");
+                                      // selectedOption = i;
+                                      setState(() {
+                                        selectedOption = i;
+                                      });
                                     },
                                     child: Row(
                                       children: [
                                         Container(
                                           decoration: BoxDecoration(
                                             border: Border.all(
-                                              color: AppColors.c_ed,
+                                              color: selectedOption == i
+                                                  ? AppColors.mainColor
+                                                  : AppColors.c_ed,
                                             ),
                                             borderRadius: BorderRadius.circular(
                                               4,

@@ -17,7 +17,9 @@ Lesson _$LessonFromJson(Map<String, dynamic> json) => Lesson(
   lessons: (json['lessons'] as List<dynamic>?)
       ?.map((e) => Lesson.fromJson(e as Map<String, dynamic>))
       .toList(),
-  course: Course.fromJson(json['course'] as Map<String, dynamic>),
+  course: json['course'] == null
+      ? null
+      : Course.fromJson(json['course'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$LessonToJson(Lesson instance) => <String, dynamic>{
