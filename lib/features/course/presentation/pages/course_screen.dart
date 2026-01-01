@@ -7,7 +7,6 @@ import 'package:ilmnur_app/features/course/data/data_sources/course_service.dart
 import 'package:ilmnur_app/features/course/data/repositories/impl_course_repo.dart';
 import 'package:ilmnur_app/features/course/presentation/bloc/course/course_bloc.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:ilmnur_app/config/routes/router.gr.dart';
 import 'package:ilmnur_app/features/course/presentation/widgets/lesson_tree_item.dart';
 
 @RoutePage()

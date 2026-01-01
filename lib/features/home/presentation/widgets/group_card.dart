@@ -54,7 +54,9 @@ class WGroupCard extends StatelessWidget {
                               0.1,
                             ), // Highlight color of the skeleton
                             child: Container(
-                              decoration: BoxDecoration(color: AppColors.white),
+                              decoration: const BoxDecoration(
+                                color: AppColors.white,
+                              ),
                               height: 177,
                               constraints: const BoxConstraints(
                                 maxWidth: 350, // Set the maximum width to 200

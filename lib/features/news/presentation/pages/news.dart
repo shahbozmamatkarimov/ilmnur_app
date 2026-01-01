@@ -24,7 +24,7 @@ class _NewsState extends State<News> with SingleTickerProviderStateMixin {
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: Column(
             children: [
-              for (int i in [1, 2, 3, 4, 5, 6]) const WNews(),
+              for (int _ in [1, 2, 3, 4, 5, 6]) const WNews(),
             ],
           ),
         ),

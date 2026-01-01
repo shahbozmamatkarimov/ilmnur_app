@@ -5,6 +5,10 @@ abstract class GroupEvent extends Equatable {
 }
 
 class GetGroups extends GroupEvent {
+  final int? categoryId;
+
+  const GetGroups({this.categoryId});
+
   @override
   List<Object?> get props => [];
 }

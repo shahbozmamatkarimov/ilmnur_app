@@ -96,7 +96,10 @@ class SuggestedContacts extends StatelessWidget {
             ),
             title: const Text("Jenny Wilson"),
             onTap: () {
-              showFullScreenSlideFromRightDialog(context, ChatDetailModal());
+              showFullScreenSlideFromRightDialog(
+                context,
+                const ChatDetailModal(),
+              );
             },
           ),
         ),

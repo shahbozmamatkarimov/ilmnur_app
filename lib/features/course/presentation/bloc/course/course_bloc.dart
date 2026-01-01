@@ -23,8 +23,6 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
       emit(Loading());
       try {
         final response = await courseRepo.getCourses(id);
-        print(response);
-        print(2303);
         if (response is DataSuccess) {
           // course = response.data;
           CourseGroupResponse? course = response.data;
@@ -39,9 +37,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
             emit(const ErrorLoadingCourseData("Failed to load course data"));
           }
         } else if (response is DataError) {
-          print(response.data);
-          print(response.errorResponse?.error);
-          print(response.errorResponse?.message);
+          print(response);
         }
       } catch (e) {
         print(e);

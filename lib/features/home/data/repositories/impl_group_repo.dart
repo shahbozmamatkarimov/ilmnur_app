@@ -48,14 +48,14 @@ class ImplGroupRepo extends GroupRepo {
   // }
 
   @override
-  Future<DataState<GroupDto>> getGroup() async {
+  Future<DataState<GroupDto>> getGroup(int? categoryId) async {
     try {
       final List<Group>? group = await _getGroupFromPreferences();
       if (group != null && group.isNotEmpty) {
         // return DataSuccess<List<Group>>(data: group);
       }
       final service = await groupService;
-      final response = await service.getGroups();
+      final response = await service.getGroups(categoryId);
       return DataSuccess<GroupDto>(data: response.data);
     } catch (e) {
       return DataException.getError<GroupDto>(e);
@@ -76,7 +76,7 @@ class ImplGroupRepo extends GroupRepo {
       final service = await groupService;
 
       await service.createGroup(formData); // Pass the group data
-      final res = await service.getGroups();
+      final res = await service.getGroups(null);
 
       // Optionally save the created group to preferences or handle it further
       return DataSuccess<GroupDto>(data: res.data);

@@ -1,7 +1,5 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_html_all/flutter_html_all.dart'; // qo‘shimcha extensionlar uchun
 import 'package:flutter/material.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:ilmnur_app/config/routes/router.gr.dart';
 import 'package:ilmnur_app/core/resources/app_colors.dart';
 import 'package:ilmnur_app/core/widgets/w_button.dart';

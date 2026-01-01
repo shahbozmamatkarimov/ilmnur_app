@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:ilmnur_app/core/error/exception_handler.dart';
-import 'package:ilmnur_app/features/tests/data/models/test.dart';
 import 'package:ilmnur_app/core/resources/data_state.dart';
 import 'package:ilmnur_app/features/tests/data/models/test_response.dart';
 import 'package:ilmnur_app/features/tests/domain/repositories/test_repo.dart';
@@ -36,10 +33,7 @@ class ImplTestsRepo extends TestsRepo {
   @override
   Future<DataState<TestsReponse>> getTests(int id) async {
     try {
-      print("id2303 $id");
       final response = await testsService.getTests(id);
-      print(response);
-      print(2303);
       return DataSuccess<TestsReponse>(data: response.data);
     } catch (e) {
       print("this is error: $e");

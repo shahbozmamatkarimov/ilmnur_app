@@ -24,7 +24,7 @@ class LessonBloc extends Bloc<LessonEvent, LessonState> {
           if (lesson != null) {
             emit(LoadedLessonData(lesson: lesson, status: StateStatus.loaded));
           } else {
-            emit(ErrorLoadingLessonData("Failed to load lesson data"));
+            emit(const ErrorLoadingLessonData("Failed to load lesson data"));
           }
         }
       } catch (e) {

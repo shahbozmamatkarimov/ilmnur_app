@@ -9,8 +9,8 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i11;
-import 'package:flutter/material.dart' as _i12;
+import 'package:auto_route/auto_route.dart' as _i12;
+import 'package:flutter/material.dart' as _i13;
 import 'package:ilmnur_app/features/chat/presentation/pages/chat_screen.dart'
     as _i1;
 import 'package:ilmnur_app/features/course/presentation/pages/course_screen.dart'
@@ -27,20 +27,22 @@ import 'package:ilmnur_app/features/login/presentation/pages/login_screen.dart'
     as _i6;
 import 'package:ilmnur_app/features/news/presentation/pages/news_screen.dart'
     as _i8;
-import 'package:ilmnur_app/features/reyting/presentation/pages/reyting_screen.dart'
+import 'package:ilmnur_app/features/profile/presentation/pages/profile_screen.dart'
     as _i9;
-import 'package:ilmnur_app/features/tests/presentation/pages/test_screen.dart'
+import 'package:ilmnur_app/features/reyting/presentation/pages/reyting_screen.dart'
     as _i10;
+import 'package:ilmnur_app/features/tests/presentation/pages/test_screen.dart'
+    as _i11;
 
 /// generated route for
 /// [_i1.ChatScreen]
-class ChatRoute extends _i11.PageRouteInfo<void> {
-  const ChatRoute({List<_i11.PageRouteInfo>? children})
+class ChatRoute extends _i12.PageRouteInfo<void> {
+  const ChatRoute({List<_i12.PageRouteInfo>? children})
     : super(ChatRoute.name, initialChildren: children);
 
   static const String name = 'ChatRoute';
 
-  static _i11.PageInfo page = _i11.PageInfo(
+  static _i12.PageInfo page = _i12.PageInfo(
     name,
     builder: (data) {
       return const _i1.ChatScreen();
@@ -50,11 +52,11 @@ class ChatRoute extends _i11.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.CourseScreen]
-class CourseRoute extends _i11.PageRouteInfo<CourseRouteArgs> {
+class CourseRoute extends _i12.PageRouteInfo<CourseRouteArgs> {
   CourseRoute({
-    _i12.Key? key,
+    _i13.Key? key,
     required int courseId,
-    List<_i11.PageRouteInfo>? children,
+    List<_i12.PageRouteInfo>? children,
   }) : super(
          CourseRoute.name,
          args: CourseRouteArgs(key: key, courseId: courseId),
@@ -63,7 +65,7 @@ class CourseRoute extends _i11.PageRouteInfo<CourseRouteArgs> {
 
   static const String name = 'CourseRoute';
 
-  static _i11.PageInfo page = _i11.PageInfo(
+  static _i12.PageInfo page = _i12.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<CourseRouteArgs>();
@@ -75,7 +77,7 @@ class CourseRoute extends _i11.PageRouteInfo<CourseRouteArgs> {
 class CourseRouteArgs {
   const CourseRouteArgs({this.key, required this.courseId});
 
-  final _i12.Key? key;
+  final _i13.Key? key;
 
   final int courseId;
 
@@ -97,13 +99,13 @@ class CourseRouteArgs {
 
 /// generated route for
 /// [_i3.GroupsScreen]
-class GroupsRoute extends _i11.PageRouteInfo<void> {
-  const GroupsRoute({List<_i11.PageRouteInfo>? children})
+class GroupsRoute extends _i12.PageRouteInfo<void> {
+  const GroupsRoute({List<_i12.PageRouteInfo>? children})
     : super(GroupsRoute.name, initialChildren: children);
 
   static const String name = 'GroupsRoute';
 
-  static _i11.PageInfo page = _i11.PageInfo(
+  static _i12.PageInfo page = _i12.PageInfo(
     name,
     builder: (data) {
       return const _i3.GroupsScreen();
@@ -113,13 +115,13 @@ class GroupsRoute extends _i11.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i4.HomeScreen]
-class HomeRoute extends _i11.PageRouteInfo<void> {
-  const HomeRoute({List<_i11.PageRouteInfo>? children})
+class HomeRoute extends _i12.PageRouteInfo<void> {
+  const HomeRoute({List<_i12.PageRouteInfo>? children})
     : super(HomeRoute.name, initialChildren: children);
 
   static const String name = 'HomeRoute';
 
-  static _i11.PageInfo page = _i11.PageInfo(
+  static _i12.PageInfo page = _i12.PageInfo(
     name,
     builder: (data) {
       return const _i4.HomeScreen();
@@ -129,11 +131,11 @@ class HomeRoute extends _i11.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i5.LessonScreen]
-class LessonRoute extends _i11.PageRouteInfo<LessonRouteArgs> {
+class LessonRoute extends _i12.PageRouteInfo<LessonRouteArgs> {
   LessonRoute({
-    _i12.Key? key,
+    _i13.Key? key,
     required int lessonId,
-    List<_i11.PageRouteInfo>? children,
+    List<_i12.PageRouteInfo>? children,
   }) : super(
          LessonRoute.name,
          args: LessonRouteArgs(key: key, lessonId: lessonId),
@@ -142,7 +144,7 @@ class LessonRoute extends _i11.PageRouteInfo<LessonRouteArgs> {
 
   static const String name = 'LessonRoute';
 
-  static _i11.PageInfo page = _i11.PageInfo(
+  static _i12.PageInfo page = _i12.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<LessonRouteArgs>();
@@ -154,7 +156,7 @@ class LessonRoute extends _i11.PageRouteInfo<LessonRouteArgs> {
 class LessonRouteArgs {
   const LessonRouteArgs({this.key, required this.lessonId});
 
-  final _i12.Key? key;
+  final _i13.Key? key;
 
   final int lessonId;
 
@@ -176,13 +178,13 @@ class LessonRouteArgs {
 
 /// generated route for
 /// [_i6.LoginScreen]
-class LoginRoute extends _i11.PageRouteInfo<void> {
-  const LoginRoute({List<_i11.PageRouteInfo>? children})
+class LoginRoute extends _i12.PageRouteInfo<void> {
+  const LoginRoute({List<_i12.PageRouteInfo>? children})
     : super(LoginRoute.name, initialChildren: children);
 
   static const String name = 'LoginRoute';
 
-  static _i11.PageInfo page = _i11.PageInfo(
+  static _i12.PageInfo page = _i12.PageInfo(
     name,
     builder: (data) {
       return const _i6.LoginScreen();
@@ -192,11 +194,11 @@ class LoginRoute extends _i11.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i7.MainScreen]
-class MainRoute extends _i11.PageRouteInfo<MainRouteArgs> {
+class MainRoute extends _i12.PageRouteInfo<MainRouteArgs> {
   MainRoute({
-    _i12.Key? key,
+    _i13.Key? key,
     required int id,
-    List<_i11.PageRouteInfo>? children,
+    List<_i12.PageRouteInfo>? children,
   }) : super(
          MainRoute.name,
          args: MainRouteArgs(key: key, id: id),
@@ -205,7 +207,7 @@ class MainRoute extends _i11.PageRouteInfo<MainRouteArgs> {
 
   static const String name = 'MainRoute';
 
-  static _i11.PageInfo page = _i11.PageInfo(
+  static _i12.PageInfo page = _i12.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<MainRouteArgs>();
@@ -217,7 +219,7 @@ class MainRoute extends _i11.PageRouteInfo<MainRouteArgs> {
 class MainRouteArgs {
   const MainRouteArgs({this.key, required this.id});
 
-  final _i12.Key? key;
+  final _i13.Key? key;
 
   final int id;
 
@@ -239,13 +241,13 @@ class MainRouteArgs {
 
 /// generated route for
 /// [_i8.NewsScreen]
-class NewsRoute extends _i11.PageRouteInfo<void> {
-  const NewsRoute({List<_i11.PageRouteInfo>? children})
+class NewsRoute extends _i12.PageRouteInfo<void> {
+  const NewsRoute({List<_i12.PageRouteInfo>? children})
     : super(NewsRoute.name, initialChildren: children);
 
   static const String name = 'NewsRoute';
 
-  static _i11.PageInfo page = _i11.PageInfo(
+  static _i12.PageInfo page = _i12.PageInfo(
     name,
     builder: (data) {
       return const _i8.NewsScreen();
@@ -254,9 +256,25 @@ class NewsRoute extends _i11.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i9.ReytingScreen]
-class ReytingRoute extends _i11.PageRouteInfo<ReytingRouteArgs> {
-  ReytingRoute({_i12.Key? key, List<_i11.PageRouteInfo>? children})
+/// [_i9.ProfileScreen]
+class ProfileRoute extends _i12.PageRouteInfo<void> {
+  const ProfileRoute({List<_i12.PageRouteInfo>? children})
+    : super(ProfileRoute.name, initialChildren: children);
+
+  static const String name = 'ProfileRoute';
+
+  static _i12.PageInfo page = _i12.PageInfo(
+    name,
+    builder: (data) {
+      return const _i9.ProfileScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [_i10.ReytingScreen]
+class ReytingRoute extends _i12.PageRouteInfo<ReytingRouteArgs> {
+  ReytingRoute({_i13.Key? key, List<_i12.PageRouteInfo>? children})
     : super(
         ReytingRoute.name,
         args: ReytingRouteArgs(key: key),
@@ -265,13 +283,13 @@ class ReytingRoute extends _i11.PageRouteInfo<ReytingRouteArgs> {
 
   static const String name = 'ReytingRoute';
 
-  static _i11.PageInfo page = _i11.PageInfo(
+  static _i12.PageInfo page = _i12.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<ReytingRouteArgs>(
         orElse: () => const ReytingRouteArgs(),
       );
-      return _i9.ReytingScreen(key: args.key);
+      return _i10.ReytingScreen(key: args.key);
     },
   );
 }
@@ -279,7 +297,7 @@ class ReytingRoute extends _i11.PageRouteInfo<ReytingRouteArgs> {
 class ReytingRouteArgs {
   const ReytingRouteArgs({this.key});
 
-  final _i12.Key? key;
+  final _i13.Key? key;
 
   @override
   String toString() {
@@ -298,12 +316,12 @@ class ReytingRouteArgs {
 }
 
 /// generated route for
-/// [_i10.TestsScreen]
-class TestsRoute extends _i11.PageRouteInfo<TestsRouteArgs> {
+/// [_i11.TestsScreen]
+class TestsRoute extends _i12.PageRouteInfo<TestsRouteArgs> {
   TestsRoute({
-    _i12.Key? key,
+    _i13.Key? key,
     required int testId,
-    List<_i11.PageRouteInfo>? children,
+    List<_i12.PageRouteInfo>? children,
   }) : super(
          TestsRoute.name,
          args: TestsRouteArgs(key: key, testId: testId),
@@ -312,11 +330,11 @@ class TestsRoute extends _i11.PageRouteInfo<TestsRouteArgs> {
 
   static const String name = 'TestsRoute';
 
-  static _i11.PageInfo page = _i11.PageInfo(
+  static _i12.PageInfo page = _i12.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<TestsRouteArgs>();
-      return _i10.TestsScreen(key: args.key, testId: args.testId);
+      return _i11.TestsScreen(key: args.key, testId: args.testId);
     },
   );
 }
@@ -324,7 +342,7 @@ class TestsRoute extends _i11.PageRouteInfo<TestsRouteArgs> {
 class TestsRouteArgs {
   const TestsRouteArgs({this.key, required this.testId});
 
-  final _i12.Key? key;
+  final _i13.Key? key;
 
   final int testId;
 

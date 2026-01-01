@@ -92,17 +92,11 @@ class _WButtonState extends State<WButton> {
                           textAlign: TextAlign.center,
                           style:
                               widget.textStyle ??
-                              (widget.buttonType == ButtonType.filled
-                                  ? Styles.getButtonStyle().copyWith(
-                                      fontSize: widget.fontSize,
-                                      color: widget.textColor,
-                                      fontWeight: widget.fontWeight,
-                                    )
-                                  : Styles.getButtonStyle().copyWith(
-                                      fontSize: 15,
-                                      color: widget.textColor,
-                                      fontWeight: widget.fontWeight,
-                                    )),
+                              Styles.getButtonStyle().copyWith(
+                                fontSize: widget.fontSize,
+                                color: widget.textColor,
+                                fontWeight: widget.fontWeight,
+                              ),
                         ),
                 } else ...{
                   const CupertinoActivityIndicator(animating: true),

@@ -23,7 +23,7 @@ class HtmlContent extends StatelessWidget {
         // const CodeExtension(),
 
         // Table uchun yaxshi stil
-        TableHtmlExtension(),
+        const TableHtmlExtension(),
 
         // Tag uchun custom stil
         TagExtension(
@@ -38,7 +38,10 @@ class HtmlContent extends StatelessWidget {
       ],
       style: {
         // Umumiy stillar
-        "body": Style(fontSize: FontSize(14), lineHeight: LineHeight(1.6)),
+        "body": Style(
+          fontSize: FontSize(14),
+          lineHeight: const LineHeight(1.6),
+        ),
         "h3": Style(
           fontSize: FontSize(12),
           fontWeight: FontWeight.bold,

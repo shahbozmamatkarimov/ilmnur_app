@@ -122,7 +122,7 @@ class _TestsScreenState extends State<TestsScreen> {
                                           ? "assets/svg/test/true.svg"
                                           : "assets/svg/test/false.svg",
                                     ),
-                                    SizedBox(width: 12),
+                                    const SizedBox(width: 12),
                                     Text(
                                       isTrue
                                           ? "Javob to‘g‘ri!"
@@ -353,7 +353,7 @@ class _TestsScreenState extends State<TestsScreen> {
                                             String.fromCharCode(
                                               65 + i,
                                             ), // A B C D
-                                            style: TextStyle(height: 0.9),
+                                            style: const TextStyle(height: 0.9),
                                           ),
                                         ),
                                         HtmlContent(

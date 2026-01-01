@@ -18,7 +18,9 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
     on<GetGroups>((event, emit) async {
       emit(GroupLoading());
       try {
-        final response = await groupRepo.getGroup();
+        print(event.categoryId);
+        print(230303);
+        final response = await groupRepo.getGroup(event.categoryId);
         if (response is DataSuccess) {
           // group = response.data;
           GroupDto? groupDto = response.data;

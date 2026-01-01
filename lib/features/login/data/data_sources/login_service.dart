@@ -24,17 +24,11 @@ abstract class LoginService {
   );
 
   // Logout funksiyasi
-  static Future<void> logout(BuildContext context) async {
-    print("HI");
+  static Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
 
-    // Tokenni o'chirish
     await prefs.remove('token');
     await prefs.remove('access_token');
-    await prefs.remove('refresh_token'); // agar refresh token bo'lsa
-
-    SharedPreferences.getInstance().then((prefs) {
-      prefs.remove('token');
-    });
+    await prefs.remove('refresh_token');
   }
 }

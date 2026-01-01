@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:ilmnur_app/core/error/exception_handler.dart';
-import 'package:ilmnur_app/features/course/data/models/course.dart';
 import 'package:ilmnur_app/core/resources/data_state.dart';
 import 'package:ilmnur_app/features/course/data/models/course_response.dart';
 import 'package:ilmnur_app/features/course/data/models/createcourse.dart';

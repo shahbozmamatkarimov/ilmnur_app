@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'group_service.dart';
+part of 'profile_service.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'group_service.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations,unused_element_parameter
 
-class _GroupService implements GroupService {
-  _GroupService(this._dio, {this.baseUrl, this.errorLogger}) {
+class _ProfileService implements ProfileService {
+  _ProfileService(this._dio, {this.baseUrl, this.errorLogger}) {
     baseUrl ??= 'https://vercel-backend-bay.vercel.app/api/';
   }
 
@@ -20,54 +20,25 @@ class _GroupService implements GroupService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<HttpResponse<GroupDto>> getGroups(int? categoryId) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'category_id': categoryId};
-    queryParameters.removeWhere((k, v) => v == null);
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HttpResponse<GroupDto>>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            'group',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late GroupDto _value;
-    try {
-      _value = GroupDto.fromJson(_result.data!);
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    final httpResponse = HttpResponse(_value, _result);
-    return httpResponse;
-  }
-
-  @override
-  Future<HttpResponse<CreateGroupModel>> createGroup(FormData groupData) async {
+  Future<HttpResponse<Profile>> getProfile(int id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = groupData;
-    final _options = _setStreamType<HttpResponse<CreateGroupModel>>(
-      Options(method: 'POST', headers: _headers, extra: _extra)
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<HttpResponse<Profile>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            'group/create',
+            'profile/getById/${id}',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late CreateGroupModel _value;
+    late Profile _value;
     try {
-      _value = CreateGroupModel.fromJson(_result.data!);
+      _value = Profile.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

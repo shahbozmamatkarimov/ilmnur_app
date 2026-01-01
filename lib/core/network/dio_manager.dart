@@ -32,13 +32,12 @@ abstract class DioManager {
           final prefs = await SharedPreferences.getInstance();
           final token = prefs.getString('token');
           print(token);
-          print(23030404);
           if (token != null && token.isNotEmpty) {
             options.headers['Authorization'] = 'Bearer $token';
           } else {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               navigatorKey.currentState?.pushAndRemoveUntil(
-                MaterialPageRoute(builder: (_) => LoginScreen()),
+                MaterialPageRoute(builder: (_) => const LoginScreen()),
                 (route) => false,
               );
             });
@@ -49,7 +48,7 @@ abstract class DioManager {
           if (e.response?.statusCode == 401) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               navigatorKey.currentState?.pushAndRemoveUntil(
-                MaterialPageRoute(builder: (_) => LoginScreen()),
+                MaterialPageRoute(builder: (_) => const LoginScreen()),
                 (route) => false,
               );
             });

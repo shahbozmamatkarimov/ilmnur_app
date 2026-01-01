@@ -62,11 +62,6 @@ class _LessonTreeItemState extends State<LessonTreeItem>
 
     final bool isModule = widget.lesson.type == "module";
 
-    print(isModule);
-
-    print(widget.lesson);
-    print(widget.lesson.lessons?.length);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -84,7 +79,7 @@ class _LessonTreeItemState extends State<LessonTreeItem>
                   AnimatedRotation(
                     turns: _isExpanded ? 0.25 : 0,
                     duration: const Duration(milliseconds: 300),
-                    child: Icon(
+                    child: const Icon(
                       Icons.chevron_right,
                       size: 20,
                       color: AppColors.mainColor,
@@ -94,13 +89,17 @@ class _LessonTreeItemState extends State<LessonTreeItem>
                   const SizedBox(width: 20),
                 if (widget.lesson.video != null &&
                     widget.lesson.video!.isNotEmpty)
-                  Icon(
+                  const Icon(
                     Icons.play_circle_fill,
                     size: 20,
                     color: AppColors.mainColor,
                   )
                 else
-                  Icon(Icons.description, size: 20, color: AppColors.mainColor),
+                  const Icon(
+                    Icons.description,
+                    size: 20,
+                    color: AppColors.mainColor,
+                  ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(

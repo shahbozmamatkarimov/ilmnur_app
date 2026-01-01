@@ -24,7 +24,7 @@ class TestsBloc extends Bloc<TestsEvent, TestsState> {
           if (tests != null) {
             emit(LoadedTestsData(tests: tests, status: StateStatus.loaded));
           } else {
-            emit(ErrorLoadingTestsData("Failed to load tests data"));
+            emit(const ErrorLoadingTestsData("Failed to load tests data"));
           }
         }
       } catch (e) {

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ilmnur_app/core/resources/app_colors.dart';
 import 'package:ilmnur_app/core/util/responsive.dart';
-import 'package:path/path.dart';
 
 class WNews extends StatelessWidget {
   const WNews({super.key});

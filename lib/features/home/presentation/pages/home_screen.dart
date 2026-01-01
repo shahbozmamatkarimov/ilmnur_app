@@ -40,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ReytingRoute(),
         const NewsRoute(),
         TestsRoute(testId: 1),
+        const ProfileRoute(),
       ],
       transitionBuilder: (context, child, animation) =>
           FadeTransition(opacity: animation, child: child),
@@ -152,8 +153,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       else if (index == 1)
                         {context.router.pushNamed("/reyting")}
                       else if (index == 3)
-                        {context.router.pushNamed("/news")},
-                      // activeBottomNav = index
+                        {context.router.pushNamed("/news")}
+                      else if (index == 4)
+                        {context.router.pushNamed("/profile")},
                       setState(() {
                         activeBottomNav = index;
                       }),
