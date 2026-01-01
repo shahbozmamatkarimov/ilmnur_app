@@ -1,5 +1,6 @@
 import 'package:ilmnur_app/core/error/exception_handler.dart';
 import 'package:ilmnur_app/core/resources/data_state.dart';
+import 'package:ilmnur_app/features/tests/data/models/answer.dart';
 import 'package:ilmnur_app/features/tests/data/models/test_response.dart';
 import 'package:ilmnur_app/features/tests/domain/repositories/test_repo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,6 +39,17 @@ class ImplTestsRepo extends TestsRepo {
     } catch (e) {
       print("this is error: $e");
       return DataException.getError<TestsReponse>(e);
+    }
+  }
+
+  @override
+  Future<DataState<Object>> checkAnswers(int id, AnswerReponse body) async {
+    try {
+      final response = await testsService.checkAnswers(id, body);
+      return DataSuccess<Object>(data: response.data);
+    } catch (e) {
+      print("this is error: $e");
+      return DataException.getError<Map<String, dynamic>>(e);
     }
   }
 }

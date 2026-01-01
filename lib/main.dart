@@ -5,9 +5,11 @@ import 'dart:io';
 import 'package:ilmnur_app/config/routes/router.dart';
 import 'package:ilmnur_app/core/resources/app_colors.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await MobileAds.instance.initialize();
   await Firebase.initializeApp();
   if (!kIsWeb) {
     if (Platform.isWindows || Platform.isMacOS) {

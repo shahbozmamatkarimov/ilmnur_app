@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:ilmnur_app/features/tests/data/models/answer.dart';
 import 'package:ilmnur_app/features/tests/data/models/test_response.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:ilmnur_app/core/network/urls.dart';
@@ -16,4 +17,10 @@ abstract class TestsService {
 
   @GET("tests/{id}")
   Future<HttpResponse<TestsReponse>> getTests(@Path("id") int id);
+
+  @POST("tests/check/{id}")
+  Future<HttpResponse<dynamic>> checkAnswers(
+    @Path("id") int id,
+    @Body() AnswerReponse body,
+  );
 }

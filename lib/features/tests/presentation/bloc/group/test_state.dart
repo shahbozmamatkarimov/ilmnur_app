@@ -35,6 +35,21 @@ class LoadedTestsData extends TestsState {
   List<Object> get props => [tests, status, tabIndex];
 }
 
+class LoadedAnswerData extends TestsState {
+  final Object result;
+  final StateStatus status;
+  final String? error;
+
+  const LoadedAnswerData({
+    required this.result,
+    this.status = StateStatus.normal,
+    this.error,
+  });
+
+  @override
+  List<Object> get props => [result, status];
+}
+
 class SuccessUpdate extends TestsState {
   @override
   List<Object> get props => [];

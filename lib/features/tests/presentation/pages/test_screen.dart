@@ -7,9 +7,11 @@ import 'package:ilmnur_app/core/widgets/w_button.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:ilmnur_app/features/lesson/presentation/widgets/HtmlContent.dart';
 import 'package:ilmnur_app/features/tests/data/data_sources/test_service.dart';
+import 'package:ilmnur_app/features/tests/data/models/answer.dart';
 import 'package:ilmnur_app/features/tests/data/models/test.dart';
 import 'package:ilmnur_app/features/tests/data/repositories/impl_test_repo.dart';
 import 'package:ilmnur_app/features/tests/presentation/bloc/group/test_bloc.dart';
+import 'package:ilmnur_app/features/tests/presentation/widgets/Adv.dart';
 import 'package:shimmer/shimmer.dart';
 
 @RoutePage()
@@ -23,9 +25,12 @@ class TestsScreen extends StatefulWidget {
 
 /// Main example page
 class _TestsScreenState extends State<TestsScreen> {
-  // late Map<String, dynamic> testResult;
-  late int selectedOption = -1;
-  late List<Tests>? tests;
+  int? selectedOption;
+  bool _initialized = false;
+  List<Tests>? tests;
+  List<int?> selectedOptions = [];
+  late int lesson_id;
+  late int user_id;
   final List<List<String>> testLabels = [
     ["timer", ""],
     ["pencil", ""],
@@ -36,178 +41,54 @@ class _TestsScreenState extends State<TestsScreen> {
   final PageController _pageController = PageController();
   int currentIndex = 0;
 
+  void setSelectedOption() {
+    setState(() {
+      if (currentIndex < 0) return; // index tekshirish
+
+      // selectedOptions ni kerak bo'lsa kengaytirish
+      while (selectedOptions.length <= currentIndex) {
+        selectedOptions.add(null);
+      }
+
+      // Tanlangan variantni currentIndex ga saqlaymiz
+      selectedOptions[currentIndex] = selectedOption;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: AppColors.transparent,
-        leading: const Text(""),
-        leadingWidth: 0,
-        actions: const [],
-        title: SizedBox(
-          width: double.infinity,
-          child: Wrap(
-            spacing: 12,
-            alignment: WrapAlignment.center,
-            children: [
-              for (List<String> i in testLabels)
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    color: AppColors.c_e2,
-                  ),
-                  padding: const EdgeInsets.all(4),
-                  child: SvgPicture.asset("assets/svg/test/${i[0]}.svg"),
-                ),
-            ],
-          ),
-        ),
+    return BlocProvider(
+      create: (_) => TestsBloc(
+        id: widget.testId,
+        testsRepo: ImplTestsRepo(testsService: TestsService.create()),
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: AppColors.transparent,
-        height: 112,
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          decoration: const BoxDecoration(
-            border: Border(top: BorderSide(color: AppColors.c_ed)),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              WButton(
-                text: '',
-                color: AppColors.transparent,
-                verticalPadding: 0,
-                horizontalPadding: 0,
-                onTap: () {},
-                child: Row(
-                  children: [SvgPicture.asset("assets/svg/test/help.svg")],
-                ),
-              ),
-              WButton(
-                text: 'Tekshirish',
-                color: AppColors.mainColor,
-                textColor: AppColors.white,
-                borderRadius: 25,
-                verticalPadding: 13,
-                horizontalPadding: 50,
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(20),
-                      ),
+      child: Scaffold(
+        backgroundColor: AppColors.backgroundColor,
+        appBar: AppBar(
+          backgroundColor: AppColors.transparent,
+          leading: const Text(""),
+          leadingWidth: 0,
+          actions: const [],
+          title: SizedBox(
+            width: double.infinity,
+            child: Wrap(
+              spacing: 12,
+              alignment: WrapAlignment.center,
+              children: [
+                for (List<String> i in testLabels)
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: AppColors.c_e2,
                     ),
-                    builder: (context) {
-                      final bool isTrue =
-                          tests?[currentIndex].true_answer[0] == selectedOption;
-                      return Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                          // mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    SvgPicture.asset(
-                                      isTrue
-                                          ? "assets/svg/test/true.svg"
-                                          : "assets/svg/test/false.svg",
-                                    ),
-                                    const SizedBox(width: 12),
-                                    Text(
-                                      isTrue
-                                          ? "Javob to‘g‘ri!"
-                                          : "Noto‘g‘ri javob!",
-                                      style: TextStyle(
-                                        color: isTrue
-                                            ? AppColors.green
-                                            : AppColors.red,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SvgPicture.asset("assets/svg/test/help.svg"),
-                              ],
-                            ),
-                            isTrue
-                                ? const Text("")
-                                : Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(height: 32),
-                                      const Text(
-                                        "To'g'ri javob",
-                                        style: TextStyle(
-                                          // fontSize: 18,
-                                          color: AppColors.red,
-                                          // fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      HtmlContent(
-                                        htmlContent:
-                                            tests![currentIndex]
-                                                .variants[tests![currentIndex]
-                                                .true_answer[0]],
-                                      ),
-                                    ],
-                                  ),
-
-                            // const SizedBox(height: 16),
-                            // Text(
-                            //   selectedOption != -1
-                            //       ? "Sizning javobingiz qabul qilindi ${tests?[currentIndex].true_answer[currentIndex] == selectedOption}"
-                            //       : "Iltimos, javobni tanlang",
-                            //   // "Sizning javobingiz qabul qilindi ${tests[selectedOption]}",
-                            // ),
-                            const SizedBox(height: 32),
-                            SizedBox(
-                              width: double.infinity,
-                              child: WButton(
-                                text: 'Keyingi',
-                                color: isTrue
-                                    ? AppColors.mainColor
-                                    : AppColors.red,
-                                textColor: AppColors.white,
-                                borderRadius: 25,
-                                verticalPadding: 13,
-                                horizontalPadding: 50,
-                                onTap: () => {
-                                  Navigator.pop(context),
-                                  _pageController.animateToPage(
-                                    currentIndex + 1, // 4-savol
-                                    duration: const Duration(milliseconds: 300),
-                                    curve: Curves.easeInOut,
-                                  ),
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ],
+                    padding: const EdgeInsets.all(4),
+                    child: SvgPicture.asset("assets/svg/test/${i[0]}.svg"),
+                  ),
+              ],
+            ),
           ),
         ),
-      ),
-      body: BlocProvider(
-        create: (context) => TestsBloc(
-          id: widget.testId,
-          testsRepo: ImplTestsRepo(testsService: TestsService.create()),
-        ),
-        child: BlocBuilder<TestsBloc, TestsState>(
+        body: BlocBuilder<TestsBloc, TestsState>(
           builder: (context, state) {
             if (state is Loading) {
               return ClipRect(
@@ -237,13 +118,19 @@ class _TestsScreenState extends State<TestsScreen> {
                 ),
               );
             } else if (state is LoadedTestsData) {
+              lesson_id = state.tests.lesson_id;
+              user_id = state.tests.user_id;
               tests = state.tests.test;
+              if (!_initialized) {
+                selectedOptions = List<int?>.filled(tests!.length, null);
+                _initialized = true;
+              }
               // Questions list
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Wrap(
-                    runSpacing: 10,
+                  const RewardedAdButton(),
+                  Row(
                     spacing: 10,
                     children: [
                       WButton(
@@ -253,23 +140,50 @@ class _TestsScreenState extends State<TestsScreen> {
                         onTap: () => context.router.pop(),
                         child: SvgPicture.asset("assets/svg/icon/close.svg"),
                       ),
-                      for (int i = 0; i < (tests?.length ?? 0); i++)
-                        WButton(
-                          text: "",
-                          verticalPadding: 0,
-                          horizontalPadding: 11.5,
-                          borderRadius: 20,
-                          onTap: () => {
-                            _pageController.animateToPage(
-                              i, // 4-savol
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeInOut,
-                            ),
-                          },
-                          color: i == currentIndex
-                              ? AppColors.mainColor
-                              : AppColors.c_ee,
+                      Expanded(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              for (int i = 0; i < (tests?.length ?? 0); i++)
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    right: 8,
+                                  ), // spacing
+                                  child: WButton(
+                                    text: "",
+                                    verticalPadding: 0,
+                                    horizontalPadding:
+                                        selectedOptions[i] != null ? 0 : 11.5,
+                                    borderRadius: 30,
+                                    onTap: () {
+                                      _pageController.animateToPage(
+                                        i,
+                                        duration: const Duration(
+                                          milliseconds: 300,
+                                        ),
+                                        curve: Curves.easeInOut,
+                                      );
+                                    },
+                                    color: i == currentIndex
+                                        ? AppColors.mainColor
+                                        : AppColors.c_ee,
+                                    child: selectedOptions[i] != null
+                                        ? SvgPicture.asset(
+                                            tests?[currentIndex]
+                                                        .true_answer[0] ==
+                                                    selectedOptions[i]
+                                                ? "assets/svg/test/true.svg"
+                                                : "assets/svg/test/false.svg",
+                                            width: 22,
+                                          )
+                                        : null,
+                                  ),
+                                ),
+                            ],
+                          ),
                         ),
+                      ),
                     ],
                   ),
                   Expanded(
@@ -278,12 +192,12 @@ class _TestsScreenState extends State<TestsScreen> {
                       itemCount: tests?.length,
                       onPageChanged: (index) {
                         setState(() {
+                          selectedOption = null;
                           currentIndex = index;
                         });
                       },
                       itemBuilder: (context, index) {
                         final q = tests?[index];
-
                         return SingleChildScrollView(
                           padding: const EdgeInsets.all(20),
                           child: Column(
@@ -301,7 +215,7 @@ class _TestsScreenState extends State<TestsScreen> {
                                 ),
                                 padding: const EdgeInsets.only(
                                   bottom: 30,
-                                  top: 50,
+                                  top: 20,
                                 ),
                                 child: HtmlContent(
                                   htmlContent: q?.question ?? '',
@@ -326,7 +240,6 @@ class _TestsScreenState extends State<TestsScreen> {
                                     horizontalPadding: 12,
                                     borderRadius: 10,
                                     onTap: () {
-                                      // selectedOption = i;
                                       setState(() {
                                         selectedOption = i;
                                       });
@@ -372,10 +285,191 @@ class _TestsScreenState extends State<TestsScreen> {
                   ),
                 ],
               );
+            } else if (state is LoadedAnswerData) {
+              return Text("${state.result}");
             } else {
               return const Text("Something went wrong!");
             }
           },
+        ),
+        bottomNavigationBar: BottomAppBar(
+          color: AppColors.transparent,
+          height: 112,
+          child: Builder(
+            builder: (context) {
+              return Container(
+                padding: const EdgeInsets.all(20),
+                decoration: const BoxDecoration(
+                  border: Border(top: BorderSide(color: AppColors.c_ed)),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    WButton(
+                      text: '',
+                      color: AppColors.transparent,
+                      verticalPadding: 0,
+                      horizontalPadding: 0,
+                      onTap: () {},
+                      child: Row(
+                        children: [
+                          SvgPicture.asset("assets/svg/test/help.svg"),
+                        ],
+                      ),
+                    ),
+                    selectedOptions
+                                .where((int? item) => item != null)
+                                .toList()
+                                .length ==
+                            tests?.length
+                        ? WButton(
+                            text: 'Yakunlash',
+                            color: AppColors.mainColor,
+                            textColor: AppColors.mainColor,
+                            buttonType: ButtonType.outline,
+                            borderRadius: 25,
+                            verticalPadding: 13,
+                            horizontalPadding: 50,
+                            onTap: () {
+                              // await TestsService.checkAnswers()
+                              context.read<TestsBloc>().add(
+                                checkAnswers(
+                                  body: AnswerReponse(
+                                    lesson_id: lesson_id,
+                                    user_id: user_id,
+                                    answers: selectedOptions,
+                                  ),
+                                ),
+                              );
+                            },
+                          )
+                        : WButton(
+                            text: 'Tekshirish',
+                            color: AppColors.mainColor,
+                            textColor: AppColors.white,
+                            borderRadius: 25,
+                            verticalPadding: 13,
+                            horizontalPadding: 50,
+                            onTap: () {
+                              if (selectedOption == null) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text("Iltimos, javobni tanlang"),
+                                  ),
+                                );
+                                return;
+                              }
+                              setSelectedOption();
+                              final bool isTrue =
+                                  tests?[currentIndex].true_answer[0] ==
+                                  selectedOption;
+
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20),
+                                  ),
+                                ),
+                                builder: (context) {
+                                  return Container(
+                                    width: double.infinity,
+                                    padding: const EdgeInsets.all(20),
+                                    child: Column(
+                                      // mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                SvgPicture.asset(
+                                                  isTrue
+                                                      ? "assets/svg/test/true.svg"
+                                                      : "assets/svg/test/false.svg",
+                                                ),
+                                                const SizedBox(width: 12),
+                                                Text(
+                                                  isTrue
+                                                      ? "Javob to‘g‘ri!"
+                                                      : "Noto‘g‘ri javob!",
+                                                  style: TextStyle(
+                                                    color: isTrue
+                                                        ? AppColors.green
+                                                        : AppColors.red,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SvgPicture.asset(
+                                              "assets/svg/test/help.svg",
+                                            ),
+                                          ],
+                                        ),
+                                        isTrue
+                                            ? const Text("")
+                                            : Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  const SizedBox(height: 32),
+                                                  const Text(
+                                                    "To'g'ri javob",
+                                                    style: TextStyle(
+                                                      // fontSize: 18,
+                                                      color: AppColors.red,
+                                                      // fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  HtmlContent(
+                                                    htmlContent:
+                                                        tests![currentIndex]
+                                                            .variants[tests![currentIndex]
+                                                            .true_answer[0]],
+                                                  ),
+                                                ],
+                                              ),
+                                        const SizedBox(height: 32),
+                                        SizedBox(
+                                          width: double.infinity,
+                                          child: WButton(
+                                            text: 'Keyingi',
+                                            color: isTrue
+                                                ? AppColors.mainColor
+                                                : AppColors.red,
+                                            textColor: AppColors.white,
+                                            borderRadius: 25,
+                                            verticalPadding: 13,
+                                            horizontalPadding: 50,
+                                            onTap: () => {
+                                              Navigator.pop(context),
+                                              _pageController.animateToPage(
+                                                currentIndex + 1, // 4-savol
+                                                duration: const Duration(
+                                                  milliseconds: 300,
+                                                ),
+                                                curve: Curves.easeInOut,
+                                              ),
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
