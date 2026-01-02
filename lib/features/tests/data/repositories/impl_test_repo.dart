@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../data_sources/test_service.dart';
 
 class ImplTestsRepo extends TestsRepo {
-  final TestsService testsService;
+  final Future<TestsService> testsService;
   SharedPreferences? preferences; // Use nullable to check initialization
 
   ImplTestsRepo({required this.testsService});
@@ -34,7 +34,8 @@ class ImplTestsRepo extends TestsRepo {
   @override
   Future<DataState<TestsReponse>> getTests(int id) async {
     try {
-      final response = await testsService.getTests(id);
+      final service = await testsService;
+      final response = await service.getTests(id);
       return DataSuccess<TestsReponse>(data: response.data);
     } catch (e) {
       print("this is error: $e");
@@ -43,13 +44,15 @@ class ImplTestsRepo extends TestsRepo {
   }
 
   @override
-  Future<DataState<Object>> checkAnswers(int id, AnswerReponse body) async {
+  Future<DataState<List<int>>> checkAnswers(int id, AnswerReponse body) async {
     try {
-      final response = await testsService.checkAnswers(id, body);
-      return DataSuccess<Object>(data: response.data);
+      print("Hi");
+      final service = await testsService;
+      final response = await service.checkAnswers(id, body);
+      return DataSuccess<List<int>>(data: response.data);
     } catch (e) {
       print("this is error: $e");
-      return DataException.getError<Map<String, dynamic>>(e);
+      return DataException.getError<List<int>>(e);
     }
   }
 }

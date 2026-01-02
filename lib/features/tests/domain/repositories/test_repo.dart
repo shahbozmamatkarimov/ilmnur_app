@@ -4,5 +4,5 @@ import 'package:ilmnur_app/features/tests/data/models/test_response.dart';
 
 abstract class TestsRepo {
   Future<DataState<TestsReponse>> getTests(int id);
-  Future<DataState<Object>> checkAnswers(int id, AnswerReponse body);
+  Future<DataState<List<int>>> checkAnswers(int id, AnswerReponse body);
 }

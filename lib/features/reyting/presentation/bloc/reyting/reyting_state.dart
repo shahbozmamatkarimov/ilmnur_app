@@ -20,19 +20,19 @@ class LoggedOut extends ReytingState {
 }
 
 class LoadedReytingData extends ReytingState {
-  final Reyting lesson;
+  final List<Reyting> reyting;
   final StateStatus status;
   final String? error;
   final int tabIndex;
   const LoadedReytingData({
-    required this.lesson,
+    required this.reyting,
     this.error,
     this.status = StateStatus.normal,
     this.tabIndex = 0,
   });
 
   @override
-  List<Object> get props => [lesson, status, tabIndex];
+  List<Object> get props => [reyting, status, tabIndex];
 }
 
 class SuccessUpdate extends ReytingState {

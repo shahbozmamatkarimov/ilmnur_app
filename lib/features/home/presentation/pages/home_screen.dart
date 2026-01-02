@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
         MainRoute(id: 1),
         CourseRoute(courseId: 1),
         LessonRoute(lessonId: 1),
-        ReytingRoute(),
+        ReytingRoute(id: 3),
         const NewsRoute(),
         TestsRoute(testId: 1),
         const ProfileRoute(),
@@ -151,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       if (index == 0)
                         {context.router.pushNamed("/home")}
                       else if (index == 1)
-                        {context.router.pushNamed("/reyting")}
+                        {context.router.navigate(ReytingRoute(id: 3))}
                       else if (index == 3)
                         {context.router.pushNamed("/news")}
                       else if (index == 4)

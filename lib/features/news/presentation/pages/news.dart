@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ilmnur_app/core/resources/app_colors.dart';
 // import 'package:ilmnur_app/features/course/presentation/pages/chat.dart';
-// import 'package:ilmnur_app/features/course/presentation/pages/reyting.dart';
+// import 'package:ilmnur_app/features/course/presentation/pages/news.dart';
 // import 'package:ilmnur_app/features/course/presentation/pages/settings.dart';
 import 'package:ilmnur_app/features/news/presentation/widgets/WNews.dart';
 

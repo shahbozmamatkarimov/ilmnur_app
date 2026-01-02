@@ -1,22 +1,22 @@
 import 'package:dio/dio.dart';
-import 'package:ilmnur_app/features/reyting/data/models/reyting.dart';
+import 'package:ilmnur_app/features/news/data/models/news.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:ilmnur_app/core/network/urls.dart';
 
 part 'news_service.g.dart';
 
 @RestApi(baseUrl: Urls.baseURl)
-abstract class ReytingService {
-  factory ReytingService(Dio dio, {String baseUrl}) = _ReytingService;
+abstract class NewsService {
+  factory NewsService(Dio dio, {String baseUrl}) = _NewsService;
 
-  factory ReytingService.create() {
+  factory NewsService.create() {
     final dio = Dio();
-    return ReytingService(dio);
+    return NewsService(dio);
   }
 
   // @GET("subject")
-  // Future<HttpResponse<List<Reyting>>> getReytings();
+  // Future<HttpResponse<List<News>>> getNewss();
 
-  @GET("video_reyting/{id}")
-  Future<HttpResponse<Reyting>> getReyting(@Path("id") int id);
+  @GET("user/news/{id}/0")
+  Future<HttpResponse<List<News>>> getNews(@Path("id") int id);
 }

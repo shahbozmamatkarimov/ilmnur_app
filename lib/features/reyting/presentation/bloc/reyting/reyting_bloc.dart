@@ -4,32 +4,38 @@ import 'package:ilmnur_app/core/resources/data_state.dart';
 import 'package:ilmnur_app/core/resources/state_status.dart';
 import 'package:ilmnur_app/features/reyting/data/models/reyting.dart';
 import 'package:ilmnur_app/features/reyting/domain/repositories/reyting_repo.dart';
-part 'news_event.dart';
-part 'news_state.dart';
+part 'reyting_event.dart';
+part 'reyting_state.dart';
 
 class ReytingBloc extends Bloc<ReytingEvent, ReytingState> {
-  final ReytingRepo lessonRepo;
+  final ReytingRepo reytingRepo;
   int activeTabIndex = 0;
-  late Reyting lesson;
+  late Reyting reyting;
   late int id;
 
-  ReytingBloc({required this.lessonRepo, required this.id})
+  ReytingBloc({required this.reytingRepo, required this.id})
     : super(ReytingInitial()) {
     on<GetReytings>((event, emit) async {
       emit(Loading());
       try {
-        final response = await lessonRepo.getReyting(id);
+        print('Hi');
+        print(id is int);
+        final response = await reytingRepo.getReyting(id);
+        print(response);
         if (response is DataSuccess) {
-          // lesson = response.data;
-          Reyting? lesson = response.data;
-          if (lesson != null) {
-            emit(LoadedReytingData(lesson: lesson, status: StateStatus.loaded));
+          // reyting = response.data;
+          List<Reyting>? reyting = response.data;
+          if (reyting != null) {
+            emit(
+              LoadedReytingData(reyting: reyting, status: StateStatus.loaded),
+            );
           } else {
-            emit(const ErrorLoadingReytingData("Failed to load lesson data"));
+            emit(const ErrorLoadingReytingData("Failed to load reyting data"));
           }
         }
       } catch (e) {
-        final errorMessage = 'Failed to load lesson data: $e';
+        print(e);
+        final errorMessage = 'Failed to load reyting data: $e';
         emit(ErrorLoadingReytingData(errorMessage));
       }
     });

@@ -8,10 +8,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:ilmnur_app/features/lesson/presentation/widgets/HtmlContent.dart';
 import 'package:ilmnur_app/features/tests/data/data_sources/test_service.dart';
 import 'package:ilmnur_app/features/tests/data/models/answer.dart';
+import 'package:ilmnur_app/features/tests/data/models/selectoption.dart';
 import 'package:ilmnur_app/features/tests/data/models/test.dart';
 import 'package:ilmnur_app/features/tests/data/repositories/impl_test_repo.dart';
 import 'package:ilmnur_app/features/tests/presentation/bloc/group/test_bloc.dart';
-import 'package:ilmnur_app/features/tests/presentation/widgets/Adv.dart';
 import 'package:shimmer/shimmer.dart';
 
 @RoutePage()
@@ -27,8 +27,9 @@ class TestsScreen extends StatefulWidget {
 class _TestsScreenState extends State<TestsScreen> {
   int? selectedOption;
   bool _initialized = false;
+  bool isFinished = false;
   List<Tests>? tests;
-  List<int?> selectedOptions = [];
+  List<SelectedOption> selectedOptions = [];
   late int lesson_id;
   late int user_id;
   final List<List<String>> testLabels = [
@@ -41,17 +42,20 @@ class _TestsScreenState extends State<TestsScreen> {
   final PageController _pageController = PageController();
   int currentIndex = 0;
 
-  void setSelectedOption() {
+  void setSelectedOption(bool isTrue) {
     setState(() {
       if (currentIndex < 0) return; // index tekshirish
 
       // selectedOptions ni kerak bo'lsa kengaytirish
       while (selectedOptions.length <= currentIndex) {
-        selectedOptions.add(null);
+        selectedOptions.add(SelectedOption(id: null, isTrue: null));
       }
 
       // Tanlangan variantni currentIndex ga saqlaymiz
-      selectedOptions[currentIndex] = selectedOption;
+      selectedOptions[currentIndex] = SelectedOption(
+        id: selectedOption,
+        isTrue: isTrue,
+      );
     });
   }
 
@@ -122,14 +126,17 @@ class _TestsScreenState extends State<TestsScreen> {
               user_id = state.tests.user_id;
               tests = state.tests.test;
               if (!_initialized) {
-                selectedOptions = List<int?>.filled(tests!.length, null);
+                selectedOptions = List<SelectedOption>.filled(
+                  tests!.length,
+                  SelectedOption(id: null, isTrue: null),
+                );
                 _initialized = true;
               }
               // Questions list
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const RewardedAdButton(),
+                  // const RewardedAdButton(),
                   Row(
                     spacing: 10,
                     children: [
@@ -154,7 +161,9 @@ class _TestsScreenState extends State<TestsScreen> {
                                     text: "",
                                     verticalPadding: 0,
                                     horizontalPadding:
-                                        selectedOptions[i] != null ? 0 : 11.5,
+                                        selectedOptions[i].id != null
+                                        ? 0
+                                        : 11.5,
                                     borderRadius: 30,
                                     onTap: () {
                                       _pageController.animateToPage(
@@ -168,11 +177,10 @@ class _TestsScreenState extends State<TestsScreen> {
                                     color: i == currentIndex
                                         ? AppColors.mainColor
                                         : AppColors.c_ee,
-                                    child: selectedOptions[i] != null
+                                    child: selectedOptions[i].id != null
                                         ? SvgPicture.asset(
-                                            tests?[currentIndex]
-                                                        .true_answer[0] ==
-                                                    selectedOptions[i]
+                                            tests?[i].true_answer[0] ==
+                                                    selectedOptions[i].id
                                                 ? "assets/svg/test/true.svg"
                                                 : "assets/svg/test/false.svg",
                                             width: 22,
@@ -286,7 +294,102 @@ class _TestsScreenState extends State<TestsScreen> {
                 ],
               );
             } else if (state is LoadedAnswerData) {
-              return Text("${state.result}");
+              // return Text("${state.ball}");
+              return Container(
+                height: double.infinity,
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // isTrue
+                    // ? "assets/svg/test/true.svg"
+                    // : "assets/svg/test/false.svg",
+                    SvgPicture.asset(
+                      state.ball[0] > 70
+                          ? "assets/svg/test/true.svg"
+                          : "assets/svg/test/false.svg",
+                      width: 100,
+                      height: 100,
+                    ),
+                    const SizedBox(height: 24),
+                    Text(
+                      state.ball[0] > 70
+                          ? "Siz muvaffaqiyatli yakunladingiz!"
+                          : "Afsuski test mufaqqiyatsiz bo'ldi!",
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                    const SizedBox(height: 24),
+                    Text(
+                      state.ball[0] > 70
+                          ? "Sinov tugallandi"
+                          : "Yetarli ball to'play olmadingiz. Hechqisi yo'q qayta topshirib ko'ring",
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 24),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                SvgPicture.asset(
+                                  "assets/svg/test/accuracy.svg",
+                                ),
+                                const SizedBox(width: 8),
+                                const Text(
+                                  "Aniqlik",
+                                  style: TextStyle(
+                                    color: AppColors.green,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              "${state.ball[0]}%",
+                              style: TextStyle(
+                                color: AppColors.green,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(width: 24),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                SvgPicture.asset("assets/svg/test/ball.svg"),
+                                const SizedBox(width: 8),
+                                const Text(
+                                  "Ball",
+                                  style: TextStyle(
+                                    color: AppColors.mainColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              "${state.ball[1]}",
+                              style: TextStyle(
+                                color: AppColors.mainColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
             } else {
               return const Text("Something went wrong!");
             }
@@ -318,31 +421,49 @@ class _TestsScreenState extends State<TestsScreen> {
                       ),
                     ),
                     selectedOptions
-                                .where((int? item) => item != null)
+                                .where(
+                                  (SelectedOption? item) => item?.id != null,
+                                )
                                 .toList()
                                 .length ==
                             tests?.length
-                        ? WButton(
-                            text: 'Yakunlash',
-                            color: AppColors.mainColor,
-                            textColor: AppColors.mainColor,
-                            buttonType: ButtonType.outline,
-                            borderRadius: 25,
-                            verticalPadding: 13,
-                            horizontalPadding: 50,
-                            onTap: () {
-                              // await TestsService.checkAnswers()
-                              context.read<TestsBloc>().add(
-                                checkAnswers(
-                                  body: AnswerReponse(
-                                    lesson_id: lesson_id,
-                                    user_id: user_id,
-                                    answers: selectedOptions,
-                                  ),
-                                ),
-                              );
-                            },
-                          )
+                        ? (isFinished == true
+                              ? WButton(
+                                  text: 'Davom etish',
+                                  color: AppColors.mainColor,
+                                  textColor: AppColors.mainColor,
+                                  buttonType: ButtonType.outline,
+                                  borderRadius: 25,
+                                  verticalPadding: 13,
+                                  horizontalPadding: 50,
+                                  onTap: () {
+                                    context.router.pop();
+                                  },
+                                )
+                              : WButton(
+                                  text: 'Yakunlash',
+                                  color: AppColors.mainColor,
+                                  textColor: AppColors.mainColor,
+                                  buttonType: ButtonType.outline,
+                                  borderRadius: 25,
+                                  verticalPadding: 13,
+                                  horizontalPadding: 50,
+                                  onTap: () {
+                                    // await TestsService.checkAnswers()
+                                    context.read<TestsBloc>().add(
+                                      checkAnswers(
+                                        body: AnswerReponse(
+                                          lesson_id: lesson_id,
+                                          user_id: user_id,
+                                          answers: selectedOptions,
+                                        ),
+                                      ),
+                                    );
+                                    setState(() {
+                                      isFinished = true;
+                                    });
+                                  },
+                                ))
                         : WButton(
                             text: 'Tekshirish',
                             color: AppColors.mainColor,
@@ -359,10 +480,10 @@ class _TestsScreenState extends State<TestsScreen> {
                                 );
                                 return;
                               }
-                              setSelectedOption();
                               final bool isTrue =
                                   tests?[currentIndex].true_answer[0] ==
                                   selectedOption;
+                              setSelectedOption(isTrue);
 
                               showModalBottomSheet(
                                 context: context,

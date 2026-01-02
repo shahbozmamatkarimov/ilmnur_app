@@ -48,24 +48,33 @@ class _TestsService implements TestsService {
   }
 
   @override
-  Future<HttpResponse<dynamic>> checkAnswers(int id, AnswerReponse body) async {
+  Future<HttpResponse<List<int>>> checkAnswers(
+    int id,
+    AnswerReponse body,
+  ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(body.toJson());
-    final _options = _setStreamType<HttpResponse<dynamic>>(
+    final _options = _setStreamType<HttpResponse<List<int>>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            'tests/check/${id}',
+            'tests/set_answers/${id}',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch(_options);
-    final _value = _result.data;
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<int> _value;
+    try {
+      _value = _result.data!.cast<int>();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
     final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }

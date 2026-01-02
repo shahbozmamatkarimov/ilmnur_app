@@ -36,18 +36,18 @@ class LoadedTestsData extends TestsState {
 }
 
 class LoadedAnswerData extends TestsState {
-  final Object result;
+  final List<int> ball;
   final StateStatus status;
   final String? error;
 
   const LoadedAnswerData({
-    required this.result,
+    required this.ball,
     this.status = StateStatus.normal,
     this.error,
   });
 
   @override
-  List<Object> get props => [result, status];
+  List<Object> get props => [ball, status];
 }
 
 class SuccessUpdate extends TestsState {

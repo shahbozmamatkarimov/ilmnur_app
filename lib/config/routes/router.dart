@@ -15,7 +15,7 @@ class AppRouter extends RootStackRouter {
         AutoRoute(page: MainRoute.page, path: 'group/:id'),
         AutoRoute(page: CourseRoute.page, path: 'course/:courseId'),
         AutoRoute(page: LessonRoute.page, path: 'lesson/:lessonId'),
-        AutoRoute(page: ReytingRoute.page, path: 'reyting'),
+        AutoRoute(page: ReytingRoute.page, path: 'reyting/:id'),
         AutoRoute(page: ProfileRoute.page, path: 'profile'),
         AutoRoute(page: NewsRoute.page, path: 'news'),
         AutoRoute(page: TestsRoute.page, path: 'test/:testId'),

@@ -9,18 +9,19 @@ class Reyting {
   final int id;
   final String name;
   final String surname;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final int totalReyting;
+  final String? image;
 
   Reyting({
     required this.id,
     required this.name,
     required this.surname,
-    required this.createdAt,
-    required this.updatedAt,
+    required this.totalReyting,
+    this.image,
   });
 
-  factory Reyting.fromJson(Map<String, dynamic> json) => _$ReytingFromJson(json);
+  factory Reyting.fromJson(Map<String, dynamic> json) =>
+      _$ReytingFromJson(json);
   Map<String, dynamic> toJson() => _$ReytingToJson(this);
 
   // Add this method

@@ -6,7 +6,7 @@ part of 'news.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Reyting _$ReytingFromJson(Map<String, dynamic> json) => Reyting(
+News _$NewsFromJson(Map<String, dynamic> json) => News(
   id: (json['id'] as num).toInt(),
   name: json['name'] as String,
   surname: json['surname'] as String,
@@ -14,7 +14,7 @@ Reyting _$ReytingFromJson(Map<String, dynamic> json) => Reyting(
   updatedAt: DateTime.parse(json['updatedAt'] as String),
 );
 
-Map<String, dynamic> _$ReytingToJson(Reyting instance) => <String, dynamic>{
+Map<String, dynamic> _$NewsToJson(News instance) => <String, dynamic>{
   'id': instance.id,
   'name': instance.name,
   'surname': instance.surname,

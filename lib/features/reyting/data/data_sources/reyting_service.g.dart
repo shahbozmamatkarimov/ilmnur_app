@@ -20,25 +20,27 @@ class _ReytingService implements ReytingService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<HttpResponse<Reyting>> getReyting(int id) async {
+  Future<HttpResponse<List<Reyting>>> getReyting(int id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HttpResponse<Reyting>>(
+    final _options = _setStreamType<HttpResponse<List<Reyting>>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            'video_reyting/${id}',
+            'user/reyting/${id}/0',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late Reyting _value;
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<Reyting> _value;
     try {
-      _value = Reyting.fromJson(_result.data!);
+      _value = _result.data!
+          .map((dynamic i) => Reyting.fromJson(i as Map<String, dynamic>))
+          .toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

@@ -274,45 +274,48 @@ class ProfileRoute extends _i12.PageRouteInfo<void> {
 /// generated route for
 /// [_i10.ReytingScreen]
 class ReytingRoute extends _i12.PageRouteInfo<ReytingRouteArgs> {
-  ReytingRoute({_i13.Key? key, List<_i12.PageRouteInfo>? children})
-    : super(
-        ReytingRoute.name,
-        args: ReytingRouteArgs(key: key),
-        initialChildren: children,
-      );
+  ReytingRoute({
+    _i13.Key? key,
+    required int id,
+    List<_i12.PageRouteInfo>? children,
+  }) : super(
+         ReytingRoute.name,
+         args: ReytingRouteArgs(key: key, id: id),
+         initialChildren: children,
+       );
 
   static const String name = 'ReytingRoute';
 
   static _i12.PageInfo page = _i12.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<ReytingRouteArgs>(
-        orElse: () => const ReytingRouteArgs(),
-      );
-      return _i10.ReytingScreen(key: args.key);
+      final args = data.argsAs<ReytingRouteArgs>();
+      return _i10.ReytingScreen(key: args.key, id: args.id);
     },
   );
 }
 
 class ReytingRouteArgs {
-  const ReytingRouteArgs({this.key});
+  const ReytingRouteArgs({this.key, required this.id});
 
   final _i13.Key? key;
 
+  final int id;
+
   @override
   String toString() {
-    return 'ReytingRouteArgs{key: $key}';
+    return 'ReytingRouteArgs{key: $key, id: $id}';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! ReytingRouteArgs) return false;
-    return key == other.key;
+    return key == other.key && id == other.id;
   }
 
   @override
-  int get hashCode => key.hashCode;
+  int get hashCode => key.hashCode ^ id.hashCode;
 }
 
 /// generated route for

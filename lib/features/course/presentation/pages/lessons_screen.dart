@@ -318,7 +318,7 @@ class Lessons extends StatelessWidget {
                               ),
                             ),
                           ),
-                        const MyCourseView(),
+                        // const MyCourseView(),
                       ],
                     );
                   } else if (state is ErrorLoadingCourseData) {

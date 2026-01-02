@@ -1,14 +1,14 @@
 import 'dart:convert';
-
+import 'package:ilmnur_app/features/tests/data/models/selectoption.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'answer.g.dart'; // Ensure this matches your filename
+part 'answer.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class AnswerReponse {
   final int lesson_id;
   final int user_id;
-  final List<int?> answers;
+  final List<SelectedOption> answers;
 
   AnswerReponse({
     required this.lesson_id,
@@ -18,8 +18,8 @@ class AnswerReponse {
 
   factory AnswerReponse.fromJson(Map<String, dynamic> json) =>
       _$AnswerReponseFromJson(json);
+
   Map<String, dynamic> toJson() => _$AnswerReponseToJson(this);
 
-  // Add this method
   String toJsonString() => jsonEncode(toJson());
 }

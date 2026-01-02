@@ -8,8 +8,8 @@ part of 'news_service.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations,unused_element_parameter
 
-class _ReytingService implements ReytingService {
-  _ReytingService(this._dio, {this.baseUrl, this.errorLogger}) {
+class _NewsService implements NewsService {
+  _NewsService(this._dio, {this.baseUrl, this.errorLogger}) {
     baseUrl ??= 'https://vercel-backend-bay.vercel.app/api/';
   }
 
@@ -20,25 +20,27 @@ class _ReytingService implements ReytingService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<HttpResponse<Reyting>> getReyting(int id) async {
+  Future<HttpResponse<List<News>>> getNews(int id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HttpResponse<Reyting>>(
+    final _options = _setStreamType<HttpResponse<List<News>>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            'video_reyting/${id}',
+            'user/news/${id}/0',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late Reyting _value;
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<News> _value;
     try {
-      _value = Reyting.fromJson(_result.data!);
+      _value = _result.data!
+          .map((dynamic i) => News.fromJson(i as Map<String, dynamic>))
+          .toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

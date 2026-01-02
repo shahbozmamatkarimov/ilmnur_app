@@ -8,31 +8,31 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../data_sources/reyting_service.dart';
 
 class ImplReytingRepo extends ReytingRepo {
-  final ReytingService reytingService;
+  final Future<ReytingService> reytingService;
   SharedPreferences? preferences; // Use nullable to check initialization
 
   ImplReytingRepo({required this.reytingService});
 
-  Future<void> _initializePreferences() async {
-    preferences ??= await SharedPreferences.getInstance();
-  }
+  // Future<void> _initializePreferences() async {
+  //   preferences ??= await SharedPreferences.getInstance();
+  // }
 
   // Retrieve reytings from SharedPreferences
-  Future<List<Reyting>?> _getReytingsFromPreferences() async {
-    await _initializePreferences(); // Ensure SharedPreferences is initialized
+  // Future<List<Reyting>?> _getReytingsFromPreferences() async {
+  //   await _initializePreferences(); // Ensure SharedPreferences is initialized
 
-    final List<String>? reytingJsonStrings = preferences?.getStringList(
-      'Reytings',
-    );
+  //   final List<String>? reytingJsonStrings = preferences?.getStringList(
+  //     'Reytings',
+  //   );
 
-    if (reytingJsonStrings == null) {
-      return null;
-    }
+  //   if (reytingJsonStrings == null) {
+  //     return null;
+  //   }
 
-    return reytingJsonStrings.map((reytingJson) {
-      return Reyting.fromJson(jsonDecode(reytingJson) as Map<String, dynamic>);
-    }).toList();
-  }
+  //   return reytingJsonStrings.map((reytingJson) {
+  //     return Reyting.fromJson(jsonDecode(reytingJson) as Map<String, dynamic>);
+  //   }).toList();
+  // }
 
   // Save reytings to SharedPreferences
   // Future<void> _saveReytingsToPreferences(Reyting reytings) async {
@@ -46,17 +46,22 @@ class ImplReytingRepo extends ReytingRepo {
   // }
 
   @override
-  Future<DataState<Reyting>> getReyting(int id) async {
+  Future<DataState<List<Reyting>>> getReyting(int id) async {
     try {
-      final List<Reyting>? reytings = await _getReytingsFromPreferences();
-      if (reytings != null && reytings.isNotEmpty) {
-        // return DataSuccess<List<Reyting>>(data: reytings);
-      }
-      final response = await reytingService.getReyting(id);
+      // final List<Reyting>? reytings = await _getReytingsFromPreferences();
+      // if (reytings != null && reytings.isNotEmpty) {
+      //   // return DataSuccess<List<Reyting>>(data: reytings);
+      // }
+      print("go");
+      final service = await reytingService;
+
+      final response = await service.getReyting(id);
       // await _saveReytingsToPreferences(response.data);
-      return DataSuccess<Reyting>(data: response.data);
+      print(response.data);
+      return DataSuccess<List<Reyting>>(data: response.data);
     } catch (e) {
-      return DataException.getError<Reyting>(e);
+      print(e);
+      return DataException.getError<List<Reyting>>(e);
     }
   }
 }

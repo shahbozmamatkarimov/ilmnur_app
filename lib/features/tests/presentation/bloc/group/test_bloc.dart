@@ -43,10 +43,11 @@ class TestsBloc extends Bloc<TestsEvent, TestsState> {
         print(response);
         if (response is DataSuccess) {
           // tests = response.data;
-          Object? result = response.data;
+          List<int>? result = response.data;
           if (result != null) {
-            emit(LoadedAnswerData(result: result, status: StateStatus.loaded));
+            emit(LoadedAnswerData(ball: result, status: StateStatus.loaded));
           } else {
+            print("$result");
             emit(const ErrorLoadingTestsData("Failed to load tests data"));
           }
         }
