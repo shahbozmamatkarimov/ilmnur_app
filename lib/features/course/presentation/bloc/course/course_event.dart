@@ -5,6 +5,10 @@ abstract class CourseEvent extends Equatable {
 }
 
 class GetCourses extends CourseEvent {
+  final String? subcategory_id;
+
+  const GetCourses({this.subcategory_id});
+
   @override
   List<Object?> get props => [];
 }

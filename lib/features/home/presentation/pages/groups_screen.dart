@@ -5,10 +5,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:ilmnur_app/core/resources/app_colors.dart';
 import 'package:ilmnur_app/core/util/responsive.dart';
 import 'package:ilmnur_app/core/widgets/w_button.dart';
-import 'package:ilmnur_app/features/home/data/data_sources/category/category_service.dart';
 import 'package:ilmnur_app/features/home/data/data_sources/group/group_service.dart';
 import 'package:ilmnur_app/features/home/data/models/category/category.dart';
-import 'package:ilmnur_app/features/home/data/repositories/impl_category_repo.dart';
 import 'package:ilmnur_app/features/home/data/repositories/impl_group_repo.dart';
 import 'package:ilmnur_app/features/home/presentation/bloc/category/category_bloc.dart';
 import 'package:ilmnur_app/features/home/presentation/bloc/group/group_bloc.dart';
@@ -43,254 +41,313 @@ class GroupsScreenState extends State<GroupsScreen>
   Widget build(BuildContext context) {
     final isDesktop = Responsive.isDesktop(context);
 
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => GroupBloc(
-            groupRepo: ImplGroupRepo(groupService: GroupService.create()),
-          ),
-        ),
-        BlocProvider(
-          create: (context) => CategoryBloc(
-            categoryRepo: ImplCategoryRepo(
-              categoryService: CategoryService.create(),
-            ),
-          ),
-        ),
-      ],
+    return BlocProvider(
+      create: (context) => GroupBloc(
+        groupRepo: ImplGroupRepo(groupService: GroupService.create()),
+      ),
       child: Builder(
-        // ← BU YERGA QO'SHING!
         builder: (context) {
           return Scaffold(
             backgroundColor: AppColors.backgroundColor,
-            body: BlocBuilder<CategoryBloc, CategoryState>(
-              builder: (context, state) {
-                if (state is Loading) {
-                  return SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Wrap(
-                      spacing: 8,
-                      children: [
-                        for (var _ in [1, 2, 3, 4, 5, 6, 7, 8, 9])
-                          Shimmer.fromColors(
-                            baseColor: Colors.grey.withOpacity(0.3),
-                            highlightColor: Colors.grey.withOpacity(0.1),
-                            child: Container(
-                              height: 34,
-                              width: 100,
-                              decoration: BoxDecoration(
-                                color: Colors.grey[300],
-                                borderRadius: BorderRadius.circular(17),
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                  );
-                } else if (state is LoadedCategoryData) {
-                  category = state.category;
-                  subcategory = category
-                      .expand(
-                        (Category cat) =>
-                            (cat.subcategories ?? []).cast<Category>(),
-                      )
-                      .toList();
-
-                  return Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      color: isDesktop ? AppColors.white : null,
-                    ),
-                    child: Column(
-                      children: [
-                        Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              for (dynamic i in category)
-                                GestureDetector(
-                                  child: CategoryCard(
-                                    isSelected: selectedCategoryId == i.id,
-                                    icon: i.icon,
-                                    label: i.title,
-                                  ),
-                                  onTap: () => {
-                                    setState(() {
-                                      selectedCategoryId =
-                                          i.id == selectedCategoryId
-                                          ? null
-                                          : i.id;
-                                    }),
-                                    context.read<GroupBloc>().add(
-                                      GetGroups(categoryId: i.id),
-                                    ),
-                                  },
-                                ),
-                            ],
-                          ),
+            body: Column(
+              children: [
+                BlocBuilder<CategoryBloc, CategoryState>(
+                  builder: (context, state) {
+                    if (state is Loading) {
+                      // if (true) {
+                      return Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6),
+                          color: isDesktop ? AppColors.white : null,
                         ),
-                        const SizedBox(height: 24),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Column(
                           children: [
-                            Expanded(
-                              child: Container(
-                                width: double.infinity,
-                                padding: const EdgeInsets.only(right: 12),
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Wrap(
-                                    spacing: 8,
-                                    children: [
-                                      WButton(
-                                        text: "All",
-                                        fontSize: 12,
-                                        borderRadius: 20,
-                                        verticalPadding: 8,
-                                        horizontalPadding: 12,
-                                        color: AppColors.mainColor,
-                                        textColor: AppColors.white,
-                                        onTap: () => {},
-                                      ),
-                                      for (dynamic i in subcategory)
-                                        WButton(
-                                          text: i.title,
-                                          fontSize: 12,
-                                          borderRadius: 20,
-                                          verticalPadding: 8,
-                                          horizontalPadding: 12,
-                                          color: AppColors.mainColor,
-                                          textColor:
-                                              selectedsubcategory_id.contains(
-                                                i.id,
-                                              )
-                                              ? AppColors.white
-                                              : AppColors.mainColor,
-                                          buttonType:
-                                              selectedsubcategory_id.contains(
-                                                i.id,
-                                              )
-                                              ? ButtonType.filled
-                                              : ButtonType.outline,
-                                          onTap: () => {
-                                            setState(() {
-                                              if (selectedsubcategory_id
-                                                  .contains(i.id)) {
-                                                selectedsubcategory_id.remove(
-                                                  i.id,
-                                                );
-                                              } else {
-                                                selectedsubcategory_id.add(
-                                                  i.id,
-                                                );
-                                              }
-                                            }),
-                                            context.read<GroupBloc>().add(
-                                              GetGroups(
-                                                subcategory_id:
-                                                    selectedsubcategory_id
-                                                        .isEmpty
-                                                    ? null
-                                                    : '[${selectedsubcategory_id.join(',')}]',
-                                              ),
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Wrap(
+                                spacing: 8,
+                                children: [
+                                  for (var _ in [1, 2, 3, 4, 5, 6, 7, 8, 9])
+                                    Column(
+                                      children: [
+                                        Shimmer.fromColors(
+                                          baseColor: Colors.grey.withOpacity(
+                                            0.3,
+                                          ),
+                                          highlightColor: Colors.grey
+                                              .withOpacity(0.1),
+                                          child: Container(
+                                            height: 50,
+                                            width: 50,
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey[300],
+                                              borderRadius:
+                                                  BorderRadius.circular(25),
                                             ),
-                                          },
+                                          ),
                                         ),
-                                    ],
-                                  ),
-                                ),
+                                        const SizedBox(height: 10),
+                                        const Text(
+                                          '',
+                                          style: TextStyle(fontSize: 10),
+                                        ),
+                                      ],
+                                    ),
+                                ],
                               ),
                             ),
-                            Row(
-                              children: [
-                                WButton(
-                                  text: "More",
-                                  fontSize: 12,
-                                  borderRadius: 20,
-                                  verticalPadding: 8,
-                                  horizontalPadding: 12,
-                                  color: AppColors.mainColor,
-                                  textColor: AppColors.white,
-                                  onTap: () {
-                                    showModalBottomSheet(
-                                      context: context,
-                                      isScrollControlled: true,
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.vertical(
-                                          top: Radius.circular(20),
+                            const SizedBox(height: 24),
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Wrap(
+                                spacing: 8,
+                                children: [
+                                  for (var _ in [1, 2, 3, 4, 5, 6, 7, 8, 9])
+                                    Shimmer.fromColors(
+                                      baseColor: Colors.grey.withOpacity(0.3),
+                                      highlightColor: Colors.grey.withOpacity(
+                                        0.1,
+                                      ),
+                                      child: Container(
+                                        height: 34,
+                                        width: 100,
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[300],
+                                          borderRadius: BorderRadius.circular(
+                                            17,
+                                          ),
                                         ),
                                       ),
-                                      builder: (sheetContext) {
-                                        return BlocProvider.value(
-                                          value: context
-                                              .read<
-                                                GroupBloc
-                                              >(), // ← To'g'ri context!
-                                          child: _CategoryBottomSheet(
-                                            subcategory: subcategory,
-                                            selectedCategoryId:
-                                                selectedCategoryId,
-                                            onSelect: (id) {
-                                              setState(
-                                                () => selectedCategoryId = id,
-                                              );
-                                              context.read<GroupBloc>().add(
-                                                GetGroups(categoryId: id),
-                                              );
-                                              Navigator.pop(context);
-                                            },
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    } else if (state is LoadedCategoryData) {
+                      category = state.category;
+                      subcategory = category
+                          .expand(
+                            (Category cat) =>
+                                (cat.subcategories ?? []).cast<Category>(),
+                          )
+                          .toList();
+
+                      return Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6),
+                          color: isDesktop ? AppColors.white : null,
+                        ),
+                        child: Column(
+                          children: [
+                            Center(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  for (dynamic i in category)
+                                    GestureDetector(
+                                      child: CategoryCard(
+                                        isSelected: selectedCategoryId == i.id,
+                                        icon: i.icon,
+                                        label: i.title,
+                                      ),
+                                      onTap: () => {
+                                        setState(() {
+                                          selectedCategoryId =
+                                              i.id == selectedCategoryId
+                                              ? null
+                                              : i.id;
+                                        }),
+                                        context.read<GroupBloc>().add(
+                                          GetGroups(categoryId: i.id),
+                                        ),
+                                      },
+                                    ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 24),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    width: double.infinity,
+                                    padding: const EdgeInsets.only(right: 12),
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Wrap(
+                                        spacing: 8,
+                                        children: [
+                                          WButton(
+                                            text: "All",
+                                            fontSize: 12,
+                                            borderRadius: 20,
+                                            verticalPadding: 8,
+                                            horizontalPadding: 12,
+                                            color: AppColors.mainColor,
+                                            textColor: AppColors.white,
+                                            onTap: () => {},
                                           ),
+                                          for (dynamic i in subcategory)
+                                            WButton(
+                                              text: i.title,
+                                              fontSize: 12,
+                                              borderRadius: 20,
+                                              verticalPadding: 8,
+                                              horizontalPadding: 12,
+                                              color: AppColors.mainColor,
+                                              textColor:
+                                                  selectedsubcategory_id
+                                                      .contains(i.id)
+                                                  ? AppColors.white
+                                                  : AppColors.mainColor,
+                                              buttonType:
+                                                  selectedsubcategory_id
+                                                      .contains(i.id)
+                                                  ? ButtonType.filled
+                                                  : ButtonType.outline,
+                                              onTap: () => {
+                                                setState(() {
+                                                  if (selectedsubcategory_id
+                                                      .contains(i.id)) {
+                                                    selectedsubcategory_id
+                                                        .remove(i.id);
+                                                  } else {
+                                                    selectedsubcategory_id.add(
+                                                      i.id,
+                                                    );
+                                                  }
+                                                }),
+                                                context.read<GroupBloc>().add(
+                                                  GetGroups(
+                                                    subcategory_id:
+                                                        selectedsubcategory_id
+                                                            .isEmpty
+                                                        ? null
+                                                        : '[${selectedsubcategory_id.join(',')}]',
+                                                  ),
+                                                ),
+                                              },
+                                            ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    WButton(
+                                      text: "More",
+                                      fontSize: 12,
+                                      borderRadius: 20,
+                                      verticalPadding: 8,
+                                      horizontalPadding: 12,
+                                      color: AppColors.mainColor,
+                                      textColor: AppColors.white,
+                                      onTap: () {
+                                        showModalBottomSheet(
+                                          context: context,
+                                          isScrollControlled: true,
+                                          shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.vertical(
+                                              top: Radius.circular(20),
+                                            ),
+                                          ),
+                                          builder: (sheetContext) {
+                                            return BlocProvider.value(
+                                              value: context
+                                                  .read<
+                                                    GroupBloc
+                                                  >(), // ← To'g'ri context!
+                                              child: _CategoryBottomSheet(
+                                                subcategory: subcategory,
+                                                selectedCategoryId:
+                                                    selectedsubcategory_id,
+                                                onSelect: (id) {
+                                                  // setState(
+                                                  //   () => selectedCategoryId = id,
+                                                  // );
+                                                  // context.read<GroupBloc>().add(
+                                                  //   GetGroups(categoryId: id),
+                                                  // );
+                                                  setState(() {
+                                                    if (selectedsubcategory_id
+                                                        .contains(id)) {
+                                                      selectedsubcategory_id
+                                                          .remove(id);
+                                                    } else {
+                                                      selectedsubcategory_id
+                                                          .add(id!);
+                                                    }
+                                                  });
+                                                  context.read<GroupBloc>().add(
+                                                    GetGroups(
+                                                      subcategory_id:
+                                                          selectedsubcategory_id
+                                                              .isEmpty
+                                                          ? null
+                                                          : '[${selectedsubcategory_id.join(',')}]',
+                                                    ),
+                                                  );
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                            );
+                                          },
                                         );
                                       },
-                                    );
-                                  },
-                                ),
-                                const SizedBox(width: 12),
-                                WButton(
-                                  text: "",
-                                  borderRadius: 20,
-                                  verticalPadding: 8,
-                                  horizontalPadding: 12,
-                                  color: AppColors.mainColor,
-                                  textColor: AppColors.white,
-                                  child: SvgPicture.asset(
-                                    "assets/svg/nav/filter.svg",
-                                  ),
-                                  onTap: () => {},
+                                    ),
+                                    const SizedBox(width: 12),
+                                    WButton(
+                                      text: "",
+                                      borderRadius: 20,
+                                      verticalPadding: 8,
+                                      horizontalPadding: 12,
+                                      color: AppColors.mainColor,
+                                      textColor: AppColors.white,
+                                      child: SvgPicture.asset(
+                                        "assets/svg/nav/filter.svg",
+                                      ),
+                                      onTap: () => {},
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
                           ],
                         ),
-                        const SizedBox(height: 20),
-                        // WTabBar(
-                        //   tabsList: categoryTabs,
-                        //   controllerForMainTabVarView: controllerForMainTabVarView,
-                        // ),
-                        // Expanded(
-                        //   child: TabBarView(
-                        //     controller: controllerForMainTabVarView,
-                        //     children: const [GroupPage(), GroupPage(), GroupPage()],
-                        //   ),
-                        // ),
-                        // const SingleChildScrollView(child: GroupPage()),
-                        const Expanded(
-                          child: GroupPage(), // o‘zi scroll qiladi
+                      );
+                    } else if (state is ErrorLoadingCategoryData) {
+                      return Center(
+                        child: Text(
+                          'Error loading category data: ${state.errorMessage}',
                         ),
-                      ],
-                    ),
-                  );
-                } else if (state is ErrorLoadingCategoryData) {
-                  return Center(
-                    child: Text(
-                      'Error loading category data: ${state.errorMessage}',
-                    ),
-                  );
-                } else {
-                  return Container();
-                }
-              },
+                      );
+                    } else {
+                      return Container();
+                    }
+                  },
+                ),
+                // WTabBar(
+                //   tabsList: categoryTabs,
+                //   controllerForMainTabVarView: controllerForMainTabVarView,
+                // ),
+                // Expanded(
+                //   child: TabBarView(
+                //     controller: controllerForMainTabVarView,
+                //     children: const [GroupPage(), GroupPage(), GroupPage()],
+                //   ),
+                // ),
+                // const SingleChildScrollView(child: GroupPage()),
+                const Expanded(
+                  child: GroupPage(), // o‘zi scroll qiladi
+                ),
+              ],
             ),
           );
         },
@@ -301,7 +358,7 @@ class GroupsScreenState extends State<GroupsScreen>
 
 class _CategoryBottomSheet extends StatelessWidget {
   final List<Category> subcategory;
-  final int? selectedCategoryId;
+  final List<int?> selectedCategoryId;
   final Function(int?) onSelect;
 
   const _CategoryBottomSheet({
@@ -326,10 +383,10 @@ class _CategoryBottomSheet extends StatelessWidget {
             verticalPadding: 8,
             horizontalPadding: 12,
             color: AppColors.mainColor,
-            textColor: selectedCategoryId == null
+            textColor: selectedCategoryId.isEmpty
                 ? AppColors.white
                 : AppColors.mainColor,
-            buttonType: selectedCategoryId == null
+            buttonType: selectedCategoryId.isEmpty
                 ? ButtonType.filled
                 : ButtonType.outline,
             onTap: () => onSelect(null),
@@ -342,10 +399,10 @@ class _CategoryBottomSheet extends StatelessWidget {
               verticalPadding: 8,
               horizontalPadding: 12,
               color: AppColors.mainColor,
-              textColor: selectedCategoryId == i.id
+              textColor: selectedCategoryId.contains(i.id)
                   ? AppColors.white
                   : AppColors.mainColor,
-              buttonType: selectedCategoryId == i.id
+              buttonType: selectedCategoryId.contains(i.id)
                   ? ButtonType.filled
                   : ButtonType.outline,
               onTap: () => onSelect(i.id),

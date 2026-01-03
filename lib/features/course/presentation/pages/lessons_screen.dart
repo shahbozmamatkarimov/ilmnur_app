@@ -9,67 +9,142 @@ import 'package:ilmnur_app/features/course/data/data_sources/course_service.dart
 import 'package:ilmnur_app/features/course/data/repositories/impl_course_repo.dart';
 import 'package:ilmnur_app/features/course/presentation/bloc/course/course_bloc.dart';
 import 'package:ilmnur_app/features/course/presentation/widgets/add_course.dart';
+import 'package:ilmnur_app/features/home/data/models/category/category.dart';
+import 'package:ilmnur_app/features/home/presentation/bloc/category/category_bloc.dart'
+    as category;
 import 'package:shimmer/shimmer.dart';
 import 'package:ilmnur_app/config/routes/router.gr.dart';
 
 // @RoutePage()
-class Lessons extends StatelessWidget {
-  // const Lessons({super.key});
+class Lessons extends StatefulWidget {
   final int id;
   const Lessons({super.key, required this.id});
 
   @override
+  State<Lessons> createState() => _LessonsState();
+}
+
+class _LessonsState extends State<Lessons> {
+  List<int> selectedsubcategory_id = [];
+
+  @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            SizedBox(
-              width: double.infinity,
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                scrollDirection: Axis.horizontal,
-                child: Wrap(
-                  direction: Axis.horizontal,
-                  crossAxisAlignment: WrapCrossAlignment.start,
-                  alignment: WrapAlignment.start,
-                  spacing: 12,
-                  children: [
-                    WButton(
-                      text: "All",
-                      fontSize: 12,
-                      borderRadius: 20,
-                      verticalPadding: 8,
-                      horizontalPadding: 12,
-                      color: AppColors.mainColor,
-                      textColor: AppColors.white,
-                      onTap: () => {},
-                    ),
-                    for (int _ in [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4])
-                      WButton(
-                        text: "Business",
-                        fontSize: 12,
-                        borderRadius: 20,
-                        verticalPadding: 5,
-                        horizontalPadding: 12,
-                        color: AppColors.mainColor,
-                        textColor: AppColors.mainColor,
-                        buttonType: ButtonType.outline,
-                        onTap: () => {},
-                      ),
-                  ],
+    return BlocProvider(
+      create: (context) => CourseBloc(
+        id: widget.id,
+        courseRepo: ImplCourseRepo(courseService: CourseService.create()),
+      )..add(GetCourses()),
+      child: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: BlocBuilder<category.CategoryBloc, category.CategoryState>(
+                  builder: (context, state) {
+                    if (state is category.Loading) {
+                      return SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          child: Wrap(
+                            spacing: 8,
+                            children: [
+                              for (var _ in [1, 2, 3, 4, 5, 6, 7, 8, 9])
+                                Shimmer.fromColors(
+                                  baseColor: Colors.grey.withOpacity(0.3),
+                                  highlightColor: Colors.grey.withOpacity(0.1),
+                                  child: Container(
+                                    height: 34,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[300],
+                                      borderRadius: BorderRadius.circular(17),
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                      );
+                    } else if (state is category.LoadedCategoryData) {
+                      final List<Category> subcategory = state.category
+                          .expand(
+                            (Category cat) =>
+                                (cat.subcategories ?? []).cast<Category>(),
+                          )
+                          .toList();
+
+                      return SingleChildScrollView(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        scrollDirection: Axis.horizontal,
+                        child: Wrap(
+                          direction: Axis.horizontal,
+                          crossAxisAlignment: WrapCrossAlignment.start,
+                          alignment: WrapAlignment.start,
+                          spacing: 12,
+                          children: [
+                            WButton(
+                              text: "All",
+                              fontSize: 12,
+                              borderRadius: 20,
+                              verticalPadding: 8,
+                              horizontalPadding: 12,
+                              color: AppColors.mainColor,
+                              textColor: AppColors.white,
+                              onTap: () => {},
+                            ),
+                            for (Category i in subcategory)
+                              WButton(
+                                text: i.title,
+                                fontSize: 12,
+                                borderRadius: 20,
+                                verticalPadding: 5,
+                                horizontalPadding: 12,
+                                color: AppColors.mainColor,
+                                textColor: selectedsubcategory_id.contains(i.id)
+                                    ? AppColors.white
+                                    : AppColors.mainColor,
+                                buttonType:
+                                    selectedsubcategory_id.contains(i.id)
+                                    ? ButtonType.filled
+                                    : ButtonType.outline,
+                                onTap: () => {
+                                  setState(() {
+                                    if (selectedsubcategory_id.contains(i.id)) {
+                                      selectedsubcategory_id.remove(i.id);
+                                    } else {
+                                      selectedsubcategory_id.add(i.id);
+                                    }
+                                  }),
+                                  context.read<CourseBloc>().add(
+                                    GetCourses(
+                                      subcategory_id:
+                                          selectedsubcategory_id.isEmpty
+                                          ? null
+                                          : '[${selectedsubcategory_id.join(',')}]',
+                                    ),
+                                  ),
+                                },
+                              ),
+                          ],
+                        ),
+                      );
+                    } else if (state is category.ErrorLoadingCategoryData) {
+                      return Center(
+                        child: Text(
+                          'Error loading category data: ${state.errorMessage}',
+                        ),
+                      );
+                    } else {
+                      return Container();
+                    }
+                  },
                 ),
               ),
-            ),
-            BlocProvider(
-              create: (context) => CourseBloc(
-                id: id,
-                courseRepo: ImplCourseRepo(
-                  courseService: CourseService.create(),
-                ),
-              )..add(GetCourses()),
-              child: BlocBuilder<CourseBloc, CourseState>(
+              BlocBuilder<CourseBloc, CourseState>(
                 builder: (context, state) {
                   if (state is Loading) {
                     return ClipRect(
@@ -332,9 +407,9 @@ class Lessons extends StatelessWidget {
                   }
                 },
               ),
-            ),
-            const SizedBox(height: 20),
-          ],
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );

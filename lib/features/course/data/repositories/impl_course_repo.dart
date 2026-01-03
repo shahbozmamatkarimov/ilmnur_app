@@ -48,7 +48,10 @@ class ImplCourseRepo extends CourseRepo {
   // }
 
   @override
-  Future<DataState<CourseGroupResponse>> getCourses(int id) async {
+  Future<DataState<CourseGroupResponse>> getCourses(
+    int id,
+    String? subcategory_id,
+  ) async {
     try {
       // final CourseGroupResponse? courses = await _getCoursesFromPreferences();
       // print(courses);
@@ -56,7 +59,7 @@ class ImplCourseRepo extends CourseRepo {
       // return DataSuccess<CourseGroupResponse>(data: courses);
       // }
       final service = await courseService;
-      final response = await service.getCourses(id);
+      final response = await service.getCourses(id, subcategory_id);
       // await _saveCoursesToPreferences(response.data);
       return DataSuccess<CourseGroupResponse>(data: response.data);
     } catch (e) {

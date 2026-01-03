@@ -17,8 +17,11 @@ abstract class CourseService {
     return CourseService(dio);
   }
 
-  @GET("course/getByCourse/{id}/0")
-  Future<HttpResponse<CourseGroupResponse>> getCourses(@Path("id") int id);
+  @GET("course/getByCourse/{id}/{subcategory_id}")
+  Future<HttpResponse<CourseGroupResponse>> getCourses(
+    @Path("id") int id,
+    @Path("subcategory_id") String? subcategory_id,
+  );
 
   @GET("lesson/getByCourse/{id}")
   Future<HttpResponse<CourseResponse>> getLessons(@Path("id") int id);

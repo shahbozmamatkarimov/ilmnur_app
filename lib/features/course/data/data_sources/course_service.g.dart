@@ -20,16 +20,20 @@ class _CourseService implements CourseService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<HttpResponse<CourseGroupResponse>> getCourses(int id) async {
+  Future<HttpResponse<CourseGroupResponse>> getCourses(
+    int id,
+    String? subcategory_id,
+  ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<CourseGroupResponse>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            'course/getByCourse/${id}/0',
+            'course/getByCourse/${id}/${subcategory_id}',
             queryParameters: queryParameters,
             data: _data,
           )

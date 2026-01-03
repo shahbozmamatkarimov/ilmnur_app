@@ -11,6 +11,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   final CategoryRepo categoryRepo;
   int activeTabIndex = 0;
   late List<Category> category;
+  // List<Category>? _category;
 
   CategoryBloc({required this.categoryRepo}) : super(CategoryInitial()) {
     on<GetCategory>((event, emit) async {
@@ -18,9 +19,17 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       try {
         final response = await categoryRepo.getCategory();
         if (response is DataSuccess) {
-          // category = response.data;
+          // if (_category != null) {
+          //   emit(
+          //     LoadedCategoryData(
+          //       category: _category!,
+          //       status: StateStatus.loaded,
+          //     ),
+          //   );
+          // }
           List<Category>? category = response.data;
           if (category != null) {
+            // _category = category;
             emit(
               LoadedCategoryData(
                 category: category,

@@ -5,6 +5,7 @@ import 'package:ilmnur_app/core/widgets/w_tabbar.dart';
 import 'package:ilmnur_app/features/chat/presentation/pages/chat_screen.dart';
 // import 'package:ilmnur_app/features/course/presentation/pages/chat.dart';
 import 'package:ilmnur_app/features/course/presentation/pages/lessons_screen.dart';
+import 'package:ilmnur_app/features/reyting/presentation/pages/reyting_screen.dart';
 // import 'package:ilmnur_app/features/course/presentation/pages/news.dart';
 // import 'package:ilmnur_app/features/course/presentation/pages/reyting.dart';
 // import 'package:ilmnur_app/features/course/presentation/pages/settings.dart';
@@ -55,7 +56,8 @@ class MainScreenState extends State<MainScreen>
                 Lessons(id: widget.id),
                 const ChatScreen(),
                 Lessons(id: widget.id),
-                Lessons(id: widget.id),
+                ReytingScreen(id: widget.id),
+                // Lessons(id: widget.id),
                 Lessons(id: widget.id),
                 Lessons(id: widget.id),
                 Lessons(id: widget.id),

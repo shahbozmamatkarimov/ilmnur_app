@@ -22,7 +22,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
     on<GetCourses>((event, emit) async {
       emit(Loading());
       try {
-        final response = await courseRepo.getCourses(id);
+        final response = await courseRepo.getCourses(id, event.subcategory_id);
         if (response is DataSuccess) {
           // course = response.data;
           CourseGroupResponse? course = response.data;
@@ -74,7 +74,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
       emit(Loading());
       try {
         await courseRepo.createCourse(event.course);
-        final response = await courseRepo.getCourses(id);
+        final response = await courseRepo.getCourses(id, null);
 
         if (response is DataSuccess) {
           // course = response.data;
