@@ -3,6 +3,10 @@ import 'package:ilmnur_app/features/home/data/models/group/GroupDto.dart';
 import 'package:ilmnur_app/features/home/data/models/group/creategroup.dart';
 
 abstract class GroupRepo {
-  Future<DataState<GroupDto>> getGroup(int? categoryId);
+  Future<DataState<GroupDto>> getGroup({
+    int? categoryId,
+    String? subcategory_id,
+  });
+
   Future<DataState<GroupDto>> createGroup(CreateGroupModel group);
 }

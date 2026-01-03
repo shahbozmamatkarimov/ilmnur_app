@@ -19,6 +19,7 @@ abstract class GroupService {
   @GET("group")
   Future<HttpResponse<GroupDto>> getGroups(
     @Query("category_id") int? categoryId,
+    @Query("subcategory_id") String? subcategory_id,
   );
 
   @POST("group/create")

@@ -20,9 +20,15 @@ class _GroupService implements GroupService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<HttpResponse<GroupDto>> getGroups(int? categoryId) async {
+  Future<HttpResponse<GroupDto>> getGroups(
+    int? categoryId,
+    String? subcategory_id,
+  ) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'category_id': categoryId};
+    final queryParameters = <String, dynamic>{
+      r'category_id': categoryId,
+      r'subcategory_id': subcategory_id,
+    };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;

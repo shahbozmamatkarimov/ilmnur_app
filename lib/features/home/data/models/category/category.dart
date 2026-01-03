@@ -8,6 +8,8 @@ part 'category.g.dart'; // Ensure this matches your filename
 class Category {
   final int id;
   final String title;
+  final String? icon;
+  final List<Category>? subcategories;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -16,6 +18,8 @@ class Category {
     required this.title,
     required this.createdAt,
     required this.updatedAt,
+    this.subcategories,
+    this.icon,
   });
 
   factory Category.fromJson(Map<String, dynamic> json) =>

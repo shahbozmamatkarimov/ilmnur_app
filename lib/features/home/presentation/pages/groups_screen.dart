@@ -13,6 +13,7 @@ import 'package:ilmnur_app/features/home/data/repositories/impl_group_repo.dart'
 import 'package:ilmnur_app/features/home/presentation/bloc/category/category_bloc.dart';
 import 'package:ilmnur_app/features/home/presentation/bloc/group/group_bloc.dart';
 import 'package:ilmnur_app/features/home/presentation/pages/group_page.dart';
+import 'package:ilmnur_app/features/home/presentation/widgets/category_card.dart';
 import 'package:shimmer/shimmer.dart';
 
 @RoutePage()
@@ -32,7 +33,9 @@ class GroupsScreenState extends State<GroupsScreen>
   );
 
   List<Category> category = [];
+  List<Category> subcategory = [];
   int? selectedCategoryId;
+  List<int> selectedsubcategory_id = [];
 
   // final List<String> categoryTabs = ["Guruhlar", "Kurslar", "Mentorlar"];
 
@@ -60,56 +63,79 @@ class GroupsScreenState extends State<GroupsScreen>
         builder: (context) {
           return Scaffold(
             backgroundColor: AppColors.backgroundColor,
-            body: Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
-                color: isDesktop ? AppColors.white : null,
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // ElevatedButton(
-                      //   onPressed: () async {
-                      //     await LoginService.logout(context);
-                      //     context.router.pushNamed("/login");
-                      //   },
-                      //   child: Text('Logout'),
-                      // ),
-                      Expanded(
-                        child: BlocBuilder<CategoryBloc, CategoryState>(
-                          builder: (context, state) {
-                            if (state is Loading) {
-                              return SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Wrap(
-                                  spacing: 8,
-                                  children: [
-                                    for (var _ in [1, 2, 3, 4, 5, 6, 7, 8, 9])
-                                      Shimmer.fromColors(
-                                        baseColor: Colors.grey.withOpacity(0.3),
-                                        highlightColor: Colors.grey.withOpacity(
-                                          0.1,
-                                        ),
-                                        child: Container(
-                                          height: 34,
-                                          width: 100,
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey[300],
-                                            borderRadius: BorderRadius.circular(
-                                              17,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                  ],
+            body: BlocBuilder<CategoryBloc, CategoryState>(
+              builder: (context, state) {
+                if (state is Loading) {
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Wrap(
+                      spacing: 8,
+                      children: [
+                        for (var _ in [1, 2, 3, 4, 5, 6, 7, 8, 9])
+                          Shimmer.fromColors(
+                            baseColor: Colors.grey.withOpacity(0.3),
+                            highlightColor: Colors.grey.withOpacity(0.1),
+                            child: Container(
+                              height: 34,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(17),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  );
+                } else if (state is LoadedCategoryData) {
+                  category = state.category;
+                  subcategory = category
+                      .expand(
+                        (Category cat) =>
+                            (cat.subcategories ?? []).cast<Category>(),
+                      )
+                      .toList();
+
+                  return Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      color: isDesktop ? AppColors.white : null,
+                    ),
+                    child: Column(
+                      children: [
+                        Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              for (dynamic i in category)
+                                GestureDetector(
+                                  child: CategoryCard(
+                                    isSelected: selectedCategoryId == i.id,
+                                    icon: i.icon,
+                                    label: i.title,
+                                  ),
+                                  onTap: () => {
+                                    setState(() {
+                                      selectedCategoryId =
+                                          i.id == selectedCategoryId
+                                          ? null
+                                          : i.id;
+                                    }),
+                                    context.read<GroupBloc>().add(
+                                      GetGroups(categoryId: i.id),
+                                    ),
+                                  },
                                 ),
-                              );
-                            } else if (state is LoadedCategoryData) {
-                              category = state.category;
-                              return Container(
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Container(
                                 width: double.infinity,
                                 padding: const EdgeInsets.only(right: 12),
                                 child: SingleChildScrollView(
@@ -127,7 +153,7 @@ class GroupsScreenState extends State<GroupsScreen>
                                         textColor: AppColors.white,
                                         onTap: () => {},
                                       ),
-                                      for (dynamic i in category)
+                                      for (dynamic i in subcategory)
                                         WButton(
                                           text: i.title,
                                           fontSize: 12,
@@ -135,143 +161,136 @@ class GroupsScreenState extends State<GroupsScreen>
                                           verticalPadding: 8,
                                           horizontalPadding: 12,
                                           color: AppColors.mainColor,
-                                          textColor: selectedCategoryId == i.id
+                                          textColor:
+                                              selectedsubcategory_id.contains(
+                                                i.id,
+                                              )
                                               ? AppColors.white
                                               : AppColors.mainColor,
-                                          buttonType: selectedCategoryId == i.id
+                                          buttonType:
+                                              selectedsubcategory_id.contains(
+                                                i.id,
+                                              )
                                               ? ButtonType.filled
                                               : ButtonType.outline,
                                           onTap: () => {
                                             setState(() {
-                                              selectedCategoryId = i.id;
+                                              if (selectedsubcategory_id
+                                                  .contains(i.id)) {
+                                                selectedsubcategory_id.remove(
+                                                  i.id,
+                                                );
+                                              } else {
+                                                selectedsubcategory_id.add(
+                                                  i.id,
+                                                );
+                                              }
                                             }),
                                             context.read<GroupBloc>().add(
-                                              GetGroups(categoryId: i.id),
+                                              GetGroups(
+                                                subcategory_id:
+                                                    selectedsubcategory_id
+                                                        .isEmpty
+                                                    ? null
+                                                    : '[${selectedsubcategory_id.join(',')}]',
+                                              ),
                                             ),
                                           },
                                         ),
                                     ],
                                   ),
                                 ),
-                              );
-                            } else if (state is ErrorLoadingCategoryData) {
-                              return Center(
-                                child: Text(
-                                  'Error loading category data: ${state.errorMessage}',
-                                ),
-                              );
-                            } else {
-                              return Container();
-                            }
-                          },
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          WButton(
-                            text: "More",
-                            fontSize: 12,
-                            borderRadius: 20,
-                            verticalPadding: 8,
-                            horizontalPadding: 12,
-                            color: AppColors.mainColor,
-                            textColor: AppColors.white,
-                            onTap: () {
-                              showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(20),
-                                  ),
-                                ),
-                                builder: (sheetContext) {
-                                  return BlocProvider.value(
-                                    value: context
-                                        .read<
-                                          GroupBloc
-                                        >(), // ← To'g'ri context!
-                                    child: _CategoryBottomSheet(
-                                      category: category,
-                                      selectedCategoryId: selectedCategoryId,
-                                      onSelect: (id) {
-                                        setState(() => selectedCategoryId = id);
-                                        context.read<GroupBloc>().add(
-                                          GetGroups(categoryId: id),
-                                        );
-                                        Navigator.pop(context);
-                                      },
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                            // showModalBottomSheet(
-                            //   context: context,
-                            //   isScrollControlled: true,
-                            //   shape: const RoundedRectangleBorder(
-                            //     borderRadius: BorderRadius.vertical(
-                            //       top: Radius.circular(20),
-                            //     ),
-                            //   ),
-                            //   builder: (sheetContext) {
-                            //     return BlocProvider.value(
-                            //       value: context.read<GroupBloc>(),
-                            //       child: Builder(
-                            //         builder: (context) {
-                            //           // ixtiyoriy, qo'shimcha xavfsizlik uchun
-                            //           return _CategoryBottomSheet(
-                            //             category: category,
-                            //             selectedCategoryId: selectedCategoryId,
-                            //             onSelect: (id) {
-                            //               setState(() => selectedCategoryId = id);
-                            //               context.read<GroupBloc>().add(
-                            //                 GetGroups(categoryId: id),
-                            //               );
-                            //               Navigator.pop(sheetContext);
-                            //             },
-                            //           );
-                            //         },
-                            //       ),
-                            //     );
-                            //   },
-                            // );
-                            // },
-                          ),
-                          const SizedBox(width: 12),
-                          WButton(
-                            text: "",
-                            borderRadius: 20,
-                            verticalPadding: 8,
-                            horizontalPadding: 12,
-                            color: AppColors.mainColor,
-                            textColor: AppColors.white,
-                            child: SvgPicture.asset(
-                              "assets/svg/nav/filter.svg",
+                              ),
                             ),
-                            onTap: () => {},
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  // WTabBar(
-                  //   tabsList: categoryTabs,
-                  //   controllerForMainTabVarView: controllerForMainTabVarView,
-                  // ),
-                  // Expanded(
-                  //   child: TabBarView(
-                  //     controller: controllerForMainTabVarView,
-                  //     children: const [GroupPage(), GroupPage(), GroupPage()],
-                  //   ),
-                  // ),
-                  // const SingleChildScrollView(child: GroupPage()),
-                  const Expanded(
-                    child: GroupPage(), // o‘zi scroll qiladi
-                  ),
-                ],
-              ),
+                            Row(
+                              children: [
+                                WButton(
+                                  text: "More",
+                                  fontSize: 12,
+                                  borderRadius: 20,
+                                  verticalPadding: 8,
+                                  horizontalPadding: 12,
+                                  color: AppColors.mainColor,
+                                  textColor: AppColors.white,
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      isScrollControlled: true,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(20),
+                                        ),
+                                      ),
+                                      builder: (sheetContext) {
+                                        return BlocProvider.value(
+                                          value: context
+                                              .read<
+                                                GroupBloc
+                                              >(), // ← To'g'ri context!
+                                          child: _CategoryBottomSheet(
+                                            subcategory: subcategory,
+                                            selectedCategoryId:
+                                                selectedCategoryId,
+                                            onSelect: (id) {
+                                              setState(
+                                                () => selectedCategoryId = id,
+                                              );
+                                              context.read<GroupBloc>().add(
+                                                GetGroups(categoryId: id),
+                                              );
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                                const SizedBox(width: 12),
+                                WButton(
+                                  text: "",
+                                  borderRadius: 20,
+                                  verticalPadding: 8,
+                                  horizontalPadding: 12,
+                                  color: AppColors.mainColor,
+                                  textColor: AppColors.white,
+                                  child: SvgPicture.asset(
+                                    "assets/svg/nav/filter.svg",
+                                  ),
+                                  onTap: () => {},
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        // WTabBar(
+                        //   tabsList: categoryTabs,
+                        //   controllerForMainTabVarView: controllerForMainTabVarView,
+                        // ),
+                        // Expanded(
+                        //   child: TabBarView(
+                        //     controller: controllerForMainTabVarView,
+                        //     children: const [GroupPage(), GroupPage(), GroupPage()],
+                        //   ),
+                        // ),
+                        // const SingleChildScrollView(child: GroupPage()),
+                        const Expanded(
+                          child: GroupPage(), // o‘zi scroll qiladi
+                        ),
+                      ],
+                    ),
+                  );
+                } else if (state is ErrorLoadingCategoryData) {
+                  return Center(
+                    child: Text(
+                      'Error loading category data: ${state.errorMessage}',
+                    ),
+                  );
+                } else {
+                  return Container();
+                }
+              },
             ),
           );
         },
@@ -281,12 +300,12 @@ class GroupsScreenState extends State<GroupsScreen>
 }
 
 class _CategoryBottomSheet extends StatelessWidget {
-  final List<Category> category;
+  final List<Category> subcategory;
   final int? selectedCategoryId;
   final Function(int?) onSelect;
 
   const _CategoryBottomSheet({
-    required this.category,
+    required this.subcategory,
     required this.selectedCategoryId,
     required this.onSelect,
   });
@@ -315,7 +334,7 @@ class _CategoryBottomSheet extends StatelessWidget {
                 : ButtonType.outline,
             onTap: () => onSelect(null),
           ),
-          for (final i in category)
+          for (final i in subcategory)
             WButton(
               text: i.title,
               fontSize: 12,

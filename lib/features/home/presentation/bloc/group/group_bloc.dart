@@ -20,7 +20,10 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
       try {
         print(event.categoryId);
         print(230303);
-        final response = await groupRepo.getGroup(event.categoryId);
+        final response = await groupRepo.getGroup(
+          categoryId: event.categoryId,
+          subcategory_id: event.subcategory_id,
+        );
         if (response is DataSuccess) {
           // group = response.data;
           GroupDto? groupDto = response.data;
