@@ -10,7 +10,7 @@ part of 'course_service.dart';
 
 class _CourseService implements CourseService {
   _CourseService(this._dio, {this.baseUrl, this.errorLogger}) {
-    baseUrl ??= 'https://vercel-backend-bay.vercel.app/api/';
+    baseUrl ??= 'http://10.18.200.229:4000/api/';
   }
 
   final Dio _dio;

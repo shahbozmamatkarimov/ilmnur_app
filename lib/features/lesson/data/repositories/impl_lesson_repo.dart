@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../data_sources/lesson_service.dart';
 
 class ImplLessonRepo extends LessonRepo {
-  final LessonService lessonService;
+  final Future<LessonService> lessonService;
   SharedPreferences? preferences; // Use nullable to check initialization
 
   ImplLessonRepo({required this.lessonService});
@@ -14,7 +14,8 @@ class ImplLessonRepo extends LessonRepo {
   @override
   Future<DataState<Lesson>> getLesson(int id) async {
     try {
-      final response = await lessonService.getLesson(id);
+      final service = await lessonService;
+      final response = await service.getLesson(id);
       return DataSuccess<Lesson>(data: response.data);
     } catch (e) {
       return DataException.getError<Lesson>(e);

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:ilmnur_app/core/network/dio_manager.dart';
 import 'package:ilmnur_app/features/lesson/data/models/lesson.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:ilmnur_app/core/network/urls.dart';
@@ -9,8 +10,8 @@ part 'lesson_service.g.dart';
 abstract class LessonService {
   factory LessonService(Dio dio, {String baseUrl}) = _LessonService;
 
-  factory LessonService.create() {
-    final dio = Dio();
+  static Future<LessonService> create() async {
+    final dio = await DioManager.getDio;
     return LessonService(dio);
   }
 

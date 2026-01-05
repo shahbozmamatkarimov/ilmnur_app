@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:ilmnur_app/features/course/data/models/course.dart';
+import 'package:ilmnur_app/features/reyting/data/models/reyting_data.dart';
+import 'package:ilmnur_app/features/reyting/presentation/bloc/reyting/reyting_bloc.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'lesson.g.dart'; // Ensure this matches your filename
@@ -12,10 +14,14 @@ class Lesson {
   final String content;
   final String type;
   final String? video;
+  final bool? is_liked;
+  final bool? is_finished;
+  final int? tests_count;
   final DateTime createdAt;
   final DateTime updatedAt;
   final List<Lesson>? lessons;
   final Course? course;
+  final ReytingData? reyting;
 
   Lesson({
     required this.id,
@@ -23,10 +29,14 @@ class Lesson {
     required this.content,
     required this.type,
     this.video,
+    required this.is_liked,
+    required this.is_finished,
+    this.tests_count,
     required this.createdAt,
     required this.updatedAt,
     this.lessons,
     this.course,
+    this.reyting,
   });
 
   factory Lesson.fromJson(Map<String, dynamic> json) => _$LessonFromJson(json);

@@ -18,6 +18,7 @@ Course _$CourseFromJson(Map<String, dynamic> json) => Course(
   subscriptions_count: (json['subscriptions_count'] as num?)?.toInt(),
   likes_count: (json['likes_count'] as num?)?.toInt(),
   lessons_count: (json['lessons_count'] as num?)?.toInt(),
+  finished_count: (json['finished_count'] as num?)?.toInt(),
 );
 
 Map<String, dynamic> _$CourseToJson(Course instance) => <String, dynamic>{
@@ -30,6 +31,7 @@ Map<String, dynamic> _$CourseToJson(Course instance) => <String, dynamic>{
   'subscriptions_count': instance.subscriptions_count,
   'likes_count': instance.likes_count,
   'lessons_count': instance.lessons_count,
+  'finished_count': instance.finished_count,
   'createdAt': instance.createdAt.toIso8601String(),
   'updatedAt': instance.updatedAt.toIso8601String(),
 };

@@ -102,7 +102,7 @@ class _CourseScreenState extends State<CourseScreen> {
                           ),
                           const SizedBox(height: 15),
                           Text(
-                            "0/${course.lessons_count} completed",
+                            "${course.finished_count ?? 0}/${course.lessons_count ?? 0} completed",
                             style: const TextStyle(fontWeight: FontWeight.w500),
                           ),
                           const SizedBox(height: 5),

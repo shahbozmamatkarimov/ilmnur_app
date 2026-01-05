@@ -8,11 +8,17 @@ import 'package:ilmnur_app/features/lesson/presentation/widgets/HtmlContent.dart
 class LectureView extends StatelessWidget {
   final String htmlContent; // backenddan kelgan HTML string
   final int lessonId; // backenddan kelgan HTML string
+  final bool isFinished;
+  final int testsCount;
+  final int ball;
 
   const LectureView({
     super.key,
     required this.htmlContent,
     required this.lessonId,
+    required this.isFinished,
+    required this.testsCount,
+    required this.ball,
   });
 
   @override
@@ -24,9 +30,12 @@ class LectureView extends StatelessWidget {
         height: 48,
         padding: const EdgeInsets.all(0),
         child: WButton(
-          text: 'Start test',
+          text: isFinished
+              ? 'Qayta topshirish ($testsCount/$ball)'
+              : 'Testni boshlash',
           color: AppColors.mainColor,
-          textColor: AppColors.white,
+          buttonType: isFinished ? ButtonType.outline : ButtonType.filled,
+          textColor: isFinished ? AppColors.mainColor : AppColors.white,
           verticalPadding: 10,
           onTap: () {
             context.router.push(TestsRoute(testId: lessonId));
@@ -34,7 +43,7 @@ class LectureView extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(vertical: 16),
         child: HtmlContent(htmlContent: htmlContent),
       ),
     );

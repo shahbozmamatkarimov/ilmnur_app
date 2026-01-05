@@ -17,6 +17,7 @@ class Course {
   final int? subscriptions_count;
   final int? likes_count;
   final int? lessons_count;
+  final int? finished_count;
   // final int group_id;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -33,6 +34,7 @@ class Course {
     this.subscriptions_count,
     this.likes_count,
     this.lessons_count,
+    this.finished_count,
     // required this.group_id,
   });
 

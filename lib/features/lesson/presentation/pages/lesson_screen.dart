@@ -194,13 +194,17 @@ class _LessonScreenState extends State<LessonScreen>
                                         verticalPadding: 12,
                                         horizontalPadding: 12,
                                         color: AppColors.mainColor,
-                                        buttonType: ButtonType.outline,
+                                        buttonType: lesson?.is_finished == true
+                                            ? ButtonType.filled
+                                            : ButtonType.outline,
                                         // color: AppColors.mainColor,
                                         borderRadius: 8,
                                         onTap: () => {},
                                         child: SvgPicture.asset(
                                           "assets/svg/lesson/marked.svg",
-                                          color: AppColors.mainColor,
+                                          color: lesson?.is_finished == true
+                                              ? AppColors.white
+                                              : AppColors.mainColor,
                                         ),
                                       ),
                                       // const SizedBox(width: 12),
@@ -312,10 +316,11 @@ class _LessonScreenState extends State<LessonScreen>
                           controller: controllerForMainTabVarView,
                           children: [
                             LectureView(
+                              isFinished: lesson?.is_finished ?? false,
                               htmlContent: lesson?.content ?? '',
                               lessonId: lesson?.id ?? 0,
-                              // text: lesson?.content ?? '',
-                              // isLoading: isLoading,
+                              testsCount: lesson?.tests_count ?? 0,
+                              ball: lesson?.reyting?.ball ?? 0,
                             ),
                             // Chat(),
                             // News(),

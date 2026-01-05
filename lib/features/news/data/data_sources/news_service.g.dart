@@ -10,7 +10,7 @@ part of 'news_service.dart';
 
 class _NewsService implements NewsService {
   _NewsService(this._dio, {this.baseUrl, this.errorLogger}) {
-    baseUrl ??= 'https://vercel-backend-bay.vercel.app/api/';
+    baseUrl ??= 'http://10.18.200.229:4000/api/';
   }
 
   final Dio _dio;
