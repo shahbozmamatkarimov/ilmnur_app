@@ -30,9 +30,9 @@ class MainScreenState extends State<MainScreen>
 
   final List<String> communityTabs = [
     "Lessons",
+    "Reyting",
     "Chat",
     "News",
-    "Reyting",
     "Settings",
     "Users",
     "Users",
@@ -54,9 +54,9 @@ class MainScreenState extends State<MainScreen>
               controller: controllerForMainTabVarView,
               children: [
                 Lessons(id: widget.id),
+                ReytingScreen(id: widget.id),
                 const ChatScreen(),
                 Lessons(id: widget.id),
-                ReytingScreen(id: widget.id),
                 // Lessons(id: widget.id),
                 Lessons(id: widget.id),
                 Lessons(id: widget.id),

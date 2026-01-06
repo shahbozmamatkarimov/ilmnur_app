@@ -10,7 +10,7 @@ part of 'lesson_service.dart';
 
 class _LessonService implements LessonService {
   _LessonService(this._dio, {this.baseUrl, this.errorLogger}) {
-    baseUrl ??= 'http://10.18.200.229:4000/api/';
+    baseUrl ??= 'https://vercel-backend-bay.vercel.app/api/';
   }
 
   final Dio _dio;

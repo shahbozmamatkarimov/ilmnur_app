@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:ilmnur_app/config/routes/router.gr.dart';
 import 'package:ilmnur_app/core/resources/app_colors.dart';
 import 'package:ilmnur_app/features/lesson/data/models/lesson.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 // 1. Avval StatefulWidget klassini aniqlash KERAK!
 class LessonTreeItem extends StatefulWidget {
@@ -58,7 +59,7 @@ class _LessonTreeItemState extends State<LessonTreeItem>
   Widget build(BuildContext context) {
     final childLessons = widget.lesson.lessons ?? [];
     final hasChildren = childLessons.isNotEmpty;
-    final paddingLeft = 20.0 + (widget.depth * 24.0);
+    final paddingLeft = 10 + widget.depth * 24.0;
 
     final bool isModule = widget.lesson.type == "module";
 
@@ -72,7 +73,12 @@ class _LessonTreeItemState extends State<LessonTreeItem>
                   context.router.push(LessonRoute(lessonId: widget.lesson.id));
                 },
           child: Padding(
-            padding: EdgeInsets.only(left: paddingLeft, top: 12, bottom: 8),
+            padding: EdgeInsets.only(
+              left: paddingLeft,
+              right: 10,
+              top: 12,
+              bottom: 8,
+            ),
             child: Row(
               children: [
                 if (isModule)
@@ -84,9 +90,7 @@ class _LessonTreeItemState extends State<LessonTreeItem>
                       size: 20,
                       color: AppColors.mainColor,
                     ),
-                  )
-                else
-                  const SizedBox(width: 20),
+                  ),
                 if (widget.lesson.video != null &&
                     widget.lesson.video!.isNotEmpty)
                   const Icon(
@@ -110,6 +114,16 @@ class _LessonTreeItemState extends State<LessonTreeItem>
                       color: AppColors.c_1b,
                     ),
                   ),
+                ),
+                // SvgPicture.asset(
+                //   "assets/svg/course/statistics.svg",
+                //   width: 20,
+                //   height: 20,
+                // ),
+                SvgPicture.asset(
+                  "assets/svg/course/${widget.lesson.is_finished == true ? 'finished' : 'not_finished'}.svg",
+                  width: 20,
+                  height: 20,
                 ),
                 if (widget.lesson.video != null &&
                     widget.lesson.video!.isNotEmpty)

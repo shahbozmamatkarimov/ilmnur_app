@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:ilmnur_app/core/resources/app_colors.dart';
 import 'package:ilmnur_app/core/widgets/w_button.dart';
 import 'package:ilmnur_app/features/course/data/data_sources/course_service.dart';
+import 'package:ilmnur_app/features/course/data/models/course.dart';
 import 'package:ilmnur_app/features/course/data/repositories/impl_course_repo.dart';
 import 'package:ilmnur_app/features/course/presentation/bloc/course/course_bloc.dart';
 import 'package:ilmnur_app/features/course/presentation/widgets/add_course.dart';
@@ -182,7 +183,7 @@ class _LessonsState extends State<Lessons> {
                       spacing: 20,
                       runSpacing: 20,
                       children: [
-                        for (dynamic i in courses.courses)
+                        for (Course i in courses.courses)
                           GestureDetector(
                             // onTap: () => context.router.pushNamed("/course"),
                             onTap: () {
@@ -315,9 +316,9 @@ class _LessonsState extends State<Lessons> {
                                               "assets/svg/nav/star.svg",
                                             ),
                                             const SizedBox(width: 4),
-                                            const Text(
-                                              "355",
-                                              style: TextStyle(
+                                            Text(
+                                              "${i.likes_count ?? 0}",
+                                              style: const TextStyle(
                                                 color: AppColors.mainColor,
                                                 fontSize: 12,
                                               ),
@@ -334,20 +335,23 @@ class _LessonsState extends State<Lessons> {
                                           ],
                                         ),
                                         const SizedBox(height: 8),
-                                        const LinearProgressIndicator(
-                                          value: 0.4,
+                                        LinearProgressIndicator(
+                                          value: i.lessons_count == null
+                                              ? 0
+                                              : (i.finished_count ?? 0) /
+                                                    (i.lessons_count ?? 0),
                                           backgroundColor: AppColors.c_e0,
                                           color: AppColors.mainColor,
-                                          borderRadius: BorderRadius.all(
+                                          borderRadius: const BorderRadius.all(
                                             Radius.circular(2),
                                           ),
                                           semanticsLabel:
                                               'Linear progress indicator',
                                         ),
                                         const SizedBox(height: 8),
-                                        const Text(
-                                          "3/10 completed",
-                                          style: TextStyle(
+                                        Text(
+                                          "${i.finished_count}/${i.lessons_count} completed",
+                                          style: const TextStyle(
                                             color: AppColors.c_07,
                                             fontSize: 12,
                                           ),

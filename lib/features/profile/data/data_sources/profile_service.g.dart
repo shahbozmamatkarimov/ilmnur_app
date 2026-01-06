@@ -10,7 +10,7 @@ part of 'profile_service.dart';
 
 class _ProfileService implements ProfileService {
   _ProfileService(this._dio, {this.baseUrl, this.errorLogger}) {
-    baseUrl ??= 'http://10.18.200.229:4000/api/';
+    baseUrl ??= 'https://vercel-backend-bay.vercel.app/api/';
   }
 
   final Dio _dio;
