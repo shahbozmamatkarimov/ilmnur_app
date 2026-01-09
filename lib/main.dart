@@ -11,6 +11,11 @@ import 'package:ilmnur_app/features/home/presentation/bloc/category/category_blo
 import 'package:window_manager/window_manager.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
+class Globals {
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await MobileAds.instance.initialize();
@@ -33,7 +38,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
-  final _router = AppRouter();
+  final _router = AppRouter(navigatorKey: Globals.navigatorKey);
 
   @override
   Widget build(BuildContext context) {

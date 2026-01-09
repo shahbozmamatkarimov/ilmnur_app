@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ilmnur_app/config/routes/router.gr.dart';
 import 'package:ilmnur_app/core/resources/app_colors.dart';
 import 'package:ilmnur_app/core/widgets/w_button.dart';
 import 'package:auto_route/auto_route.dart';
@@ -25,6 +28,7 @@ class TestsScreen extends StatefulWidget {
 
 /// Main example page
 class _TestsScreenState extends State<TestsScreen> {
+  final GlobalKey _scaffoldKey = GlobalKey();
   int? selectedOption;
   bool _initialized = false;
   bool isFinished = false;
@@ -42,8 +46,75 @@ class _TestsScreenState extends State<TestsScreen> {
   final PageController _pageController = PageController();
   int currentIndex = 0;
 
+  // timer start
+  late Timer _timer;
+  int remainingSeconds = 10; // 1 daqiqa = 60 soniya
+  bool isTimerRunning = true;
+
+  void startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
+
+      setState(() {
+        if (remainingSeconds > 0) {
+          remainingSeconds--;
+        } else {
+          // Vaqt tugadi — keyingi savolga o'tamiz
+          timer.cancel();
+          goToNextQuestion();
+        }
+      });
+    });
+  }
+
+  void goToNextQuestion() {
+    final bool isTrue = tests?[currentIndex].true_answer[0] == selectedOption;
+
+    setSelectedOption(isTrue);
+    if (currentIndex < (tests?.length ?? 0) - 1) {
+      _pageController.nextPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    } else {
+      // Oxirgi savol bo'lsa — yakunlash tugmasini faollashtirish
+      // yoki avtomatik yakunlash mumkin
+      // if (selectedOptions.every((e) => e.isTrue != null)) {
+      final bloc = _scaffoldKey.currentContext?.read<TestsBloc>();
+      if (bloc != null) {
+        bloc.add(
+          checkAnswers(
+            body: AnswerReponse(
+              lesson_id: lesson_id,
+              user_id: user_id,
+              answers: selectedOptions,
+            ),
+          ),
+        );
+      }
+      setState(() {
+        isFinished = true;
+      });
+      // }
+    }
+  }
+
+  void resetTimer() {
+    _timer.cancel();
+    setState(() {
+      remainingSeconds = 10;
+    });
+    startTimer();
+  }
+
+  // timer end
+
   void setSelectedOption(bool isTrue) {
     setState(() {
+      print(isTrue);
       if (currentIndex < 0) return; // index tekshirish
 
       // selectedOptions ni kerak bo'lsa kengaytirish
@@ -60,6 +131,13 @@ class _TestsScreenState extends State<TestsScreen> {
   }
 
   @override
+  void dispose() {
+    _timer.cancel();
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => TestsBloc(
@@ -67,6 +145,7 @@ class _TestsScreenState extends State<TestsScreen> {
         testsRepo: ImplTestsRepo(testsService: TestsService.create()),
       ),
       child: Scaffold(
+        key: _scaffoldKey,
         backgroundColor: AppColors.backgroundColor,
         appBar: AppBar(
           backgroundColor: AppColors.transparent,
@@ -131,6 +210,11 @@ class _TestsScreenState extends State<TestsScreen> {
                   SelectedOption(id: null, isTrue: null),
                 );
                 _initialized = true;
+
+                // Timer ni birinchi marta ishga tushiramiz
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  startTimer();
+                });
               }
               // Questions list
               return Column(
@@ -161,7 +245,7 @@ class _TestsScreenState extends State<TestsScreen> {
                                     text: "",
                                     verticalPadding: 0,
                                     horizontalPadding:
-                                        selectedOptions[i].id != null
+                                        selectedOptions[i].isTrue != null
                                         ? 0
                                         : 11.5,
                                     borderRadius: 30,
@@ -177,7 +261,7 @@ class _TestsScreenState extends State<TestsScreen> {
                                     color: i == currentIndex
                                         ? AppColors.mainColor
                                         : AppColors.c_ee,
-                                    child: selectedOptions[i].id != null
+                                    child: selectedOptions[i].isTrue != null
                                         ? SvgPicture.asset(
                                             tests?[i].true_answer[0] ==
                                                     selectedOptions[i].id
@@ -198,11 +282,15 @@ class _TestsScreenState extends State<TestsScreen> {
                     child: PageView.builder(
                       controller: _pageController,
                       itemCount: tests?.length,
+                      physics: const NeverScrollableScrollPhysics(),
                       onPageChanged: (index) {
                         setState(() {
                           selectedOption = null;
                           currentIndex = index;
                         });
+
+                        // Timer ni qayta ishga tushiramiz
+                        resetTimer();
                       },
                       itemBuilder: (context, index) {
                         final q = tests?[index];
@@ -211,6 +299,48 @@ class _TestsScreenState extends State<TestsScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              // TIMER KO'RSATKICHI
+                              Center(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 8,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: remainingSeconds <= 10
+                                        ? AppColors.red.withOpacity(0.1)
+                                        : AppColors.mainColor.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(
+                                      color: remainingSeconds <= 10
+                                          ? AppColors.red
+                                          : AppColors.mainColor,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/svg/test/timer.svg",
+                                        width: 20,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        "${(remainingSeconds ~/ 60).toString().padLeft(2, '0')}:${(remainingSeconds % 60).toString().padLeft(2, '0')}",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: remainingSeconds <= 10
+                                              ? AppColors.red
+                                              : AppColors.mainColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+
                               // SAVOL
                               Container(
                                 decoration: const BoxDecoration(
@@ -422,7 +552,8 @@ class _TestsScreenState extends State<TestsScreen> {
                     ),
                     selectedOptions
                                 .where(
-                                  (SelectedOption? item) => item?.id != null,
+                                  (SelectedOption? item) =>
+                                      item?.isTrue != null,
                                 )
                                 .toList()
                                 .length ==
@@ -438,6 +569,11 @@ class _TestsScreenState extends State<TestsScreen> {
                                   horizontalPadding: 50,
                                   onTap: () {
                                     context.router.pop();
+                                    context.router.popAndPush(
+                                      LessonRoute(
+                                        lessonId: lesson_id,
+                                      ), // yoki boshqa route
+                                    );
                                   },
                                 )
                               : WButton(
@@ -569,8 +705,7 @@ class _TestsScreenState extends State<TestsScreen> {
                                             horizontalPadding: 50,
                                             onTap: () => {
                                               Navigator.pop(context),
-                                              _pageController.animateToPage(
-                                                currentIndex + 1, // 4-savol
+                                              _pageController.nextPage(
                                                 duration: const Duration(
                                                   milliseconds: 300,
                                                 ),
