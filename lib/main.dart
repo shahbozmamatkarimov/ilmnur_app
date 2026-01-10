@@ -12,8 +12,9 @@ import 'package:window_manager/window_manager.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class Globals {
-  static final GlobalKey<NavigatorState> navigatorKey =
-      GlobalKey<NavigatorState>();
+  static ValueNotifier<bool> isAuth = ValueNotifier<bool>(false);
+  // static final GlobalKey<NavigatorState> navigatorKey =
+  //     GlobalKey<NavigatorState>();
 }
 
 void main() async {
@@ -38,7 +39,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
-  final _router = AppRouter(navigatorKey: Globals.navigatorKey);
+  final _router = AppRouter();
 
   @override
   Widget build(BuildContext context) {

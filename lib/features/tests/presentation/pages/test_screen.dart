@@ -263,8 +263,10 @@ class _TestsScreenState extends State<TestsScreen> {
                                         : AppColors.c_ee,
                                     child: selectedOptions[i].isTrue != null
                                         ? SvgPicture.asset(
-                                            tests?[i].true_answer[0] ==
-                                                    selectedOptions[i].id
+                                            (tests?[i].true_answer.isNotEmpty ==
+                                                        true &&
+                                                    tests?[i].true_answer[0] ==
+                                                        selectedOptions[i].id)
                                                 ? "assets/svg/test/true.svg"
                                                 : "assets/svg/test/false.svg",
                                             width: 22,
@@ -370,7 +372,10 @@ class _TestsScreenState extends State<TestsScreen> {
                                   margin: const EdgeInsets.only(bottom: 16),
                                   child: WButton(
                                     text: "",
-                                    color: selectedOption == i
+                                    color:
+                                        (selectedOption != null
+                                            ? selectedOption == i
+                                            : selectedOptions[index].id == i)
                                         ? AppColors.mainColor
                                         : AppColors.c_a1,
                                     buttonType: ButtonType.outline,
@@ -379,7 +384,10 @@ class _TestsScreenState extends State<TestsScreen> {
                                     borderRadius: 10,
                                     onTap: () {
                                       setState(() {
-                                        selectedOption = i;
+                                        if (selectedOptions[index].isTrue ==
+                                            null) {
+                                          selectedOption = i;
+                                        }
                                       });
                                     },
                                     child: Row(
@@ -387,7 +395,12 @@ class _TestsScreenState extends State<TestsScreen> {
                                         Container(
                                           decoration: BoxDecoration(
                                             border: Border.all(
-                                              color: selectedOption == i
+                                              color:
+                                                  (selectedOption != null
+                                                      ? selectedOption == i
+                                                      : selectedOptions[index]
+                                                                .id ==
+                                                            i)
                                                   ? AppColors.mainColor
                                                   : AppColors.c_ed,
                                             ),
@@ -601,13 +614,27 @@ class _TestsScreenState extends State<TestsScreen> {
                                   },
                                 ))
                         : WButton(
-                            text: 'Tekshirish',
+                            text:
+                                (selectedOptions.isNotEmpty == true &&
+                                    selectedOptions[currentIndex].isTrue !=
+                                        null)
+                                ? 'Keyingi'
+                                : 'Tekshirish',
                             color: AppColors.mainColor,
                             textColor: AppColors.white,
                             borderRadius: 25,
                             verticalPadding: 13,
                             horizontalPadding: 50,
                             onTap: () {
+                              if (selectedOptions.isNotEmpty == true &&
+                                  selectedOptions[currentIndex].isTrue !=
+                                      null) {
+                                _pageController.nextPage(
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeInOut,
+                                );
+                                return;
+                              }
                               if (selectedOption == null) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(

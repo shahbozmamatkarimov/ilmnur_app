@@ -3,7 +3,7 @@ import 'package:ilmnur_app/config/routes/router.gr.dart';
 
 @AutoRouterConfig(replaceInRouteName: 'Screen,Route')
 class AppRouter extends RootStackRouter {
-  AppRouter({super.navigatorKey});
+  // AppRouter({super.navigatorKey});
 
   @override
   List<AutoRoute> get routes => [

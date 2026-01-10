@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ilmnur_app/core/resources/app_colors.dart';
 import 'package:ilmnur_app/core/widgets/w_button.dart';
@@ -13,6 +14,8 @@ import 'package:ilmnur_app/features/course/presentation/widgets/add_course.dart'
 import 'package:ilmnur_app/features/home/data/models/category/category.dart';
 import 'package:ilmnur_app/features/home/presentation/bloc/category/category_bloc.dart'
     as category;
+import 'package:ilmnur_app/features/login/presentation/pages/login_screen.dart';
+import 'package:ilmnur_app/main.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:ilmnur_app/config/routes/router.gr.dart';
 
@@ -401,10 +404,37 @@ class _LessonsState extends State<Lessons> {
                       ],
                     );
                   } else if (state is ErrorLoadingCourseData) {
-                    return Center(
-                      child: Text(
-                        'Error loading community data: ${state.errorMessage}',
-                      ),
+                    // return Center(
+                    //   child: Text(
+                    //     'Error loading community data: ${state.errorMessage}',
+                    //   ),
+                    // );
+                    return ValueListenableBuilder(
+                      valueListenable: Globals.isAuth,
+                      builder: (context, bool auth, child) {
+                        // Mantiqni tekshiring: kirmagan bo'lsa (!) Loginni ko'rsatish
+                        // if (!auth) {
+                        return Center(
+                          child: Padding(
+                            padding: const EdgeInsetsGeometry.symmetric(
+                              vertical: 150,
+                            ),
+                            child: WButton(
+                              color: AppColors.mainColor,
+                              horizontalPadding: 25,
+                              verticalPadding: 10,
+                              fontSize: 14,
+                              textColor: AppColors.white,
+                              borderRadius: 50,
+                              text: 'Iltimos, tizimga kiring',
+                              onTap: () => {
+                                context.router.push(const LoginRoute()),
+                              },
+                            ),
+                          ),
+                        );
+                        // }
+                      },
                     );
                   } else {
                     return Container();

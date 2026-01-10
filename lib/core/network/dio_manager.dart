@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:ilmnur_app/config/routes/route_service.dart';
 import 'package:ilmnur_app/config/routes/router.gr.dart';
 import 'package:ilmnur_app/features/login/presentation/pages/login_screen.dart';
 import 'package:ilmnur_app/main.dart';
@@ -37,32 +38,35 @@ abstract class DioManager {
           if (token != null && token.isNotEmpty) {
             options.headers['Authorization'] = 'Bearer $token';
           } else {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              navigatorKey.currentState?.pushAndRemoveUntil(
-                MaterialPageRoute(builder: (_) => const LoginScreen()),
-                (route) => false,
-              );
-            });
-          }
-          handler.next(options);
-        },
-        onError: (e, handler) {
-          if (e.response?.statusCode == 401) {
-            final context = Globals.navigatorKey.currentContext;
-            if (context != null) {
-              context.router.replace(
-                const LoginRoute(),
-              ); // auto_route navigator
-            } else {
-              debugPrint("goo");
-            }
-            // debugPrint("${e.response?.statusCode}");
             // WidgetsBinding.instance.addPostFrameCallback((_) {
             //   navigatorKey.currentState?.pushAndRemoveUntil(
             //     MaterialPageRoute(builder: (_) => const LoginScreen()),
             //     (route) => false,
             //   );
             // });
+          }
+          Globals.isAuth.value = true;
+          handler.next(options);
+        },
+        onError: (e, handler) {
+          if (e.response?.statusCode == 401) {
+            Globals.isAuth.value = false;
+            // final context = Globals.navigatorKey.currentContext;
+            // WidgetsBinding.instance.addPostFrameCallback((_) {
+            // RouteService().navigateTo('/login');
+            // Globals.appRouter.replaceAll([const LoginRoute()]);
+            // Globals.appRouter.push(const LoginRoute());
+            // context?.router.replace(const LoginRoute());
+            // Globals.navigatorKey.currentState?.context.router.replace(
+            //   const LoginRoute(),
+            // MaterialPageRoute(builder: (_) => const LoginScreen()),
+            // (route) => false,
+            // );
+            // });
+            // if (context != null) {
+            // } else {
+            //   WidgetsBinding.instance.addPostFrameCallback((_) {
+            // }
           }
           handler.next(e);
         },
